@@ -15,32 +15,31 @@ const types = {
 export class Tracker extends EventTarget {
   // Is it dark?
 
-  // Is anyone overencumbered?
-  // Is anyone not wearing warm clothing?
-  // Is anyone in water?
-  // Is anyone injured?
-  // Is anyone poisoned?
-  // Is anyone sick?
-  // Is anyone sleeping on bare ground?
-  // Is anyone shooting ammunition?
-  // Do they have a stronghold?
-  // Do they have hirelings?
-
   weather = {};
   terrain = {};
   light = true;
   party = {
-    isEncumbered: true,
-    haveWarmClothing: true,
-    isInWater: true,
-    isInjured: true,
-    isPoisoned: true,
-    isDiseased: true,
-    isSleepingOnBareGround: true,
-    isFiringArrows: true,
-    ownsStronghold: true,
-    haveHirelings: true,
-    isWearingArmor: true,
+    overEncumbered: false,
+    noWarmClothes: false,
+    inWater: false,
+    poisoned: false,
+    injured: false,
+    diseased: false,
+    bareGroundSleeping: false,
+    usingArrows: false,
+    wearingArmor: false,
+    ownStronghold: false,
+    haveHirelings: false,
+    hike: false,
+    fish: false,
+    forage: false,
+    hunt: false,
+    keepWatch: false,
+    leadTheWay: false,
+    rest: false,
+    sleep: false,
+    makeCamp: false,
+    forcedMarch: 0,
   };
 
   _round = 0;
@@ -56,6 +55,10 @@ export class Tracker extends EventTarget {
   _quarterDayMessages = [];
   _dayMessages = [];
   _weekMessages = [];
+
+  setParty(key, value) {
+    this.party[key] = value;
+  }
 
   get round() {
     return this._round;
@@ -138,10 +141,10 @@ export class Tracker extends EventTarget {
   }
 
   async setRound(num) {
-    const messages = [];
+    let messages = [];
     for (const round of rounds) {
       // pass in weather and terrain and light level and party state
-      messages.push(await round(this.weather, this.terrain, this.light, this.party));
+      messages = messages.concat((await round(this.weather, this.terrain, this.light, this.party)) || []);
     }
     this.roundMessages = messages.filter(Boolean);
     this.round = num;
@@ -157,10 +160,10 @@ export class Tracker extends EventTarget {
   }
 
   async setTurn(num) {
-    const messages = [];
+    let messages = [];
     for (const turn of turns) {
       // pass in weather and terrain and light level and party state
-      messages.push(await turn(this.weather, this.terrain, this.light, this.party));
+      messages = messages.concat((await turn(this.weather, this.terrain, this.light, this.party)) || []);
     }
     this.turnMessages = messages.filter(Boolean);
     this.round = null;
@@ -177,10 +180,10 @@ export class Tracker extends EventTarget {
   }
 
   async setQuarterDay(num) {
-    const messages = [];
+    let messages = [];
     for (const quarterDay of quarterDays) {
       // pass in weather and terrain and light level and party state
-      messages.push(await quarterDay(this.weather, this.terrain, this.light, this.party));
+      messages = messages.concat((await quarterDay(this.weather, this.terrain, this.light, this.party)) || []);
     }
     this.quarterDayMessages = messages.filter(Boolean);
     this.round = null;
@@ -197,10 +200,10 @@ export class Tracker extends EventTarget {
   }
 
   async setDay(num) {
-    const messages = [];
+    let messages = [];
     for (const day of days) {
       // pass in weather and terrain and light level and party state
-      messages.push(await day(this.weather, this.terrain, this.light, this.party));
+      messages = messages.concat((await day(this.weather, this.terrain, this.light, this.party)) || []);
     }
     this.dayMessages = messages.filter(Boolean);
     this.round = null;
@@ -218,10 +221,10 @@ export class Tracker extends EventTarget {
   }
 
   async setWeek(num) {
-    const messages = [];
+    let messages = [];
     for (const week of weeks) {
       // pass in weather and terrain and light level and party state
-      messages.push(await week(this.weather, this.terrain, this.light, this.party));
+      messages = messages.concat((await week(this.weather, this.terrain, this.light, this.party)) || []);
     }
     this.weekMessages = messages.filter(Boolean);
     this.round = null;
