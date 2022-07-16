@@ -49,6 +49,12 @@ export class WorldStateOptions extends LitElement {
     makeCamp: { type: Boolean },
     forcedMarch: { type: Number },
   };
+  static styles = css`
+    :host {
+      display: flex;
+      flex-direction: row;
+    }
+  `;
   selectionChange(e) {
     this.dispatchEvent(new CustomEvent("change", { detail: { name: e.target.value, selected: e.target.checked } }));
   }
@@ -60,7 +66,82 @@ export class WorldStateOptions extends LitElement {
   render() {
     return html`
       <section>
-        <h3>Is anyone in the party...</h3>
+        <h3>Conditions</h3>
+        <h4>Is anyone in the party...</h4>
+        <div>
+          <label for="hungry">HUNGRY</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="hungry"
+            name="hungry"
+            value="hungry"
+            ?checked="${this.hungry}"
+          />
+        </div>
+        <div>
+          <label for="thirsty">THIRSTY</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="thirsty"
+            name="thirsty"
+            value="thirsty"
+            ?checked="${this.thirsty}"
+          />
+        </div>
+        <div>
+          <label for="sleepy">SLEEPY</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="sleepy"
+            name="sleepy"
+            value="sleepy"
+            ?checked="${this.sleepy}"
+          />
+        </div>
+        <div>
+          <label for="cold">COLD</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="cold"
+            name="cold"
+            value="cold"
+            ?checked="${this.cold}"
+          />
+        </div>
+      </section>
+      <section>
+        <h3>Drowning</h3>
+        <h4>Is anyone in the party...</h4>
+        <div>
+          <label for="in-water">In water?</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="in-water"
+            name="in-water"
+            value="inWater"
+            ?checked="${this.inWater}"
+          />
+        </div>
+        <div>
+          <label for="wearing-armor">Wearing armor?</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="wearing-armor"
+            name="wearing-armor"
+            value="wearingArmor"
+            ?checked="${this.wearingArmor}"
+          />
+        </div>
+      </section>
+      <section>
+        <h3>Other</h3>
+        <h4>Is anyone in the party...</h4>
         <div>
           <label for="over-encumbered">over encumbered?</label>
           <input
@@ -81,17 +162,6 @@ export class WorldStateOptions extends LitElement {
             name="no-warm-clothes"
             value="noWarmClothes"
             ?checked="${this.noWarmClothes}"
-          />
-        </div>
-        <div>
-          <label for="in-water">In water?</label>
-          <input
-            @change="${this.selectionChange}"
-            type="checkbox"
-            id="in-water"
-            name="in-water"
-            value="inWater"
-            ?checked="${this.inWater}"
           />
         </div>
         <div>
@@ -149,20 +219,10 @@ export class WorldStateOptions extends LitElement {
             ?checked="${this.usingArrows}"
           />
         </div>
-        <div>
-          <label for="wearing-armor">Wearing armor?</label>
-          <input
-            @change="${this.selectionChange}"
-            type="checkbox"
-            id="wearing-armor"
-            name="wearing-armor"
-            value="wearingArmor"
-            ?checked="${this.wearingArmor}"
-          />
-        </div>
       </section>
       <section>
-        <h3>Does the party...</h3>
+        <h3>Stronghold</h3>
+        <h4>Does the party...</h4>
         <div>
           <label for="own-stronghold">Own a stronghold?</label>
           <input
