@@ -11,6 +11,7 @@ import leadTheWay from "./effects/quarter_day/lead-the-way.js";
 import makeCamp from "./effects/quarter_day/make-camp.js";
 import randomEncounter from "./effects/quarter_day/random-encounter.js";
 import sleep from "./effects/quarter_day/sleep.js";
+import rest from "./effects/quarter_day/rest.js";
 
 export default [
   cold,
@@ -26,4 +27,5 @@ export default [
   makeCamp,
   randomEncounter,
   sleep,
+  rest,
 ];

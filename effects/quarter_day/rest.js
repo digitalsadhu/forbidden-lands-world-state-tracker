@@ -1,12 +1,6 @@
 export default async (weather, terrain, light, party) => {
-  const result = [];
-
-  if (party.sleep) {
-    if (party.bareGroundSleeping) {
-      result.push("SLEEP: Make a SURVIVAL roll when sleeping without having first made camp (MAKE CAMP).");
-    }
-
-    let message = "SLEEP: PCs recover all attribute points";
+  if (party.rest) {
+    let message = "REST: PCs recover all attribute points";
     const exceptions = [];
     if (party.hungry) {
       exceptions.push("HUNGRY");
@@ -26,12 +20,6 @@ export default async (weather, terrain, light, party) => {
 
     message += ".";
 
-    result.push(message);
-
-    if (party.sleepy) {
-      result.push("PCs recover from the SLEEPY condition.");
-    }
+    return [message];
   }
-
-  return result;
 };
