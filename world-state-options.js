@@ -24,6 +24,9 @@ export class WorldStateOptions extends LitElement {
     this.sleep = false;
     this.makeCamp = false;
     this.forcedMarch = 0;
+    this.environmentCold = false;
+    this.environmentDark = false;
+    this.noLightSource = false;
   }
   static properties = {
     overEncumbered: { type: Boolean },
@@ -48,6 +51,9 @@ export class WorldStateOptions extends LitElement {
     sleep: { type: Boolean },
     makeCamp: { type: Boolean },
     forcedMarch: { type: Number },
+    environmentCold: { type: Boolean },
+    environmentDark: { type: Boolean },
+    noLightSource: { type: Boolean },
   };
   static styles = css`
     :host {
@@ -67,7 +73,6 @@ export class WorldStateOptions extends LitElement {
     return html`
       <section>
         <h3>Conditions</h3>
-        <h4>Is anyone in the party...</h4>
         <div>
           <label for="hungry">HUNGRY</label>
           <input
@@ -112,10 +117,42 @@ export class WorldStateOptions extends LitElement {
             ?checked="${this.cold}"
           />
         </div>
+        <div>
+          <label for="poisoned">POISONED</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="poisoned"
+            name="poisoned"
+            value="poisoned"
+            ?checked="${this.poisoned}"
+          />
+        </div>
+        <div>
+          <label for="injured">INJURED</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="injured"
+            name="injured"
+            value="injured"
+            ?checked="${this.injured}"
+          />
+        </div>
+        <div>
+          <label for="diseased">SICK/DISEASED</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="diseased"
+            name="diseased"
+            value="diseased"
+            ?checked="${this.diseased}"
+          />
+        </div>
       </section>
       <section>
         <h3>Drowning</h3>
-        <h4>Is anyone in the party...</h4>
         <div>
           <label for="in-water">In water?</label>
           <input
@@ -140,8 +177,7 @@ export class WorldStateOptions extends LitElement {
         </div>
       </section>
       <section>
-        <h3>Other</h3>
-        <h4>Is anyone in the party...</h4>
+        <h3>Gear</h3>
         <div>
           <label for="over-encumbered">over encumbered?</label>
           <input
@@ -151,61 +187,6 @@ export class WorldStateOptions extends LitElement {
             name="over-encumbered"
             value="overEncumbered"
             ?checked="${this.overEncumbered}"
-          />
-        </div>
-        <div>
-          <label for="no-warm-clothes">not wearing warm clothing?</label>
-          <input
-            @change="${this.selectionChange}"
-            type="checkbox"
-            id="no-warm-clothes"
-            name="no-warm-clothes"
-            value="noWarmClothes"
-            ?checked="${this.noWarmClothes}"
-          />
-        </div>
-        <div>
-          <label for="poisoned">Poisoned?</label>
-          <input
-            @change="${this.selectionChange}"
-            type="checkbox"
-            id="poisoned"
-            name="poisoned"
-            value="poisoned"
-            ?checked="${this.poisoned}"
-          />
-        </div>
-        <div>
-          <label for="injured">Injured?</label>
-          <input
-            @change="${this.selectionChange}"
-            type="checkbox"
-            id="injured"
-            name="injured"
-            value="injured"
-            ?checked="${this.injured}"
-          />
-        </div>
-        <div>
-          <label for="diseased">Diseased?</label>
-          <input
-            @change="${this.selectionChange}"
-            type="checkbox"
-            id="diseased"
-            name="diseased"
-            value="diseased"
-            ?checked="${this.diseased}"
-          />
-        </div>
-        <div>
-          <label for="bare-ground-sleeping">Sleeping on bare ground?</label>
-          <input
-            @change="${this.selectionChange}"
-            type="checkbox"
-            id="bare-ground-sleeping"
-            name="bare-ground-sleeping"
-            value="bareGroundSleeping"
-            ?checked="${this.bareGroundSleeping}"
           />
         </div>
         <div>
@@ -222,7 +203,6 @@ export class WorldStateOptions extends LitElement {
       </section>
       <section>
         <h3>Stronghold</h3>
-        <h4>Does the party...</h4>
         <div>
           <label for="own-stronghold">Own a stronghold?</label>
           <input
@@ -337,6 +317,17 @@ export class WorldStateOptions extends LitElement {
           />
         </div>
         <div>
+          <label for="make-camp">MAKE CAMP</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="make-camp"
+            name="make-camp"
+            value="makeCamp"
+            ?checked="${this.makeCamp}"
+          />
+        </div>
+        <div>
           <label for="sleep">SLEEP</label>
           <input
             @change="${this.selectionChange}"
@@ -346,16 +337,14 @@ export class WorldStateOptions extends LitElement {
             value="sleep"
             ?checked="${this.sleep}"
           />
-        </div>
-        <div>
-          <label for="make-camp">MAKE CAMP</label>
+          <label for="bare-ground-sleeping">(didn't make camp first)</label>
           <input
             @change="${this.selectionChange}"
             type="checkbox"
-            id="make-camp"
-            name="make-camp"
-            value="makeCamp"
-            ?checked="${this.makeCamp}"
+            id="bare-ground-sleeping"
+            name="bare-ground-sleeping"
+            value="bareGroundSleeping"
+            ?checked="${this.bareGroundSleeping}"
           />
         </div>
         <div>
@@ -387,6 +376,49 @@ export class WorldStateOptions extends LitElement {
               ?checked="${this.forcedMarch === 2}"
             />2 quarter days
           </label>
+        </div>
+      </section>
+      <section>
+        <h3>Environment</h3>
+        <div>
+          <label for="environment-dark">DARK</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="environment-dark"
+            name="environmentDark"
+            value="environmentDark"
+            ?checked="${this.environmentDark}"
+          />
+          <label for="no-light-source">(no light source)</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="no-light-source"
+            name="noLightSource"
+            value="noLightSource"
+            ?checked="${this.noLightSource}"
+          />
+        </div>
+        <div>
+          <label for="environment-cold">COLD</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="environment-cold"
+            name="environmentCold"
+            value="environmentCold"
+            ?checked="${this.environmentCold}"
+          />
+          <label for="no-warm-clothes">(not wearing warm clothing)</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="no-warm-clothes"
+            name="no-warm-clothes"
+            value="noWarmClothes"
+            ?checked="${this.noWarmClothes}"
+          />
         </div>
       </section>
     `;
