@@ -55,6 +55,9 @@ export class WorldStateTracker extends LitElement {
     tracker.addEventListener("week-change", () => {
       this._week = tracker.week;
     });
+    tracker.addEventListener("party-change", () => {
+      tracker.refresh();
+    });
   }
   disconnectedCallback() {
     tracker.removeEventListener("round-messages-change");

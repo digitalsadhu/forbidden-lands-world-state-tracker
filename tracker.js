@@ -56,8 +56,9 @@ export class Tracker extends EventTarget {
   _dayMessages = [];
   _weekMessages = [];
 
-  setParty(key, value) {
+  async setParty(key, value) {
     this.party[key] = value;
+    await this.refresh();
   }
 
   get round() {
@@ -148,6 +149,7 @@ export class Tracker extends EventTarget {
     }
     this.roundMessages = messages.filter(Boolean);
     this.round = num;
+    this._currentType = types.ROUND;
   }
 
   async incrementRound() {
@@ -168,6 +170,7 @@ export class Tracker extends EventTarget {
     this.turnMessages = messages.filter(Boolean);
     this.round = null;
     this.turn = num;
+    this._currentType = types.TURN;
   }
 
   async incrementTurn() {
@@ -189,6 +192,7 @@ export class Tracker extends EventTarget {
     this.round = null;
     this.turn = null;
     this.quarterDay = num;
+    this._currentType = types.QUARTER_DAY;
   }
 
   async incrementQuarterDay() {
@@ -210,6 +214,7 @@ export class Tracker extends EventTarget {
     this.turn = null;
     this.quarterDay = null;
     this.day = num;
+    this._currentType = types.DAY;
   }
 
   async incrementDay() {
@@ -232,6 +237,7 @@ export class Tracker extends EventTarget {
     this.quarterDay = null;
     this.day = null;
     this.week = num;
+    this._currentType = types.WEEK;
   }
 
   async incrementWeek() {
@@ -254,6 +260,26 @@ export class Tracker extends EventTarget {
         break;
       case types.WEEK:
         await this.incrementWeek();
+        break;
+    }
+  }
+
+  async refresh() {
+    switch (this._currentType) {
+      case types.ROUND:
+        await this.setRound(this.round);
+        break;
+      case types.TURN:
+        await this.setTurn(this.turn);
+        break;
+      case types.QUARTER_DAY:
+        await this.setQuarterDay(this.quarterDay);
+        break;
+      case types.DAY:
+        await this.setDay(this.day);
+        break;
+      case types.WEEK:
+        await this.setWeek(this.week);
         break;
     }
   }
