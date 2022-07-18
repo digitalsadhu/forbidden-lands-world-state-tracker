@@ -1,3 +1,3 @@
-export default async (weather, terrain, light, party) => {
-  if (party.overEncumbered) return ["Overencumbered PCs that try to RUN must roll ENDURANCE"];
+export default async (state) => {
+  if (state.overEncumbered) return ["Overencumbered PCs that try to RUN must roll ENDURANCE"];
 };

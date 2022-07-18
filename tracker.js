@@ -14,11 +14,7 @@ const types = {
 
 export class Tracker extends EventTarget {
   // Is it dark?
-
-  weather = {};
-  terrain = {};
-  light = true;
-  party = {
+  state = {
     overEncumbered: false,
     noWarmClothes: false,
     inWater: false,
@@ -40,6 +36,18 @@ export class Tracker extends EventTarget {
     sleep: false,
     makeCamp: false,
     forcedMarch: 0,
+    environmentDark: false,
+    environmentCold: false,
+    terrainPlains: false,
+    terrainForest: false,
+    terrainDarkForest: false,
+    terrainHills: false,
+    terrainMountains: false,
+    terrainHighMountains: false,
+    terrainLakeRiver: false,
+    terrainMarshlands: false,
+    terrainQuagmire: false,
+    terrainRuins: false,
   };
 
   _round = 0;
@@ -56,8 +64,8 @@ export class Tracker extends EventTarget {
   _dayMessages = [];
   _weekMessages = [];
 
-  async setParty(key, value) {
-    this.party[key] = value;
+  async setState(key, value) {
+    this.state[key] = value;
     await this.refresh();
   }
 
@@ -145,7 +153,7 @@ export class Tracker extends EventTarget {
     let messages = [];
     for (const round of rounds) {
       // pass in weather and terrain and light level and party state
-      messages = messages.concat((await round(this.weather, this.terrain, this.light, this.party)) || []);
+      messages = messages.concat((await round(this.state)) || []);
     }
     this.roundMessages = messages.filter(Boolean);
     this.round = num;
@@ -165,7 +173,7 @@ export class Tracker extends EventTarget {
     let messages = [];
     for (const turn of turns) {
       // pass in weather and terrain and light level and party state
-      messages = messages.concat((await turn(this.weather, this.terrain, this.light, this.party)) || []);
+      messages = messages.concat((await turn(this.state)) || []);
     }
     this.turnMessages = messages.filter(Boolean);
     this.round = null;
@@ -186,7 +194,7 @@ export class Tracker extends EventTarget {
     let messages = [];
     for (const quarterDay of quarterDays) {
       // pass in weather and terrain and light level and party state
-      messages = messages.concat((await quarterDay(this.weather, this.terrain, this.light, this.party)) || []);
+      messages = messages.concat((await quarterDay(this.state)) || []);
     }
     this.quarterDayMessages = messages.filter(Boolean);
     this.round = null;
@@ -207,7 +215,7 @@ export class Tracker extends EventTarget {
     let messages = [];
     for (const day of days) {
       // pass in weather and terrain and light level and party state
-      messages = messages.concat((await day(this.weather, this.terrain, this.light, this.party)) || []);
+      messages = messages.concat((await day(this.state)) || []);
     }
     this.dayMessages = messages.filter(Boolean);
     this.round = null;
@@ -229,7 +237,7 @@ export class Tracker extends EventTarget {
     let messages = [];
     for (const week of weeks) {
       // pass in weather and terrain and light level and party state
-      messages = messages.concat((await week(this.weather, this.terrain, this.light, this.party)) || []);
+      messages = messages.concat((await week(this.state)) || []);
     }
     this.weekMessages = messages.filter(Boolean);
     this.round = null;

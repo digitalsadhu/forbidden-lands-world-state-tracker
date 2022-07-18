@@ -1,5 +1,5 @@
-export default async (weather, terrain, light, party) => {
-  if (party.fish) {
+export default async (state) => {
+  if (state.fish) {
     return ["FISHING: Roll SURVIVAL."];
   }
 };

@@ -1,5 +1,5 @@
-export default async (weather, terrain, light, party) => {
-  if (party.hike) {
+export default async (state) => {
+  if (state.hike) {
     return ["Roll once per quarter day for a random encounter when on a HIKE."];
   }
 };

@@ -1,8 +1,8 @@
-export default async (weather, terrain, light, party) => {
-  if (party.environmentDark && party.noLightSource) {
+export default async (state) => {
+  if (state.environmentDark && state.noLightSource) {
     const result = ["PCs without a light source must make a SCOUT roll when trying to hit an enemy."];
 
-    if (party.usingArrows) {
+    if (state.usingArrows) {
       result.push(
         ...[
           "PCs cannot SHOOT at targets at SHORT range or more in the dark.",

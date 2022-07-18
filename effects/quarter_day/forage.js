@@ -1,5 +1,5 @@
-export default async (weather, terrain, light, party) => {
-  if (party.forage) {
+export default async (state) => {
+  if (state.forage) {
     return ["FORAGE: Roll SURVIVAL modified by season and terrain."];
   }
 };

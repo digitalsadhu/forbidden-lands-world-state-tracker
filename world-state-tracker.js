@@ -78,7 +78,7 @@ export class WorldStateTracker extends LitElement {
 
   selectionChange(event) {
     console.log(event.detail);
-    tracker.setParty(event.detail.name, event.detail.selected);
+    tracker.setState(event.detail.name, event.detail.selected);
   }
 
   render() {

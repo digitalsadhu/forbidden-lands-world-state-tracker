@@ -1,5 +1,5 @@
-export default async (weather, terrain, light, party) => {
-  if (party.makeCamp) {
+export default async (state) => {
+  if (state.makeCamp) {
     return ["MAKE CAMP: Roll SURVIVAL."];
   }
 };

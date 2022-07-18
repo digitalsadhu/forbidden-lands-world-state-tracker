@@ -1,5 +1,5 @@
-export default async (weather, terrain, light, party) => {
-  if (party.environmentDark && !party.noLightSource) {
+export default async (state) => {
+  if (state.environmentDark && !state.noLightSource) {
     return ["A new torch needs to be lit, roll for TORCHES"];
   }
 };

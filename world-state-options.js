@@ -27,6 +27,16 @@ export class WorldStateOptions extends LitElement {
     this.environmentCold = false;
     this.environmentDark = false;
     this.noLightSource = false;
+    this.plains = false;
+    this.forest = false;
+    this.darkForest = false;
+    this.hills = false;
+    this.mountains = false;
+    this.highMountains = false;
+    this.lakeRiver = false;
+    this.marshlands = false;
+    this.quagmire = false;
+    this.ruins = false;
   }
   static properties = {
     overEncumbered: { type: Boolean },
@@ -54,6 +64,16 @@ export class WorldStateOptions extends LitElement {
     environmentCold: { type: Boolean },
     environmentDark: { type: Boolean },
     noLightSource: { type: Boolean },
+    plains: { type: Boolean },
+    forest: { type: Boolean },
+    darkForest: { type: Boolean },
+    hills: { type: Boolean },
+    mountains: { type: Boolean },
+    highMountains: { type: Boolean },
+    lakeRiver: { type: Boolean },
+    marshlands: { type: Boolean },
+    quagmire: { type: Boolean },
+    ruins: { type: Boolean },
   };
   static styles = css`
     :host {
@@ -418,6 +438,119 @@ export class WorldStateOptions extends LitElement {
             name="no-warm-clothes"
             value="noWarmClothes"
             ?checked="${this.noWarmClothes}"
+          />
+        </div>
+      </section>
+      <section>
+        <h3>Terrain</h3>
+        <div>
+          <label for="terrain-plains">Plains</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="terrain-plains"
+            name="terrainPlains"
+            value="terrainPlains"
+            ?checked="${this.terrainPlains}"
+          />
+        </div>
+        <div>
+          <label for="terrain-forest">forest</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="terrain-forest"
+            name="terrainForest"
+            value="terrainForest"
+            ?checked="${this.terrainForest}"
+          />
+        </div>
+        <div>
+          <label for="terrain-dark-forest">Dark Forest</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="terrain-dark-forest"
+            name="terrainDarkForest"
+            value="terrainDarkForest"
+            ?checked="${this.terrainDarkForest}"
+          />
+        </div>
+        <div>
+          <label for="terrain-hills">Hills</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="terrain-hills"
+            name="terrainHills"
+            value="terrainHills"
+            ?checked="${this.terrainHills}"
+          />
+        </div>
+        <div>
+          <label for="terrain-mountains">Mountains</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="terrain-mountains"
+            name="terrainMountains"
+            value="terrainMountains"
+            ?checked="${this.terrainMountains}"
+          />
+        </div>
+        <div>
+          <label for="terrain-high-mountains">High Mountains</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="terrain-high-mountains"
+            name="terrainHighMountains"
+            value="terrainHighMountains"
+            ?checked="${this.terrainHighMountains}"
+          />
+        </div>
+        <div>
+          <label for="terrain-lake-river">Lake/River</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="terrain-lake-river"
+            name="terrainLakeRiver"
+            value="terrainLakeRiver"
+            ?checked="${this.terrainLakeRiver}"
+          />
+        </div>
+        <div>
+          <label for="terrain-marshlands">Marshlands</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="terrain-marshlands"
+            name="terrainMarshlands"
+            value="terrainMarshlands"
+            ?checked="${this.terrainMarshlands}"
+          />
+        </div>
+        <div>
+          <label for="terrain-quagmire">Quagmire</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="terrain-quagmire"
+            name="terrainQuagmire"
+            value="terrainQuagmire"
+            ?checked="${this.terrainQuagmire}"
+          />
+        </div>
+        <div>
+          <label for="terrain-ruins">Ruins</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="terrain-ruins"
+            name="terrainRuins"
+            value="terrainRuins"
+            ?checked="${this.terrainRuins}"
           />
         </div>
       </section>

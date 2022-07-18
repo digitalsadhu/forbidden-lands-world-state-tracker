@@ -1,20 +1,20 @@
-export default async (weather, terrain, light, party) => {
-  if (party.rest) {
+export default async (state) => {
+  if (state.rest) {
     let message = "REST: PCs recover all attribute points";
     const exceptions = [];
-    if (party.hungry) {
+    if (state.hungry) {
       exceptions.push("HUNGRY");
     }
 
-    if (party.thirsty) {
+    if (state.thirsty) {
       exceptions.push("THIRSTY");
     }
 
-    if (party.diseased) {
+    if (state.diseased) {
       exceptions.push("SICK (Diseased PCs recover WITS and EMPATHY only)");
     }
 
-    if (party.cold) {
+    if (state.cold) {
       exceptions.push("COLD (Cold PCs recover AGILITY and EMPATHY only)");
     }
 
