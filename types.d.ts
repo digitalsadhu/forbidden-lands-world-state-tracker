@@ -1,6 +1,6 @@
 export type State = {
   overEncumbered: Boolean,
-  noWarmClothes: Boolean,
+  warmClothes: Boolean,
   inWater: Boolean,
   poisoned: Boolean,
   injured: Boolean,

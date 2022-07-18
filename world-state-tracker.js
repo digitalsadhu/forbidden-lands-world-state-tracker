@@ -8,6 +8,8 @@ export class WorldStateTracker extends LitElement {
     super();
     this._title = "";
     this._messages = [];
+    this._datestamp = 1165 * 365 + 1;
+    this._dark = false;
   }
   static properties = {
     _round: { state: true },
@@ -17,6 +19,8 @@ export class WorldStateTracker extends LitElement {
     _week: { state: true },
     _title: { state: true },
     _messages: { state: true },
+    _datestamp: { state: true },
+    _dark: { state: true },
   };
   connectedCallback() {
     super.connectedCallback();
@@ -49,14 +53,11 @@ export class WorldStateTracker extends LitElement {
     tracker.addEventListener("quarter-day-change", () => {
       this._quarterDay = tracker.quarterDay;
     });
-    tracker.addEventListener("day-change", () => {
-      this._day = tracker.day;
-    });
-    tracker.addEventListener("week-change", () => {
-      this._week = tracker.week;
-    });
     tracker.addEventListener("party-change", () => {
       tracker.refresh();
+    });
+    tracker.addEventListener("darkness-change", () => {
+      this._dark = tracker.dark;
     });
   }
   disconnectedCallback() {
@@ -77,13 +78,24 @@ export class WorldStateTracker extends LitElement {
   }
 
   selectionChange(event) {
-    console.log(event.detail);
     tracker.setState(event.detail.name, event.detail.selected);
+  }
+
+  dateChange(event) {
+    if (event.detail.type === "week") {
+      tracker.setWeek();
+    }
+    if (event.detail.type === "day") {
+      tracker.setDay();
+    }
+    tracker.setState("season", event.detail.season);
   }
 
   render() {
     return html`
       <section class="container">
+        <world-state-calendar datestamp="${this._datestamp}" @change="${this.dateChange}"></world-state-calendar>
+
         <world-state-controls
           round="${this._round}"
           turn="${this._turn}"
@@ -93,7 +105,7 @@ export class WorldStateTracker extends LitElement {
           @click=${this.buttonClicked}
         ></world-state-controls>
 
-        <world-state-options @change="${this.selectionChange}"></world-state-options>
+        <world-state-options @change="${this.selectionChange}" ?environment-dark="${this._dark}"></world-state-options>
 
         <world-state-notes title="${this._title}" messages="${JSON.stringify(this._messages)}"></world-state-notes>
       </section>

@@ -2,7 +2,7 @@
  * @param { import("../../types").State } state
  */
 export default async (state) => {
-  if (state.environmentDark && state.noLightSource) {
+  if (state.environmentDark && !state.lightSource) {
     const result = ["PCs without a light source must make a SCOUT roll when trying to hit an enemy."];
 
     if (state.usingArrows) {

@@ -4,7 +4,7 @@ export class WorldStateOptions extends LitElement {
   constructor() {
     super();
     this.overEncumbered = false;
-    this.noWarmClothes = false;
+    this.warmClothes = false;
     this.inWater = false;
     this.poisoned = false;
     this.injured = false;
@@ -26,7 +26,7 @@ export class WorldStateOptions extends LitElement {
     this.forcedMarch = 0;
     this.environmentCold = false;
     this.environmentDark = false;
-    this.noLightSource = false;
+    this.lightSource = false;
     this.plains = false;
     this.forest = false;
     this.darkForest = false;
@@ -40,7 +40,7 @@ export class WorldStateOptions extends LitElement {
   }
   static properties = {
     overEncumbered: { type: Boolean },
-    noWarmClothes: { type: Boolean },
+    warmClothes: { type: Boolean },
     inWater: { type: Boolean },
     poisoned: { type: Boolean },
     injured: { type: Boolean },
@@ -62,8 +62,8 @@ export class WorldStateOptions extends LitElement {
     makeCamp: { type: Boolean },
     forcedMarch: { type: Number },
     environmentCold: { type: Boolean },
-    environmentDark: { type: Boolean },
-    noLightSource: { type: Boolean },
+    environmentDark: { type: Boolean, attribute: "environment-dark" },
+    lightSource: { type: Boolean },
     plains: { type: Boolean },
     forest: { type: Boolean },
     darkForest: { type: Boolean },
@@ -172,34 +172,9 @@ export class WorldStateOptions extends LitElement {
         </div>
       </section>
       <section>
-        <h3>Drowning</h3>
-        <div>
-          <label for="in-water">In water?</label>
-          <input
-            @change="${this.selectionChange}"
-            type="checkbox"
-            id="in-water"
-            name="in-water"
-            value="inWater"
-            ?checked="${this.inWater}"
-          />
-        </div>
-        <div>
-          <label for="wearing-armor">Wearing armor?</label>
-          <input
-            @change="${this.selectionChange}"
-            type="checkbox"
-            id="wearing-armor"
-            name="wearing-armor"
-            value="wearingArmor"
-            ?checked="${this.wearingArmor}"
-          />
-        </div>
-      </section>
-      <section>
         <h3>Gear</h3>
         <div>
-          <label for="over-encumbered">over encumbered?</label>
+          <label for="over-encumbered">Over encumbered</label>
           <input
             @change="${this.selectionChange}"
             type="checkbox"
@@ -210,7 +185,7 @@ export class WorldStateOptions extends LitElement {
           />
         </div>
         <div>
-          <label for="using-arrows">Using arrows?</label>
+          <label for="using-arrows">Arrows</label>
           <input
             @change="${this.selectionChange}"
             type="checkbox"
@@ -220,11 +195,44 @@ export class WorldStateOptions extends LitElement {
             ?checked="${this.usingArrows}"
           />
         </div>
+        <div>
+          <label for="wearing-armor">Armor</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="wearing-armor"
+            name="wearing-armor"
+            value="wearingArmor"
+            ?checked="${this.wearingArmor}"
+          />
+        </div>
+        <div>
+          <label for="warm-clothes">Warm clothes</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="warm-clothes"
+            name="warm-clothes"
+            value="warmClothes"
+            ?checked="${this.warmClothes}"
+          />
+        </div>
+        <div>
+          <label for="light-source">Light source</label>
+          <input
+            @change="${this.selectionChange}"
+            type="checkbox"
+            id="light-source"
+            name="lightSource"
+            value="lightSource"
+            ?checked="${this.lightSource}"
+          />
+        </div>
       </section>
       <section>
         <h3>Stronghold</h3>
         <div>
-          <label for="own-stronghold">Own a stronghold?</label>
+          <label for="own-stronghold">Stronghold</label>
           <input
             @change="${this.selectionChange}"
             type="checkbox"
@@ -235,7 +243,7 @@ export class WorldStateOptions extends LitElement {
           />
         </div>
         <div>
-          <label for="have-hirelings">Have any hirelings?</label>
+          <label for="have-hirelings">Hirelings</label>
           <input
             @change="${this.selectionChange}"
             type="checkbox"
@@ -410,15 +418,6 @@ export class WorldStateOptions extends LitElement {
             value="environmentDark"
             ?checked="${this.environmentDark}"
           />
-          <label for="no-light-source">(no light source)</label>
-          <input
-            @change="${this.selectionChange}"
-            type="checkbox"
-            id="no-light-source"
-            name="noLightSource"
-            value="noLightSource"
-            ?checked="${this.noLightSource}"
-          />
         </div>
         <div>
           <label for="environment-cold">COLD</label>
@@ -430,14 +429,16 @@ export class WorldStateOptions extends LitElement {
             value="environmentCold"
             ?checked="${this.environmentCold}"
           />
-          <label for="no-warm-clothes">(not wearing warm clothing)</label>
+        </div>
+        <div>
+          <label for="in-water">WATER</label>
           <input
             @change="${this.selectionChange}"
             type="checkbox"
-            id="no-warm-clothes"
-            name="no-warm-clothes"
-            value="noWarmClothes"
-            ?checked="${this.noWarmClothes}"
+            id="in-water"
+            name="in-water"
+            value="inWater"
+            ?checked="${this.inWater}"
           />
         </div>
       </section>

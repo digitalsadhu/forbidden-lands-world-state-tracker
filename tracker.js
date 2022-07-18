@@ -15,7 +15,7 @@ const types = {
 export class Tracker extends EventTarget {
   state = {
     overEncumbered: false,
-    noWarmClothes: false,
+    warmClothes: false,
     inWater: false,
     poisoned: false,
     injured: false,
@@ -47,13 +47,12 @@ export class Tracker extends EventTarget {
     terrainMarshlands: false,
     terrainQuagmire: false,
     terrainRuins: false,
+    season: "Spring",
   };
 
   _round = 0;
   _turn = 0;
   _quarterDay = 0;
-  _day = 0;
-  _week = 0;
 
   messages = [];
 
@@ -90,22 +89,6 @@ export class Tracker extends EventTarget {
   set quarterDay(value) {
     this._quarterDay = value;
     this.dispatchEvent(new CustomEvent("quarter-day-change"));
-  }
-
-  get day() {
-    return this._day;
-  }
-  set day(value) {
-    this._day = value;
-    this.dispatchEvent(new CustomEvent("day-change"));
-  }
-
-  get week() {
-    return this._week;
-  }
-  set week(value) {
-    this._week = value;
-    this.dispatchEvent(new CustomEvent("week-change"));
   }
 
   get roundMessages() {
@@ -199,18 +182,55 @@ export class Tracker extends EventTarget {
     this.round = null;
     this.turn = null;
     this.quarterDay = num;
+    this.calculateDarkness();
     this._currentType = types.QUARTER_DAY;
+  }
+
+  calculateDarkness() {
+    let dark = false;
+    if (this.state.season === "Spring") {
+      if ([3, 4].includes(this.quarterDay)) {
+        dark = true;
+      }
+    }
+    if (this.state.season === "Summer") {
+      if ([4].includes(this.quarterDay)) {
+        dark = true;
+      }
+    }
+    if (this.state.season === "Fall") {
+      if ([3, 4].includes(this.quarterDay)) {
+        dark = true;
+      }
+    }
+    if (this.state.season === "Winter") {
+      if ([1, 3, 4].includes(this.quarterDay)) {
+        dark = true;
+      }
+    }
+
+    this.dark = dark;
+  }
+
+  get dark() {
+    return this.state.environmentDark;
+  }
+  set dark(value) {
+    if (this.dark !== value) {
+      this.setState("environmentDark", value);
+      this.dispatchEvent(new CustomEvent("darkness-change"));
+    }
   }
 
   async incrementQuarterDay() {
     if (this.quarterDay >= 4) {
-      await this.advance("day");
+      this.quarterDay = 0;
     } else {
       await this.setQuarterDay(this.quarterDay + 1);
     }
   }
 
-  async setDay(num) {
+  async setDay() {
     let messages = [];
     for (const day of days) {
       // pass in weather and terrain and light level and party state
@@ -220,19 +240,11 @@ export class Tracker extends EventTarget {
     this.round = null;
     this.turn = null;
     this.quarterDay = null;
-    this.day = num;
+    this.dispatchEvent(new CustomEvent("day-change"));
     this._currentType = types.DAY;
   }
 
-  async incrementDay() {
-    if (this.day >= 7) {
-      await this.advance("week");
-    } else {
-      await this.setDay(this.day + 1);
-    }
-  }
-
-  async setWeek(num) {
+  async setWeek() {
     let messages = [];
     for (const week of weeks) {
       // pass in weather and terrain and light level and party state
@@ -242,13 +254,8 @@ export class Tracker extends EventTarget {
     this.round = null;
     this.turn = null;
     this.quarterDay = null;
-    this.day = null;
-    this.week = num;
     this._currentType = types.WEEK;
-  }
-
-  async incrementWeek() {
-    await this.setWeek(this.week + 1);
+    this.dispatchEvent(new CustomEvent("week-change"));
   }
 
   async advance(type) {
@@ -261,12 +268,6 @@ export class Tracker extends EventTarget {
         break;
       case types.QUARTER_DAY:
         await this.incrementQuarterDay();
-        break;
-      case types.DAY:
-        await this.incrementDay();
-        break;
-      case types.WEEK:
-        await this.incrementWeek();
         break;
     }
   }
@@ -283,10 +284,10 @@ export class Tracker extends EventTarget {
         await this.setQuarterDay(this.quarterDay);
         break;
       case types.DAY:
-        await this.setDay(this.day);
+        await this.setDay();
         break;
       case types.WEEK:
-        await this.setWeek(this.week);
+        await this.setWeek();
         break;
     }
   }
