@@ -13,7 +13,6 @@ const types = {
 };
 
 export class Tracker extends EventTarget {
-  // Is it dark?
   state = {
     overEncumbered: false,
     noWarmClothes: false,

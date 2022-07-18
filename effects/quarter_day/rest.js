@@ -1,3 +1,6 @@
+/**
+ * @param { import("../../types").State } state
+ */
 export default async (state) => {
   if (state.rest) {
     let message = "REST: PCs recover all attribute points";
