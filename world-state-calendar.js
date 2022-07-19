@@ -107,7 +107,15 @@ export class WorldStateCalendar extends LitElement {
     this.datestamp = 1165 * 365 + 1;
   }
 
-  static styles = css``;
+  static styles = css`
+    section {
+      display: flex;
+      flex-direction: column;
+    }
+    h1 {
+      margin: 0;
+    }
+  `;
 
   increment(e) {
     if (e.target.dataset.type === "year") {
@@ -179,14 +187,20 @@ export class WorldStateCalendar extends LitElement {
 
   render() {
     return html`
-      <a @click="${this.decrement}" data-type="year" href="#">&lt;&lt;year</a>
-      <a @click="${this.decrement}" data-type="week" href="#">&lt;&lt;week</a>
-      <a @click="${this.decrement}" data-type="day" href="#">&lt;&lt;day</a>
-      [ ${getDayName(this.datestamp)} ${getPhaseDay(this.datestamp)} ${getPhaseName(this.datestamp)},
-      ${getYear(this.datestamp)} ]
-      <a @click="${this.increment}" data-type="day" href="#">day&gt;&gt;</a>
-      <a @click="${this.increment}" data-type="week" href="#">week&gt;&gt;</a>
-      <a @click="${this.increment}" data-type="year" href="#">year&gt;&gt;</a>
+      <section>
+        <h1>
+          ${getDayName(this.datestamp)} ${getPhaseDay(this.datestamp)} ${getPhaseName(this.datestamp)},
+          ${getYear(this.datestamp)}
+        </h1>
+        <div>
+          <a @click="${this.decrement}" data-type="year" href="#">&lt;&lt;&lt;</a>
+          <a @click="${this.decrement}" data-type="week" href="#">&lt;&lt;</a>
+          <a @click="${this.decrement}" data-type="day" href="#">&lt;</a>
+          <a @click="${this.increment}" data-type="day" href="#">&gt;</a>
+          <a @click="${this.increment}" data-type="week" href="#">&gt;&gt;</a>
+          <a @click="${this.increment}" data-type="year" href="#">&gt;&gt;&gt;</a>
+        </div>
+      </section>
     `;
   }
 }

@@ -4,6 +4,53 @@ import { LitElement, html, css, classMap } from "https://cdn.jsdelivr.net/gh/lit
 const tracker = new Tracker();
 
 export class WorldStateTracker extends LitElement {
+  static styles = css`
+    header {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 15px 0px;
+      border-bottom: 1px #dddddd solid;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .container > div {
+      flex: 1 100%;
+    }
+
+    /* Large screens */
+    @media all and (min-width: 800px) {
+      header {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 100px;
+        padding: 15px 0px;
+        border-bottom: 1px #dddddd solid;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+      }
+
+      .left {
+        width: 40%;
+      }
+
+      .right {
+        width: 60%;
+      }
+    }
+  `;
   constructor() {
     super();
     this._title = "";
@@ -105,9 +152,8 @@ export class WorldStateTracker extends LitElement {
 
   render() {
     return html`
-      <section class="container">
+      <header>
         <world-state-calendar datestamp="${this._datestamp}" @change="${this.dateChange}"></world-state-calendar>
-
         <world-state-controls
           round="${this._round}"
           turn="${this._turn}"
@@ -116,10 +162,18 @@ export class WorldStateTracker extends LitElement {
           week="${this._week}"
           @click=${this.buttonClicked}
         ></world-state-controls>
+      </header>
 
-        <world-state-options @change="${this.selectionChange}" ?environment-dark="${this._dark}"></world-state-options>
-
-        <world-state-notes title="${this._title}" messages="${JSON.stringify(this._messages)}"></world-state-notes>
+      <section class="container">
+        <div class="left">
+          <world-state-notes title="${this._title}" messages="${JSON.stringify(this._messages)}"></world-state-notes>
+        </div>
+        <div class="right">
+          <world-state-options
+            @change="${this.selectionChange}"
+            ?environment-dark="${this._dark}"
+          ></world-state-options>
+        </div>
       </section>
     `;
   }

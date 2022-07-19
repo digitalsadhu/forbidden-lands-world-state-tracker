@@ -14,7 +14,11 @@ export class WorldStateNotes extends LitElement {
 
   static styles = css`
     :host {
-      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+    }
+
+    h2 {
+      font-size: 20px;
     }
 
     .messages {

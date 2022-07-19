@@ -1,5 +1,13 @@
 import { LitElement, html, css, classMap } from "https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js";
 
+const quarterDays = {
+  0: "Morning",
+  1: "Morning",
+  2: "Afternoon",
+  3: "Evening",
+  4: "Night",
+};
+
 export class WorldStateControls extends LitElement {
   static properties = {
     round: { type: Number },
@@ -9,13 +17,20 @@ export class WorldStateControls extends LitElement {
     week: { type: Number },
   };
 
+  constructor() {
+    super();
+    this.quarterDay = 1;
+  }
+
   static styles = css`
     :host {
-      font-family: Arial, Helvetica, sans-serif;
     }
 
     .controls {
       display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
     }
 
     .controls > div {
@@ -23,48 +38,19 @@ export class WorldStateControls extends LitElement {
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 5px;
     }
 
     .value-display {
-      margin: 10px;
-      font-size: x-large;
     }
 
     .btn {
-      align-items: center;
-      background-color: initial;
-      background-image: linear-gradient(#464d55, #25292e);
-      border-radius: 8px;
-      border-width: 0;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.05);
-      box-sizing: border-box;
-      color: #fff;
-      cursor: pointer;
-      display: inline-flex;
-      flex-direction: column;
-      font-family: expo-brand-demi, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-        Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-      font-size: 18px;
-      height: 52px;
-      justify-content: center;
-      line-height: 1;
-      margin: 0;
-      outline: none;
-      overflow: hidden;
-      padding: 0 32px;
-      text-align: center;
-      text-decoration: none;
-      transform: translate3d(0, 0, 0);
-      transition: all 150ms;
-      vertical-align: baseline;
-      white-space: nowrap;
-      user-select: none;
-      -webkit-user-select: none;
-      touch-action: manipulation;
+      border-radius: 100%;
+      border: 0;
     }
 
     .btn:hover {
-      box-shadow: rgba(0, 1, 0, 0.2) 0 2px 8px;
+      cursor: pointer;
       opacity: 0.85;
     }
 
@@ -73,7 +59,6 @@ export class WorldStateControls extends LitElement {
     }
 
     .btn:focus {
-      box-shadow: rgba(0, 0, 0, 0.5) 0 0 0 3px;
     }
 
     @media (max-width: 420px) {
@@ -93,27 +78,30 @@ export class WorldStateControls extends LitElement {
     );
   }
 
+  quarterDayName(quarterDay = 1) {
+    console.log(quarterDay);
+    return quarterDays[quarterDay];
+  }
+
   render() {
     return html`
       <section class="controls">
         <div>
-          <button @click=${this.buttonClick} data-type="round" data-direction="-" class="btn">Round -1</button>
-          <button @click=${this.buttonClick} data-type="round" data-direction="+" class="btn">Round +1</button>
+          <button @click=${this.buttonClick} data-type="round" data-direction="-" class="btn">-</button>
+          Round
           <div class="value-display">${this.round || "--"}</div>
+          <button @click=${this.buttonClick} data-type="round" data-direction="+" class="btn">+</button>
         </div>
         <div>
-          <button @click=${this.buttonClick} data-type="turn" data-direction="-" class="btn">Turn -1</button>
-          <button @click=${this.buttonClick} data-type="turn" data-direction="+" class="btn">Turn +1</button>
+          <button @click=${this.buttonClick} data-type="turn" data-direction="-" class="btn">-</button>
+          Turn
           <div class="value-display">${this.turn || "--"}</div>
+          <button @click=${this.buttonClick} data-type="turn" data-direction="+" class="btn">+</button>
         </div>
         <div>
-          <button @click=${this.buttonClick} data-type="quarterDay" data-direction="-" class="btn">
-            Quarter Day -1
-          </button>
-          <button @click=${this.buttonClick} data-type="quarterDay" data-direction="+" class="btn">
-            Quarter Day +1
-          </button>
-          <div class="value-display">${this.quarterDay || "1"}</div>
+          <button @click=${this.buttonClick} data-type="quarterDay" data-direction="-" class="btn">-</button>
+          <div class="value-display">${this.quarterDayName(this.quarterDay)}</div>
+          <button @click=${this.buttonClick} data-type="quarterDay" data-direction="+" class="btn">+</button>
         </div>
       </section>
     `;
