@@ -63,7 +63,10 @@ export class Tracker extends EventTarget {
   _weekMessages = [];
 
   async setState(key, value) {
-    this.state[key] = value;
+    if (key === "environmentDark") {
+      this.dark = value;
+    } else this.state[key] = value;
+
     await this.refresh();
   }
 
@@ -200,7 +203,6 @@ export class Tracker extends EventTarget {
     this.round = null;
     this.turn = null;
     this.quarterDay = num;
-    this.calculateDarkness();
     this._currentType = types.QUARTER_DAY;
   }
 
@@ -245,7 +247,7 @@ export class Tracker extends EventTarget {
       }
     }
 
-    this.dark = dark;
+    return dark;
   }
 
   get dark() {
@@ -253,7 +255,7 @@ export class Tracker extends EventTarget {
   }
   set dark(value) {
     if (this.dark !== value) {
-      this.setState("environmentDark", value);
+      this.state.environmentDark = value;
       this.dispatchEvent(new CustomEvent("darkness-change"));
     }
   }

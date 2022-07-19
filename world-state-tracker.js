@@ -86,6 +86,7 @@ export class WorldStateTracker extends LitElement {
   buttonClicked(event) {
     if (event.detail.direction === "+") tracker.advance(event.detail.type);
     if (event.detail.direction === "-") tracker.reverse(event.detail.type);
+    tracker.dark = tracker.calculateDarkness();
   }
 
   selectionChange(event) {
@@ -93,7 +94,6 @@ export class WorldStateTracker extends LitElement {
   }
 
   async dateChange(event) {
-    console.log(event);
     if (event.detail.type === "week") {
       await tracker.setWeek();
     }

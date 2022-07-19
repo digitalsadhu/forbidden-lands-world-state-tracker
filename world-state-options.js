@@ -416,7 +416,7 @@ export class WorldStateOptions extends LitElement {
             id="environment-dark"
             name="environmentDark"
             value="environmentDark"
-            ?checked="${this.environmentDark}"
+            .checked="${this.environmentDark}"
           />
         </div>
         <div>
