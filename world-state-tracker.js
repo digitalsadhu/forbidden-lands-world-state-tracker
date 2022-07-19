@@ -75,24 +75,30 @@ export class WorldStateTracker extends LitElement {
     tracker.removeEventListener("round-change");
     tracker.removeEventListener("turn-change");
     tracker.removeEventListener("quarter-day-change");
-    tracker.removeEventListener("day-change");
-    tracker.removeEventListener("week-change");
+    // tracker.removeEventListener("day-change");
+    // tracker.removeEventListener("week-change");
+    tracker.removeEventListener("party-change");
+    tracker.removeEventListener("darkness-change");
+    tracker.removeEventListener("next-day");
+    tracker.removeEventListener("previous-day");
   }
 
   buttonClicked(event) {
-    tracker.advance(event.detail.type);
+    if (event.detail.direction === "+") tracker.advance(event.detail.type);
+    if (event.detail.direction === "-") tracker.reverse(event.detail.type);
   }
 
   selectionChange(event) {
     tracker.setState(event.detail.name, event.detail.selected);
   }
 
-  dateChange(event) {
+  async dateChange(event) {
+    console.log(event);
     if (event.detail.type === "week") {
-      tracker.setWeek();
+      await tracker.setWeek();
     }
     if (event.detail.type === "day") {
-      tracker.setDay();
+      await tracker.setDay();
     }
     tracker.setState("season", event.detail.season);
   }

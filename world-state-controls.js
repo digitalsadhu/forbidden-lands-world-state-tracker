@@ -86,7 +86,7 @@ export class WorldStateControls extends LitElement {
   buttonClick(e) {
     this.dispatchEvent(
       new CustomEvent("click", {
-        detail: { type: e.target.dataset.type },
+        detail: { type: e.target.dataset.type, direction: e.target.dataset.direction },
         bubbles: true,
         composed: true,
       })
@@ -97,15 +97,22 @@ export class WorldStateControls extends LitElement {
     return html`
       <section class="controls">
         <div>
-          <button @click=${this.buttonClick} data-type="round" class="btn">Round</button>
+          <button @click=${this.buttonClick} data-type="round" data-direction="-" class="btn">Round -1</button>
+          <button @click=${this.buttonClick} data-type="round" data-direction="+" class="btn">Round +1</button>
           <div class="value-display">${this.round || "--"}</div>
         </div>
         <div>
-          <button @click=${this.buttonClick} data-type="turn" class="btn">Turn</button>
+          <button @click=${this.buttonClick} data-type="turn" data-direction="-" class="btn">Turn -1</button>
+          <button @click=${this.buttonClick} data-type="turn" data-direction="+" class="btn">Turn +1</button>
           <div class="value-display">${this.turn || "--"}</div>
         </div>
         <div>
-          <button @click=${this.buttonClick} data-type="quarterDay" class="btn">Quarter Day</button>
+          <button @click=${this.buttonClick} data-type="quarterDay" data-direction="-" class="btn">
+            Quarter Day -1
+          </button>
+          <button @click=${this.buttonClick} data-type="quarterDay" data-direction="+" class="btn">
+            Quarter Day +1
+          </button>
           <div class="value-display">${this.quarterDay || "1"}</div>
         </div>
       </section>
