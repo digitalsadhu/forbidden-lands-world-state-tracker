@@ -52,7 +52,7 @@ export class Tracker extends EventTarget {
 
   _round = 0;
   _turn = 0;
-  _quarterDay = 0;
+  _quarterDay = 1;
 
   messages = [];
 
@@ -151,6 +151,15 @@ export class Tracker extends EventTarget {
     }
   }
 
+  async decrementRound() {
+    if (this.round <= 1) {
+      // 90 rounds in a turn?
+      await this.reverse("turn");
+    } else {
+      await this.setRound(this.round - 1);
+    }
+  }
+
   async setTurn(num) {
     let messages = [];
     for (const turn of turns) {
@@ -172,6 +181,15 @@ export class Tracker extends EventTarget {
     }
   }
 
+  async decrementTurn() {
+    if (this.turn <= 1) {
+      // 24 turns in a quarter day
+      await this.reverse("quarterDay");
+    } else {
+      await this.setTurn(this.turn - 1);
+    }
+  }
+
   async setQuarterDay(num) {
     let messages = [];
     for (const quarterDay of quarterDays) {
@@ -184,6 +202,24 @@ export class Tracker extends EventTarget {
     this.quarterDay = num;
     this.calculateDarkness();
     this._currentType = types.QUARTER_DAY;
+  }
+
+  async incrementQuarterDay() {
+    if (this.quarterDay >= 4) {
+      await this.setQuarterDay(1);
+      this.dispatchEvent(new CustomEvent("next-day"));
+    } else {
+      await this.setQuarterDay(this.quarterDay + 1);
+    }
+  }
+
+  async decrementQuarterDay() {
+    if (this.quarterDay <= 1) {
+      await this.setQuarterDay(4);
+      this.dispatchEvent(new CustomEvent("previous-day"));
+    } else {
+      await this.setQuarterDay(this.quarterDay - 1);
+    }
   }
 
   calculateDarkness() {
@@ -219,14 +255,6 @@ export class Tracker extends EventTarget {
     if (this.dark !== value) {
       this.setState("environmentDark", value);
       this.dispatchEvent(new CustomEvent("darkness-change"));
-    }
-  }
-
-  async incrementQuarterDay() {
-    if (this.quarterDay >= 4) {
-      this.quarterDay = 0;
-    } else {
-      await this.setQuarterDay(this.quarterDay + 1);
     }
   }
 
@@ -268,6 +296,20 @@ export class Tracker extends EventTarget {
         break;
       case types.QUARTER_DAY:
         await this.incrementQuarterDay();
+        break;
+    }
+  }
+
+  async reverse(type) {
+    switch (type) {
+      case types.ROUND:
+        await this.decrementRound();
+        break;
+      case types.TURN:
+        await this.decrementTurn();
+        break;
+      case types.QUARTER_DAY:
+        await this.decrementQuarterDay();
         break;
     }
   }

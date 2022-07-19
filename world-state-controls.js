@@ -106,7 +106,7 @@ export class WorldStateControls extends LitElement {
         </div>
         <div>
           <button @click=${this.buttonClick} data-type="quarterDay" class="btn">Quarter Day</button>
-          <div class="value-display">${this.quarterDay || "--"}</div>
+          <div class="value-display">${this.quarterDay || "1"}</div>
         </div>
       </section>
     `;

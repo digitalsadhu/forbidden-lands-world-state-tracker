@@ -59,6 +59,12 @@ export class WorldStateTracker extends LitElement {
     tracker.addEventListener("darkness-change", () => {
       this._dark = tracker.dark;
     });
+    tracker.addEventListener("next-day", () => {
+      this._datestamp += 1;
+    });
+    tracker.addEventListener("previous-day", () => {
+      this._datestamp -= 1;
+    });
   }
   disconnectedCallback() {
     tracker.removeEventListener("round-messages-change");
