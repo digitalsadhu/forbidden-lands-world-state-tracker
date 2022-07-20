@@ -475,7 +475,7 @@ export class WorldStateOptions extends LitElement {
             ?checked="${this.forcedMarch === 0}"
           />No
         </label>
-        <label>
+        <!-- <label>
           <input
             @change="${this.radioSelectionChange}"
             type="radio"
@@ -492,7 +492,7 @@ export class WorldStateOptions extends LitElement {
             value="2"
             ?checked="${this.forcedMarch === 2}"
           />2 quarter days
-        </label>
+        </label> -->
       </div>
     `;
   }

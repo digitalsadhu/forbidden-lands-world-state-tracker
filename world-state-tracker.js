@@ -12,16 +12,14 @@ export class WorldStateTracker extends LitElement {
       align-items: center;
       padding: 15px 0px;
       border-bottom: 1px #dddddd solid;
+      margin-bottom: 30px;
     }
 
     .container {
       display: flex;
       flex-direction: column;
       gap: 20px;
-    }
-
-    .container > div {
-      flex: 1 100%;
+      margin: 0 30px;
     }
 
     /* Large screens */
@@ -37,17 +35,17 @@ export class WorldStateTracker extends LitElement {
       }
 
       .container {
-        display: flex;
         flex-direction: row;
-        gap: 20px;
+        gap: 30px;
+        justify-content: center;
       }
 
       .left {
-        width: 40%;
+        min-width: 35%;
+        flex-grow: 2;
       }
 
       .right {
-        width: 60%;
       }
     }
   `;

@@ -15,6 +15,10 @@ export class WorldStateNotes extends LitElement {
   static styles = css`
     :host {
       font-size: 12px;
+      box-shadow: 0px 0px 32px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      min-height: 400px;
+      display: block;
     }
 
     h2 {
