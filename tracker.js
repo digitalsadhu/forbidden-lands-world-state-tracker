@@ -10,7 +10,37 @@ const types = {
   QUARTER_DAY: "quarterDay",
   DAY: "day",
   WEEK: "week",
+  YEAR: "year",
 };
+
+const seasonBoundaries = [
+  [91, 1],
+  [183, 2],
+  [274, 3],
+  [365, 4],
+];
+
+const seasons = {
+  1: "Spring",
+  2: "Summer",
+  3: "Fall",
+  4: "Winter",
+};
+
+function getDay(datestamp) {
+  let dayNum = datestamp % 365;
+  if (dayNum === 0) dayNum = 365;
+  return dayNum;
+}
+
+function getSeason(datestamp) {
+  const day = getDay(datestamp);
+  for (const [boundary, seasonNum] of seasonBoundaries) {
+    if (day <= boundary) {
+      return seasons[seasonNum];
+    }
+  }
+}
 
 export class Tracker extends EventTarget {
   state = {
@@ -50,9 +80,10 @@ export class Tracker extends EventTarget {
     season: "Spring",
   };
 
-  _round = 0;
-  _turn = 0;
+  _round = 1;
+  _turn = 1;
   _quarterDay = 1;
+  _datestamp = 1165 * 365 + 1;
 
   messages = [];
 
@@ -92,6 +123,15 @@ export class Tracker extends EventTarget {
   set quarterDay(value) {
     this._quarterDay = value;
     this.dispatchEvent(new CustomEvent("quarter-day-change"));
+  }
+
+  get datestamp() {
+    return this._datestamp;
+  }
+  set datestamp(value) {
+    this._datestamp = value;
+    this.state.season = getSeason(this._datestamp);
+    this.dispatchEvent(new CustomEvent("datestamp-change"));
   }
 
   get roundMessages() {
@@ -170,7 +210,7 @@ export class Tracker extends EventTarget {
       messages = messages.concat((await turn(this.state)) || []);
     }
     this.turnMessages = messages.filter(Boolean);
-    this.round = null;
+    this.round = 1;
     this.turn = num;
     this._currentType = types.TURN;
   }
@@ -200,16 +240,15 @@ export class Tracker extends EventTarget {
       messages = messages.concat((await quarterDay(this.state)) || []);
     }
     this.quarterDayMessages = messages.filter(Boolean);
-    this.round = null;
-    this.turn = null;
+    this.round = 1;
+    this.turn = 1;
     this.quarterDay = num;
     this._currentType = types.QUARTER_DAY;
   }
 
   async incrementQuarterDay() {
     if (this.quarterDay >= 4) {
-      await this.setQuarterDay(1);
-      this.dispatchEvent(new CustomEvent("next-day"));
+      await this.advance("day");
     } else {
       await this.setQuarterDay(this.quarterDay + 1);
     }
@@ -217,10 +256,82 @@ export class Tracker extends EventTarget {
 
   async decrementQuarterDay() {
     if (this.quarterDay <= 1) {
-      await this.setQuarterDay(4);
-      this.dispatchEvent(new CustomEvent("previous-day"));
+      await this.reverse("day");
     } else {
       await this.setQuarterDay(this.quarterDay - 1);
+    }
+  }
+
+  async incrementDay() {
+    await this.setDay(this.datestamp + 1);
+  }
+
+  async decrementDay() {
+    await this.setDay(this.datestamp - 1);
+  }
+
+  async setDay(datestamp) {
+    let messages = [];
+    for (const day of days) {
+      // pass in weather and terrain and light level and party state
+      messages = messages.concat((await day(this.state)) || []);
+    }
+    this.dayMessages = messages.filter(Boolean);
+    this.round = 1;
+    this.turn = 1;
+    this.quarterDay = 1;
+    this.datestamp = datestamp;
+    this._currentType = types.DAY;
+    this.dispatchEvent(new CustomEvent("day-change"));
+  }
+
+  async incrementWeek() {
+    await this.setWeek(this.datestamp + 7);
+  }
+
+  async decrementWeek() {
+    await this.setWeek(this.datestamp - 7);
+  }
+
+  async setWeek(datestamp) {
+    let messages = [];
+    for (const week of weeks) {
+      // pass in weather and terrain and light level and party state
+      messages = messages.concat((await week(this.state)) || []);
+    }
+    this.weekMessages = messages.filter(Boolean);
+    this.round = 1;
+    this.turn = 1;
+    this.quarterDay = 1;
+    this.datestamp = datestamp;
+    this._currentType = types.WEEK;
+    this.dispatchEvent(new CustomEvent("week-change"));
+  }
+
+  async incrementYear() {
+    await this.setYear(this.datestamp + 365);
+  }
+
+  async decrementYear() {
+    await this.setYear(this.datestamp - 365);
+  }
+
+  async setYear(datestamp) {
+    this.round = 1;
+    this.turn = 1;
+    this.quarterDay = 1;
+    this.datestamp = datestamp;
+    this.dispatchEvent(new CustomEvent("year-change"));
+  }
+
+  get dark() {
+    return this.state.environmentDark;
+  }
+
+  set dark(value) {
+    if (this.dark !== value) {
+      this.state.environmentDark = value;
+      this.dispatchEvent(new CustomEvent("darkness-change"));
     }
   }
 
@@ -250,44 +361,6 @@ export class Tracker extends EventTarget {
     return dark;
   }
 
-  get dark() {
-    return this.state.environmentDark;
-  }
-  set dark(value) {
-    if (this.dark !== value) {
-      this.state.environmentDark = value;
-      this.dispatchEvent(new CustomEvent("darkness-change"));
-    }
-  }
-
-  async setDay() {
-    let messages = [];
-    for (const day of days) {
-      // pass in weather and terrain and light level and party state
-      messages = messages.concat((await day(this.state)) || []);
-    }
-    this.dayMessages = messages.filter(Boolean);
-    this.round = null;
-    this.turn = null;
-    this.quarterDay = null;
-    this.dispatchEvent(new CustomEvent("day-change"));
-    this._currentType = types.DAY;
-  }
-
-  async setWeek() {
-    let messages = [];
-    for (const week of weeks) {
-      // pass in weather and terrain and light level and party state
-      messages = messages.concat((await week(this.state)) || []);
-    }
-    this.weekMessages = messages.filter(Boolean);
-    this.round = null;
-    this.turn = null;
-    this.quarterDay = null;
-    this._currentType = types.WEEK;
-    this.dispatchEvent(new CustomEvent("week-change"));
-  }
-
   async advance(type) {
     switch (type) {
       case types.ROUND:
@@ -298,6 +371,15 @@ export class Tracker extends EventTarget {
         break;
       case types.QUARTER_DAY:
         await this.incrementQuarterDay();
+        break;
+      case types.DAY:
+        await this.incrementDay();
+        break;
+      case types.WEEK:
+        await this.incrementWeek();
+        break;
+      case types.YEAR:
+        await this.incrementYear();
         break;
     }
   }
@@ -312,6 +394,15 @@ export class Tracker extends EventTarget {
         break;
       case types.QUARTER_DAY:
         await this.decrementQuarterDay();
+        break;
+      case types.DAY:
+        await this.decrementDay();
+        break;
+      case types.WEEK:
+        await this.decrementWeek();
+        break;
+      case types.YEAR:
+        await this.decrementYear();
         break;
     }
   }
@@ -328,10 +419,13 @@ export class Tracker extends EventTarget {
         await this.setQuarterDay(this.quarterDay);
         break;
       case types.DAY:
-        await this.setDay();
+        await this.setDay(this.datestamp);
         break;
       case types.WEEK:
-        await this.setWeek();
+        await this.setWeek(this.datestamp);
+        break;
+      case types.YEAR:
+        await this.setYear(this.datestamp);
         break;
     }
   }

@@ -1,91 +1,106 @@
 import { LitElement, html, css, classMap } from "https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js";
+import { globalStyles } from "./global-styles.js";
 
 export class WorldStateNotes extends LitElement {
   constructor() {
     super();
-    this.title = "";
     this.messages = [];
   }
 
   static properties = {
-    title: { type: String },
+    datestamp: { type: Number },
     messages: { type: Array },
+    round: { type: Number },
+    turn: { type: Number },
+    quarterDay: { type: Number, attribute: "quarter-day" },
   };
 
-  static styles = css`
-    :host {
-      font-size: 12px;
-      box-shadow: 0px 0px 32px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      min-height: 400px;
-      display: block;
-    }
-
-    h2 {
-      font-size: 20px;
-    }
-
-    .messages {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .messages > div,
-    .messages > message-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .messages > div,
-    .messages > message-section {
-      animation-duration: 1s;
-      animation-name: showit;
-    }
-
-    .messages > div.animate-out,
-    .messages > message-section.animate-out {
-      animation-duration: 0.5s;
-      animation-name: hideit;
-    }
-
-    .messages > div.hidden,
-    .messages > message-section.hidden {
-      display: none;
-    }
-
-    @keyframes showit {
-      from {
-        opacity: 0;
+  static styles = [
+    globalStyles,
+    css`
+      :host {
+        box-shadow: 0px 0px 32px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
+        padding: 30px;
+        justify-content: space-between;
+        align-items: center;
       }
-
-      to {
-        opacity: 1;
+      .controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        flex-flow: row wrap;
       }
-    }
-
-    @keyframes hideit {
-      from {
-        opacity: 1;
+      .controls > div {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
       }
-
-      to {
-        opacity: 0;
+      .value-display {
+        text-align: center;
       }
-    }
-  `;
+      .btn {
+        border-radius: 100%;
+        border: 0;
+      }
+      .btn:hover {
+        cursor: pointer;
+        opacity: 0.85;
+      }
+      .btn:active {
+        outline: 0;
+      }
+      .btn:focus {
+      }
+    `,
+  ];
+
+  buttonClick(e) {
+    this.dispatchEvent(
+      new CustomEvent("click", {
+        detail: { type: e.target.dataset.type, direction: e.target.dataset.direction },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
 
   render() {
     return html`
       <section class="messages">
+        <h2>
+          <dayname-display datestamp=${this.datestamp}></dayname-display>
+          <day-display datestamp=${this.datestamp}></day-display>
+        </h2>
         <div>
-          <h2>${this.title}</h2>
-          <div>
-            <ul>
-              ${this.messages.map((message) => html`<li>${message}</li>`)}
-            </ul>
-          </div>
+          <ul>
+            ${this.messages.map((message) => html`<li>${message}</li>`)}
+          </ul>
+        </div>
+      </section>
+      <section class="controls">
+        <div>
+          <button @click=${this.buttonClick} data-type="quarterDay" data-direction="-" class="btn">-</button>
+          <h3 class="value-display width-100">
+            <quarterday-display quarter-day="${this.quarterDay}"></quarterday-display>
+          </h3>
+          <button @click=${this.buttonClick} data-type="quarterDay" data-direction="+" class="btn">+</button>
+        </div>
+        <div>
+          <button @click=${this.buttonClick} data-type="turn" data-direction="-" class="btn">-</button>
+          <h3 class="value-display width-75">Turn ${this.turn}</h3>
+          <button @click=${this.buttonClick} data-type="turn" data-direction="+" class="btn">+</button>
+        </div>
+        <div>
+          <button @click=${this.buttonClick} data-type="round" data-direction="-" class="btn">-</button>
+          <h3 class="value-display width-100">Round ${this.round}</h3>
+          <button @click=${this.buttonClick} data-type="round" data-direction="+" class="btn">+</button>
         </div>
       </section>
     `;

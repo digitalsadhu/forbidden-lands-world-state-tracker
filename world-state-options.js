@@ -1,4 +1,5 @@
 import { LitElement, html, css, classMap } from "https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js";
+import { globalStyles } from "./global-styles.js";
 
 export class WorldStateOptions extends LitElement {
   constructor() {
@@ -77,53 +78,52 @@ export class WorldStateOptions extends LitElement {
     ruins: { type: Boolean },
   };
 
-  static styles = css`
-    :host {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      font-size: 12px;
-      gap: 20px;
-    }
-    h2 {
-      font-size: 20px;
-    }
-    h3 {
-      font-size: 16px;
-    }
-    .party > section {
-      display: flex;
-      flex-direction: row;
-      gap: 20px;
-      flex-wrap: wrap;
-      align-items: flex-start;
-    }
-    .other > section {
-      display: flex;
-      flex-direction: row;
-      gap: 20px;
-      flex-wrap: wrap;
-      align-items: flex-start;
-    }
-    .left {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      align-items: flex-start;
-    }
-    .right {
-      display: flex;
-      flex-direction: row;
-      gap: 40px;
-      align-items: flex-start;
-    }
-    .journey > section {
-      display: flex;
-      flex-direction: row;
-      gap: 40px;
-      align-items: flex-start;
-    }
-  `;
+  static styles = [
+    globalStyles,
+    css`
+      :host {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+      .party > section {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+      .other > section {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+      .left {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: flex-start;
+      }
+      .right {
+        display: flex;
+        flex-direction: row;
+        gap: 40px;
+        align-items: flex-start;
+      }
+      .journey > section {
+        display: flex;
+        flex-direction: row;
+        gap: 40px;
+        align-items: flex-start;
+      }
+      .left > section > section > div {
+        min-width: 140px;
+      }
+    `,
+  ];
 
   selectionChange(e) {
     this.dispatchEvent(new CustomEvent("change", { detail: { name: e.target.value, selected: e.target.checked } }));
@@ -454,7 +454,7 @@ export class WorldStateOptions extends LitElement {
         />
         <label for="sleep">Sleep</label>
 
-        <input
+        <!-- <input
           @change="${this.selectionChange}"
           type="checkbox"
           id="bare-ground-sleeping"
@@ -462,10 +462,10 @@ export class WorldStateOptions extends LitElement {
           value="bareGroundSleeping"
           ?checked="${this.bareGroundSleeping}"
         />
-        <label for="bare-ground-sleeping">(didn't make camp first)</label>
+        <label for="bare-ground-sleeping">(didn't make camp first)</label> -->
       </div>
       <div>
-        Forced march
+        <!-- Forced march
         <label>
           <input
             @change="${this.radioSelectionChange}"
@@ -474,7 +474,7 @@ export class WorldStateOptions extends LitElement {
             value="0"
             ?checked="${this.forcedMarch === 0}"
           />No
-        </label>
+        </label> -->
         <!-- <label>
           <input
             @change="${this.radioSelectionChange}"
