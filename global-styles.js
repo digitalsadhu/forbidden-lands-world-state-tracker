@@ -6,6 +6,8 @@ export const globalStyles = css`
     line-height: 20px;
     margin: 0;
     padding: 0;
+    color: var(--text-color);
+    background-color: var(--background-color);
   }
   h1 {
     font-size: 32px;

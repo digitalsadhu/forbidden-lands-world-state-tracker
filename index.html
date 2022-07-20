@@ -10,6 +10,19 @@
       body {
         margin: 0;
         font-family: "Libre Baskerville";
+        color: var(--text-color);
+        background-color: var(--background-color);
+      }
+      :root {
+        --background-color: hsl(0, 0%, 100%);
+        --text-color: hsl(0, 0%, 0%);
+        --accent-color: hsl(273, 73%, 54%);
+      }
+
+      :root.dark {
+        --background-color: hsl(0, 0%, 0%);
+        --text-color: hsl(0, 0%, 100%);
+        --accent-color: hsl(273, 73%, 65%);
       }
     </style>
   </head>

@@ -108,6 +108,7 @@ export class WorldStateTracker extends LitElement {
     });
     tracker.addEventListener("darkness-change", () => {
       this._dark = tracker.dark;
+      document.documentElement.classList.toggle("dark");
     });
   }
   disconnectedCallback() {
