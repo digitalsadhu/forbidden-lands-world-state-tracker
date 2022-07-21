@@ -86,6 +86,8 @@ export class WorldStateOptions extends LitElement {
         flex-direction: row;
         flex-wrap: wrap;
         gap: 20px;
+        padding: 30px;
+        border-radius: 8px;
       }
       .party > section {
         display: flex;

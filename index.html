@@ -12,17 +12,24 @@
         font-family: "Libre Baskerville";
         color: var(--text-color);
         background-color: var(--background-color);
+        background-image: url("./backgrounds/dark-forest.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
       }
       :root {
         --background-color: hsl(0, 0%, 100%);
+        --background-color-trans: hsl(0 0% 100% / 0.7);
         --text-color: hsl(0, 0%, 0%);
-        --accent-color: hsl(273, 73%, 54%);
+        --background-gradient-start: rgb(255, 255, 255);
+        --background-gradient-end: rgba(255, 255, 255, 0.5);
       }
 
       :root.dark {
         --background-color: hsl(0, 0%, 0%);
+        --background-color-trans: hwb(0 0% 100% / 0.7);
         --text-color: hsl(0, 0%, 100%);
-        --accent-color: hsl(273, 73%, 65%);
+        --background-gradient-start: rgb(0, 0, 0);
+        --background-gradient-end: rgb(0, 0, 0, 0.5);
       }
     </style>
   </head>
