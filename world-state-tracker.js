@@ -22,8 +22,10 @@ export class WorldStateTracker extends LitElement {
 
       .right {
         border-radius: 8px;
-        background: linear-gradient(180deg, var(--background-gradient-start), var(--background-gradient-end));
+        background: linear-gradient(180deg, #000, rgb(0, 0, 0, 0));
+        color: #fff;
         box-shadow: 0px 0px 32px rgba(0, 0, 0, 0.1);
+        padding-bottom: 200px;
       }
 
       header {
@@ -32,11 +34,10 @@ export class WorldStateTracker extends LitElement {
         justify-content: center;
         align-items: center;
         padding: 15px 0px;
-        border-bottom: 1px #dddddd solid;
         margin-bottom: 30px;
         gap: 20px;
-        background-color: var(--background-color-trans);
-        color: var(--text-color);
+        background-color: #000000;
+        color: #fff;
       }
 
       .container {
@@ -55,7 +56,6 @@ export class WorldStateTracker extends LitElement {
           justify-content: center;
           align-items: center;
           padding: 30px 0px;
-          border-bottom: 1px #dddddd solid;
         }
 
         .container {

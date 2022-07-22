@@ -7,14 +7,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville" rel="stylesheet" />
     <style>
+      html,
       body {
         margin: 0;
         font-family: "Libre Baskerville";
         color: var(--text-color);
-        background-color: var(--background-color);
+        background-color: #000000;
         background-image: url("./backgrounds/dark-forest.jpg");
         background-size: cover;
         background-repeat: no-repeat;
+        height: 100%;
+      }
+      .wrapper {
+        background: linear-gradient(180deg, #000000 21.99%, rgba(0, 0, 0, 0) 73.97%);
+      }
+      .dark .inner-wrapper {
+        background: radial-gradient(rgb(0, 0, 0, 1), rgb(0, 0, 0, 0));
       }
       :root {
         --background-color: hsl(0, 0%, 100%);
@@ -22,6 +30,7 @@
         --text-color: hsl(0, 0%, 0%);
         --background-gradient-start: rgb(255, 255, 255);
         --background-gradient-end: rgba(255, 255, 255, 0.5);
+        --header-underline: rgba(255, 255, 255);
       }
 
       :root.dark {
@@ -30,11 +39,16 @@
         --text-color: hsl(0, 0%, 100%);
         --background-gradient-start: rgb(0, 0, 0);
         --background-gradient-end: rgb(0, 0, 0, 0.5);
+        --header-underline: rgba(0, 0, 0);
       }
     </style>
   </head>
   <body>
-    <world-state-tracker></world-state-tracker>
+    <div class="wrapper">
+      <div class="inner-wrapper">
+        <world-state-tracker></world-state-tracker>
+      </div>
+    </div>
     <script src="./index.js" type="module"></script>
   </body>
 </html>
