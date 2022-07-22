@@ -94,6 +94,40 @@ export class Tracker extends EventTarget {
   _weekMessages = [];
 
   async setState(key, value) {
+    if (key === "terrainPlains") {
+      this.dispatchEvent(new CustomEvent("background-change", { detail: { background: "plains" } }));
+    }
+    if (key === "terrainForest") {
+      this.dispatchEvent(new CustomEvent("background-change", { detail: { background: "forest" } }));
+    }
+    if (key === "terrainDarkForest") {
+      this.dispatchEvent(new CustomEvent("background-change", { detail: { background: "dark-forest" } }));
+    }
+    if (key === "terrainHills") {
+      this.dispatchEvent(new CustomEvent("background-change", { detail: { background: "hills" } }));
+    }
+    if (key === "terrainMountains") {
+      this.dispatchEvent(new CustomEvent("background-change", { detail: { background: "mountains" } }));
+    }
+    if (key === "terrainHighMountains") {
+      this.dispatchEvent(new CustomEvent("background-change", { detail: { background: "high-mountains" } }));
+    }
+    if (key === "terrainLake") {
+      this.dispatchEvent(new CustomEvent("background-change", { detail: { background: "lake" } }));
+    }
+    if (key === "terrainRiver") {
+      this.dispatchEvent(new CustomEvent("background-change", { detail: { background: "river" } }));
+    }
+    if (key === "terrainMarshlands") {
+      this.dispatchEvent(new CustomEvent("background-change", { detail: { background: "marshlands" } }));
+    }
+    if (key === "terrainQuagmire") {
+      this.dispatchEvent(new CustomEvent("background-change", { detail: { background: "quagmire" } }));
+    }
+    if (key === "terrainRuins") {
+      this.dispatchEvent(new CustomEvent("background-change", { detail: { background: "ruins" } }));
+    }
+
     if (key === "environmentDark") {
       this.dark = value;
     } else this.state[key] = value;
