@@ -65,8 +65,8 @@ export class WorldStateControls extends LitElement {
         justify-content: center;
         gap: 5px;
       }
-      .value-display {
-        min-width: 125px;
+      stepper-control {
+        padding: 5px;
       }
       /* Large screens */
       @media all and (min-width: 800px) {
@@ -99,7 +99,7 @@ export class WorldStateControls extends LitElement {
   buttonClick(e) {
     this.dispatchEvent(
       new CustomEvent("click", {
-        detail: { type: e.target.dataset.type, direction: e.target.dataset.direction },
+        detail: { type: e.detail.type, direction: e.detail.direction },
         bubbles: true,
         composed: true,
       })
@@ -126,19 +126,13 @@ export class WorldStateControls extends LitElement {
     return html`
       <section class="controls">
         <div>
-          <button @click=${this.buttonClick} data-type="day" data-direction="-" class="btn">-</button>
-          <h3 class="value-display width-50">Day</h3>
-          <button @click=${this.buttonClick} data-type="day" data-direction="+" class="btn">+</button>
+          <stepper-control type="day" name="Day" @change="${this.buttonClick}">Day</stepper-control>
         </div>
         <div>
-          <button @click=${this.buttonClick} data-type="week" data-direction="-" class="btn">-</button>
-          <h3 class="value-display width-70">Week</h3>
-          <button @click=${this.buttonClick} data-type="week" data-direction="+" class="btn">+</button>
+          <stepper-control type="week" name="Week" @change="${this.buttonClick}">Week</stepper-control>
         </div>
         <div>
-          <button @click=${this.buttonClick} data-type="year" data-direction="-" class="btn">-</button>
-          <h3 class="value-display width-50">Year</h3>
-          <button @click=${this.buttonClick} data-type="year" data-direction="+" class="btn">+</button>
+          <stepper-control type="year" name="Year" @change="${this.buttonClick}">Year</stepper-control>
         </div>
       </section>
     `;

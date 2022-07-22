@@ -58,13 +58,22 @@ export class WorldStateNotes extends LitElement {
       }
       .btn:focus {
       }
+      .w-150 {
+        width: 150px;
+      }
+      .w-160 {
+        width: 160px;
+      }
+      .w-170 {
+        width: 170px;
+      }
     `,
   ];
 
   buttonClick(e) {
     this.dispatchEvent(
       new CustomEvent("click", {
-        detail: { type: e.target.dataset.type, direction: e.target.dataset.direction },
+        detail: { type: e.detail.type, direction: e.detail.direction },
         bubbles: true,
         composed: true,
       })
@@ -86,21 +95,17 @@ export class WorldStateNotes extends LitElement {
       </section>
       <section class="controls">
         <div>
-          <button @click=${this.buttonClick} data-type="quarterDay" data-direction="-" class="btn">-</button>
-          <h3 class="value-display width-100">
+          <stepper-control class="w-170" type="quarterDay" @change="${this.buttonClick}">
             <quarterday-display quarter-day="${this.quarterDay}"></quarterday-display>
-          </h3>
-          <button @click=${this.buttonClick} data-type="quarterDay" data-direction="+" class="btn">+</button>
+          </stepper-control>
         </div>
         <div>
-          <button @click=${this.buttonClick} data-type="turn" data-direction="-" class="btn">-</button>
-          <h3 class="value-display width-75">Turn ${this.turn}</h3>
-          <button @click=${this.buttonClick} data-type="turn" data-direction="+" class="btn">+</button>
+          <stepper-control class="w-150" type="turn" @change="${this.buttonClick}">Turn ${this.turn}</stepper-control>
         </div>
         <div>
-          <button @click=${this.buttonClick} data-type="round" data-direction="-" class="btn">-</button>
-          <h3 class="value-display width-100">Round ${this.round}</h3>
-          <button @click=${this.buttonClick} data-type="round" data-direction="+" class="btn">+</button>
+          <stepper-control class="w-160" type="round" @change="${this.buttonClick}"
+            >Round ${this.round}</stepper-control
+          >
         </div>
       </section>
     `;
