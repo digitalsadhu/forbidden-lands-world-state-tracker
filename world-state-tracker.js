@@ -3,6 +3,7 @@ import { Tracker } from "./tracker.js";
 import { globalStyles } from "./global-styles.js";
 
 const tracker = new Tracker();
+window.tracker = tracker;
 
 export class WorldStateTracker extends LitElement {
   static styles = [
@@ -96,22 +97,6 @@ export class WorldStateTracker extends LitElement {
   };
   connectedCallback() {
     super.connectedCallback();
-    tracker.addEventListener("round-messages-change", () => {
-      this._messages = tracker.roundMessages;
-    });
-    tracker.addEventListener("turn-messages-change", () => {
-      this._messages = tracker.turnMessages;
-    });
-    tracker.addEventListener("quarter-day-messages-change", () => {
-      this._messages = tracker.quarterDayMessages;
-    });
-    tracker.addEventListener("day-messages-change", () => {
-      this._messages = tracker.dayMessages;
-    });
-    tracker.addEventListener("week-messages-change", () => {
-      this._messages = tracker.weekMessages;
-      this._title = "New Week";
-    });
     tracker.addEventListener("round-change", () => {
       this._round = tracker.round;
     });
@@ -136,11 +121,6 @@ export class WorldStateTracker extends LitElement {
     });
   }
   disconnectedCallback() {
-    tracker.removeEventListener("round-messages-change");
-    tracker.removeEventListener("turn-messages-change");
-    tracker.removeEventListener("quarter-day-messages-change");
-    tracker.removeEventListener("day-messages-change");
-    tracker.removeEventListener("week-messages-change");
     tracker.removeEventListener("round-change");
     tracker.removeEventListener("turn-change");
     tracker.removeEventListener("quarter-day-change");
@@ -188,7 +168,6 @@ export class WorldStateTracker extends LitElement {
             round="${this._round}"
             turn="${this._turn}"
             quarter-day="${this._quarterDay}"
-            messages="${JSON.stringify(this._messages)}"
             @click="${this.buttonClicked}"
           ></world-state-notes>
         </div>

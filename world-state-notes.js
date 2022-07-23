@@ -4,15 +4,15 @@ import { globalStyles } from "./global-styles.js";
 export class WorldStateNotes extends LitElement {
   constructor() {
     super();
-    this.messages = [];
+    this._messages = [];
   }
 
   static properties = {
     datestamp: { type: Number },
-    messages: { type: Array },
     round: { type: Number },
     turn: { type: Number },
     quarterDay: { type: Number, attribute: "quarter-day" },
+    _messages: { state: true },
   };
 
   static styles = [
@@ -50,8 +50,59 @@ export class WorldStateNotes extends LitElement {
       .w-170 {
         width: 170px;
       }
+      .underline {
+        border-bottom: 1px #fff solid;
+      }
+      .c-skill {
+        text-transform: uppercase;
+        font-weight: bold;
+        color: firebrick;
+      }
+      .c-attribute {
+        text-transform: uppercase;
+        font-weight: bold;
+        color: coral;
+      }
+      .c-modifier {
+        font-weight: bold;
+        color: darkkharki;
+      }
+      .c-condition {
+        text-transform: uppercase;
+        font-weight: bold;
+        color: aqua;
+      }
     `,
   ];
+
+  connectedCallback() {
+    super.connectedCallback();
+    const tracker = window.tracker;
+    tracker.addEventListener("round-messages-change", () => {
+      this._messages = tracker.roundMessages;
+    });
+    tracker.addEventListener("turn-messages-change", () => {
+      this._messages = tracker.turnMessages;
+    });
+    tracker.addEventListener("quarter-day-messages-change", () => {
+      this._messages = tracker.quarterDayMessages;
+    });
+    tracker.addEventListener("day-messages-change", () => {
+      this._messages = tracker.dayMessages;
+    });
+    tracker.addEventListener("week-messages-change", () => {
+      this._messages = tracker.weekMessages;
+      this._title = "New Week";
+    });
+  }
+
+  disconnectedCallback() {
+    tracker.removeEventListener("round-messages-change");
+    tracker.removeEventListener("turn-messages-change");
+    tracker.removeEventListener("quarter-day-messages-change");
+    tracker.removeEventListener("day-messages-change");
+    tracker.removeEventListener("week-messages-change");
+  }
 
   buttonClick(e) {
     this.dispatchEvent(
@@ -72,7 +123,9 @@ export class WorldStateNotes extends LitElement {
         </h2>
         <div>
           <ul>
-            ${this.messages.map((message) => html`<li>${message}</li>`)}
+            ${this._messages.map((message) => {
+              return html`<li>${message}</li>`;
+            })}
           </ul>
         </div>
       </section>

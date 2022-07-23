@@ -1,3 +1,5 @@
+import { html } from "https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js";
+
 /**
  * @param { import("../../types").State } state
  */
@@ -12,19 +14,35 @@ export default async (state) => {
     if (state.sleep) {
       gear.push("a camp fire");
     }
-    const message = `COLD: PCs without ${gear.join(" or ")} must roll ENDURANCE in cold conditions or become COLD.`;
+    const message = html`PCs without ${gear.join(" or ")} must roll <strong class="c-skill">endurance</strong> in
+      <strong class="c-condition">cold</strong> conditions or become <strong class="c-condition">COLD</strong>.`;
 
     if (gear.length > 0) messages.push(message);
 
     if (state.cold) {
       messages.push(
-        "COLD: PCs with the COLD condition continue to roll ENDURANCE at the same interval until warm. Failure results in -1 STRENGTH and -1 WITS. PCs broken in strength in this way die on the next failed roll."
+        html`PCs with the <strong class="c-condition">cold</strong> condition continue to roll
+          <strong class="c-skill">endurance</strong> at the same interval until no longer cold. <br />Failure results in
+          <i class="c-modifier">-1</i> <strong class="c-attribute">strength</strong> and <i class="c-modifier">-1</i>
+          <strong class="c-attribute">wits</strong>. PCs broken in <strong class="c-attribute">strength</strong> in this
+          way die on the next failed roll.`
       );
     }
   }
   if (state.cold && state.sleep) {
-    messages.push("COLD: PCs with the COLD condition that sleep around a campfire are no longer COLD.");
+    messages.push(
+      html`PCs with the <strong class="c-condition">cold</strong> condition that sleep around a campfire are no longer
+        <strong class="c-condition">cold</strong>`
+    );
   }
 
-  return messages;
+  if (messages.length) {
+    return [
+      html`<h4 class="c-condition">COLD</h4>
+        <ul>
+          ${messages.map((message) => html`<li>${message}</li>`)}
+        </ul>`,
+    ];
+  }
+  return [];
 };

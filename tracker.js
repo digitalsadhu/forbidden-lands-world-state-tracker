@@ -272,7 +272,10 @@ export class Tracker extends EventTarget {
     let messages = [];
     for (const quarterDay of quarterDays) {
       // pass in weather and terrain and light level and party state
-      messages = messages.concat((await quarterDay(this.state)) || []);
+      const collectedMessages = await quarterDay(this.state);
+      for (const message of collectedMessages || []) {
+        messages.push(message);
+      }
     }
     this.quarterDayMessages = messages.filter(Boolean);
     this.round = 1;
