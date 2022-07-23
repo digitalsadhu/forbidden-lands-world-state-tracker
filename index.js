@@ -9,6 +9,7 @@ import { SeasonDisplay } from "./components/season-display.js";
 import { YearDisplay } from "./components/year-display.js";
 import { QuarterDayDisplay } from "./components/quarterday-display.js";
 import { StepperControl } from "./components/stepper-control.js";
+import { CheckboxControl } from "./components/checkbox-control.js";
 
 customElements.define("world-state-tracker", WorldStateTracker);
 customElements.define("world-state-controls", WorldStateControls);
@@ -21,3 +22,4 @@ customElements.define("season-display", SeasonDisplay);
 customElements.define("year-display", YearDisplay);
 customElements.define("quarterday-display", QuarterDayDisplay);
 customElements.define("stepper-control", StepperControl);
+customElements.define("checkbox-control", CheckboxControl);

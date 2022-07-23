@@ -84,6 +84,7 @@ export class Tracker extends EventTarget {
   _turn = 1;
   _quarterDay = 1;
   _datestamp = 1165 * 365 + 1;
+  _currentType = types.QUARTER_DAY;
 
   messages = [];
 

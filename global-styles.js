@@ -27,9 +27,7 @@ export const globalStyles = css`
     line-height: 25px;
     margin: 0;
     padding: 0;
-  }
-  h3 {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
   :host {
     font-size: 16px;

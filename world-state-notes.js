@@ -26,7 +26,6 @@ export class WorldStateNotes extends LitElement {
         flex-direction: column;
         padding: 30px;
         justify-content: space-between;
-        align-items: center;
       }
       .controls {
         display: flex;
@@ -41,22 +40,6 @@ export class WorldStateNotes extends LitElement {
         align-items: center;
         justify-content: center;
         gap: 5px;
-      }
-      .value-display {
-        text-align: center;
-      }
-      .btn {
-        border-radius: 100%;
-        border: 0;
-      }
-      .btn:hover {
-        cursor: pointer;
-        opacity: 0.85;
-      }
-      .btn:active {
-        outline: 0;
-      }
-      .btn:focus {
       }
       .w-150 {
         width: 150px;

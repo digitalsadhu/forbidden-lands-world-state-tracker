@@ -70,6 +70,7 @@ export class WorldStateTracker extends LitElement {
         }
 
         .right {
+          min-width: 775px;
         }
       }
     `,
@@ -121,7 +122,6 @@ export class WorldStateTracker extends LitElement {
       this._quarterDay = tracker.quarterDay;
     });
     tracker.addEventListener("datestamp-change", () => {
-      console.log(this._datestamp, tracker.datestamp);
       this._datestamp = tracker.datestamp;
     });
     tracker.addEventListener("party-change", () => {

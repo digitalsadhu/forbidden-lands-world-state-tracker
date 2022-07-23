@@ -86,7 +86,7 @@ export class WorldStateOptions extends LitElement {
         flex-direction: row;
         flex-wrap: wrap;
         gap: 20px;
-        padding: 30px;
+        padding: 0 30px 30px 30px;
         border-radius: 8px;
       }
       .party > section {
@@ -106,7 +106,7 @@ export class WorldStateOptions extends LitElement {
       .left {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 40px;
         align-items: flex-start;
       }
       .right {
@@ -124,339 +124,189 @@ export class WorldStateOptions extends LitElement {
       .left > section > section > div {
         min-width: 140px;
       }
+      .checkbox-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
     `,
   ];
 
   selectionChange(e) {
-    this.dispatchEvent(new CustomEvent("change", { detail: { name: e.target.value, selected: e.target.checked } }));
+    this.dispatchEvent(new CustomEvent("change", { detail: { name: e.detail.value, selected: e.detail.checked } }));
   }
 
   radioSelectionChange(e) {
     this.dispatchEvent(
-      new CustomEvent("change", { detail: { name: e.target.name, selected: Number(e.target.value) } })
+      new CustomEvent("change", {
+        detail: { name: e.target.name, selected: Number(e.target.value) },
+      })
     );
   }
 
   conditionsTemplate() {
     return html`
-      <div>
-        <input
-          @change="${this.selectionChange}"
-          type="checkbox"
-          id="hungry"
-          name="hungry"
-          value="hungry"
-          ?checked="${this.hungry}"
-        />
-        <label for="hungry">Hungry</label>
-      </div>
-      <div>
-        <input
-          @change="${this.selectionChange}"
-          type="checkbox"
-          id="thirsty"
-          name="thirsty"
-          value="thirsty"
-          ?checked="${this.thirsty}"
-        />
-        <label for="thirsty">Thirsty</label>
-      </div>
-      <div>
-        <input
-          @change="${this.selectionChange}"
-          type="checkbox"
-          id="sleepy"
-          name="sleepy"
-          value="sleepy"
-          ?checked="${this.sleepy}"
-        />
-        <label for="sleepy">Sleepy</label>
-      </div>
-      <div>
-        <input
-          @change="${this.selectionChange}"
-          type="checkbox"
-          id="cold"
-          name="cold"
-          value="cold"
-          ?checked="${this.cold}"
-        />
-        <label for="cold">Cold</label>
-      </div>
-      <div>
-        <input
-          @change="${this.selectionChange}"
-          type="checkbox"
-          id="poisoned"
-          name="poisoned"
-          value="poisoned"
-          ?checked="${this.poisoned}"
-        />
-        <label for="poisoned">Poisoned</label>
-      </div>
-      <div>
-        <input
-          @change="${this.selectionChange}"
-          type="checkbox"
-          id="injured"
-          name="injured"
-          value="injured"
-          ?checked="${this.injured}"
-        />
-        <label for="injured">Injured</label>
-      </div>
-      <div>
-        <input
-          @change="${this.selectionChange}"
-          type="checkbox"
-          id="diseased"
-          name="diseased"
-          value="diseased"
-          ?checked="${this.diseased}"
-        />
-        <label for="diseased">Sick</label>
+      <div class="checkbox-group">
+        <checkbox-control @change="${this.selectionChange}" name="hungry" value="hungry" ?checked="${this.hungry}"
+          >Hungry</checkbox-control
+        >
+        <checkbox-control @change="${this.selectionChange}" name="thirsty" value="thirsty" ?checked="${this.thirsty}"
+          >Thirsty</checkbox-control
+        >
+        <checkbox-control @change="${this.selectionChange}" name="sleepy" value="sleepy" ?checked="${this.sleepy}"
+          >Sleepy</checkbox-control
+        >
+        <checkbox-control @change="${this.selectionChange}" name="cold" value="cold" ?checked="${this.cold}"
+          >Cold</checkbox-control
+        >
+        <checkbox-control @change="${this.selectionChange}" name="poisoned" value="poisoned" ?checked="${this.poisoned}"
+          >Poisoned</checkbox-control
+        >
+        <checkbox-control @change="${this.selectionChange}" name="injured" value="injured" ?checked="${this.injured}"
+          >Injured</checkbox-control
+        >
+        <checkbox-control @change="${this.selectionChange}" name="diseased" value="diseased" ?checked="${this.diseased}"
+          >Sick</checkbox-control
+        >
       </div>
     `;
   }
 
   gearTemplate() {
     return html`
-      <div>
-        <input
+      <div class="checkbox-group">
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="over-encumbered"
           name="over-encumbered"
           value="overEncumbered"
           ?checked="${this.overEncumbered}"
-        />
-        <label for="over-encumbered">Over encumbered</label>
-      </div>
-      <div>
-        <input
+          >Over encumbered</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="using-arrows"
           name="using-arrows"
           value="usingArrows"
           ?checked="${this.usingArrows}"
-        />
-        <label for="using-arrows">Arrows</label>
-      </div>
-      <div>
-        <input
+          >Arrows</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="wearing-armor"
           name="wearing-armor"
           value="wearingArmor"
           ?checked="${this.wearingArmor}"
-        />
-        <label for="wearing-armor">Armor</label>
-      </div>
-      <div>
-        <input
+          >Armor</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="warm-clothes"
           name="warm-clothes"
           value="warmClothes"
           ?checked="${this.warmClothes}"
-        />
-        <label for="warm-clothes">Warm clothes</label>
-      </div>
-      <div>
-        <input
+          >Warm clothes</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="light-source"
-          name="lightSource"
+          name="light-source"
           value="lightSource"
           ?checked="${this.lightSource}"
-        />
-        <label for="light-source">Light source</label>
+          >Light source</checkbox-control
+        >
       </div>
     `;
   }
 
   environmentTemplate() {
     return html`
-      <div>
-        <input
+      <div class="checkbox-group">
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="environment-dark"
-          name="environmentDark"
+          name="environment-dark"
           value="environmentDark"
-          .checked="${this.environmentDark}"
-        />
-        <label for="environment-dark">Dark</label>
-      </div>
-      <div>
-        <input
+          ?checked="${this.environmentDark}"
+          >Dark</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="environment-cold"
-          name="environmentCold"
+          name="environment-cold"
           value="environmentCold"
           ?checked="${this.environmentCold}"
-        />
-        <label for="environment-cold">Cold</label>
-      </div>
-      <div>
-        <input
-          @change="${this.selectionChange}"
-          type="checkbox"
-          id="in-water"
-          name="in-water"
-          value="inWater"
-          ?checked="${this.inWater}"
-        />
-        <label for="in-water">Water</label>
+          >Cold</checkbox-control
+        >
+        <checkbox-control @change="${this.selectionChange}" name="in-water" value="inWater" ?checked="${this.inWater}"
+          >Water</checkbox-control
+        >
       </div>
     `;
   }
 
   strongholdTemplate() {
     return html`
-      <div>
-        <input
+      <div class="checkbox-group">
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="own-stronghold"
           name="own-stronghold"
           value="ownStronghold"
           ?checked="${this.ownStronghold}"
-        />
-        <label for="own-stronghold">Stronghold</label>
-      </div>
-      <div>
-        <input
+          >Stronghold</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="have-hirelings"
           name="have-hirelings"
           value="haveHirelings"
           ?checked="${this.haveHirelings}"
-        />
-        <label for="have-hirelings">Hirelings</label>
+          >Hirelings</checkbox-control
+        >
       </div>
     `;
   }
 
   actionsTemplate() {
     return html`
-      <div>
-        <input
+      <div class="checkbox-group">
+        <checkbox-control @change="${this.selectionChange}" name="explore" value="explore" ?checked="${this.explore}"
+          >Explore</checkbox-control
+        >
+        <checkbox-control @change="${this.selectionChange}" name="hike" value="hike" ?checked="${this.hike}"
+          >Hike</checkbox-control
+        >
+        <checkbox-control @change="${this.selectionChange}" name="fish" value="fish" ?checked="${this.fish}"
+          >Fish</checkbox-control
+        >
+        <checkbox-control @change="${this.selectionChange}" name="forage" value="forage" ?checked="${this.forage}"
+          >Forage</checkbox-control
+        >
+        <checkbox-control @change="${this.selectionChange}" name="hunt" value="hunt" ?checked="${this.hunt}"
+          >Hunt</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="explore"
-          name="explore"
-          value="explore"
-          ?checked="${this.explore}"
-        />
-        <label for="explore">Explore</label>
-      </div>
-      <div>
-        <input
-          @change="${this.selectionChange}"
-          type="checkbox"
-          id="hike"
-          name="hike"
-          value="hike"
-          ?checked="${this.hike}"
-        />
-        <label for="hike">Hike</label>
-      </div>
-      <div>
-        <input
-          @change="${this.selectionChange}"
-          type="checkbox"
-          id="fish"
-          name="fish"
-          value="fish"
-          ?checked="${this.fish}"
-        />
-        <label for="fish">Fish</label>
-      </div>
-      <div>
-        <input
-          @change="${this.selectionChange}"
-          type="checkbox"
-          id="forage"
-          name="forage"
-          value="forage"
-          ?checked="${this.forage}"
-        />
-        <label for="forage">Forage</label>
-      </div>
-      <div>
-        <input
-          @change="${this.selectionChange}"
-          type="checkbox"
-          id="hunt"
-          name="hunt"
-          value="hunt"
-          ?checked="${this.hunt}"
-        />
-        <label for="hunt">Hunt</label>
-      </div>
-      <div>
-        <input
-          @change="${this.selectionChange}"
-          type="checkbox"
-          id="keep-watch"
           name="keep-watch"
           value="keepWatch"
           ?checked="${this.keepWatch}"
-        />
-        <label for="keep-watch">Keep watch</label>
-      </div>
-      <div>
-        <input
+          >Keep Watch</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="lead-the-way"
           name="lead-the-way"
           value="leadTheWay"
           ?checked="${this.leadTheWay}"
-        />
-        <label for="lead-the-way">Lead the way</label>
-      </div>
-      <div>
-        <input
+          >Lead the way</checkbox-control
+        >
+        <checkbox-control @change="${this.selectionChange}" name="rest" value="rest" ?checked="${this.rest}"
+          >Rest</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="rest"
-          name="rest"
-          value="rest"
-          ?checked="${this.rest}"
-        />
-        <label for="rest">Rest</label>
-      </div>
-      <div>
-        <input
-          @change="${this.selectionChange}"
-          type="checkbox"
-          id="make-camp"
           name="make-camp"
           value="makeCamp"
           ?checked="${this.makeCamp}"
-        />
-        <label for="make-camp">Make camp</label>
-      </div>
-      <div>
-        <input
-          @change="${this.selectionChange}"
-          type="checkbox"
-          id="sleep"
-          name="sleep"
-          value="sleep"
-          ?checked="${this.sleep}"
-        />
-        <label for="sleep">Sleep</label>
+          >Make Camp</checkbox-control
+        >
+        <checkbox-control @change="${this.selectionChange}" name="sleep" value="sleep" ?checked="${this.sleep}"
+          >Sleep</checkbox-control
+        >
 
-        <!-- <input
+
+          <!-- <input
           @change="${this.selectionChange}"
           type="checkbox"
           id="bare-ground-sleeping"
@@ -465,9 +315,9 @@ export class WorldStateOptions extends LitElement {
           ?checked="${this.bareGroundSleeping}"
         />
         <label for="bare-ground-sleeping">(didn't make camp first)</label> -->
-      </div>
-      <div>
-        <!-- Forced march
+        </div>
+        <div>
+          <!-- Forced march
         <label>
           <input
             @change="${this.radioSelectionChange}"
@@ -477,7 +327,7 @@ export class WorldStateOptions extends LitElement {
             ?checked="${this.forcedMarch === 0}"
           />No
         </label> -->
-        <!-- <label>
+          <!-- <label>
           <input
             @change="${this.radioSelectionChange}"
             type="radio"
@@ -495,121 +345,84 @@ export class WorldStateOptions extends LitElement {
             ?checked="${this.forcedMarch === 2}"
           />2 quarter days
         </label> -->
+        </div>
       </div>
     `;
   }
 
   terrainTemplate() {
     return html`
-      <div>
-        <input
+      <div class="checkbox-group">
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="terrain-plains"
-          name="terrainPlains"
+          name="terrain-plains"
           value="terrainPlains"
           ?checked="${this.terrainPlains}"
-        />
-        <label for="terrain-plains">Plains</label>
-      </div>
-      <div>
-        <input
+          >Plains</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="terrain-forest"
-          name="terrainForest"
+          name="terrain-forest"
           value="terrainForest"
           ?checked="${this.terrainForest}"
-        />
-        <label for="terrain-forest">Forest</label>
-      </div>
-      <div>
-        <input
+          >Forest</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="terrain-dark-forest"
-          name="terrainDarkForest"
+          name="terrain-dark-forest"
           value="terrainDarkForest"
           ?checked="${this.terrainDarkForest}"
-        />
-        <label for="terrain-dark-forest">Dark forest</label>
-      </div>
-      <div>
-        <input
+          >Dark Forest</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="terrain-hills"
-          name="terrainHills"
+          name="terrain-hills"
           value="terrainHills"
           ?checked="${this.terrainHills}"
-        />
-        <label for="terrain-hills">Hills</label>
-      </div>
-      <div>
-        <input
+          >Hills</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="terrain-mountains"
-          name="terrainMountains"
+          name="terrain-mountains"
           value="terrainMountains"
           ?checked="${this.terrainMountains}"
-        />
-        <label for="terrain-mountains">Mountains</label>
-      </div>
-      <div>
-        <input
+          >Mountains</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="terrain-high-mountains"
-          name="terrainHighMountains"
+          name="terrain-high-mountains"
           value="terrainHighMountains"
           ?checked="${this.terrainHighMountains}"
-        />
-        <label for="terrain-high-mountains">High mountains</label>
-      </div>
-      <div>
-        <input
+          >High mountains</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="terrain-lake-river"
-          name="terrainLakeRiver"
+          name="terrain-lake-river"
           value="terrainLakeRiver"
           ?checked="${this.terrainLakeRiver}"
-        />
-        <label for="terrain-lake-river">Lake / river</label>
-      </div>
-      <div>
-        <input
+          >Lake / river</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="terrain-marshlands"
-          name="terrainMarshlands"
+          name="terrain-marshlands"
           value="terrainMarshlands"
           ?checked="${this.terrainMarshlands}"
-        />
-        <label for="terrain-marshlands">Marshlands</label>
-      </div>
-      <div>
-        <input
+          >Marshlands</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="terrain-quagmire"
-          name="terrainQuagmire"
+          name="terrain-quagmire"
           value="terrainQuagmire"
           ?checked="${this.terrainQuagmire}"
-        />
-        <label for="terrain-quagmire">Quagmire</label>
-      </div>
-      <div>
-        <input
+          >Quagmire</checkbox-control
+        >
+        <checkbox-control
           @change="${this.selectionChange}"
-          type="checkbox"
-          id="terrain-ruins"
-          name="terrainRuins"
+          name="terrain-ruins"
           value="terrainRuins"
           ?checked="${this.terrainRuins}"
-        />
-        <label for="terrain-ruins">Ruins</label>
+          >Ruins</checkbox-control
+        >
       </div>
     `;
   }
