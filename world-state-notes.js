@@ -76,6 +76,21 @@ export class WorldStateNotes extends LitElement {
         font-weight: bold;
         color: aqua;
       }
+      .c-action {
+        text-transform: uppercase;
+        font-weight: bold;
+        color: indianred;
+      }
+      .c-terrain {
+        text-transform: uppercase;
+        font-weight: bold;
+        color: burlywood;
+      }
+      .c-consumable {
+        text-transform: uppercase;
+        font-weight: bold;
+        color: chocolate;
+      }
     `,
   ];
 

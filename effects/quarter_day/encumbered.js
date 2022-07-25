@@ -1,7 +1,12 @@
+import { html } from "../../dependencies/lit-all.min.js";
+
 /**
  * @param { import("../../types").State } state
  */
 export default async (state) => {
   if (state.overEncumbered && state.hike)
-    return ["Overencumbered PCs that try to HIKE for a quarter day must roll ENDURANCE"];
+    return [
+      html`Overencumbered PCs that try to <span class="c-action">hike</span> for a quarter day must roll
+        <span class="c-skill">ENDURANCE</span>`,
+    ];
 };
