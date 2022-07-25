@@ -1,4 +1,4 @@
-import { LitElement, html, css } from "https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js";
+import { LitElement, html, css } from "/dependencies/lit-all.min.js";
 
 export class CalendarDisplay extends LitElement {
   static properties = {

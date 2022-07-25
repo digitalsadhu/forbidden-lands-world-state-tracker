@@ -1,4 +1,4 @@
-import { css } from "https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js";
+import { css } from "/dependencies/lit-all.min.js";
 
 export const globalStyles = css`
   :host {

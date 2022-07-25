@@ -1,4 +1,4 @@
-import { html } from "https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js";
+import { html } from "/dependencies/lit-all.min.js";
 
 /**
  * @param { import("../../types").State } state
