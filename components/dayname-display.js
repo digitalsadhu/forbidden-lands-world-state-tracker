@@ -1,4 +1,4 @@
-import { LitElement, html } from "/dependencies/lit-all.min.js";
+import { LitElement, html } from "../dependencies/lit-all.min.js";
 
 const days = {
   1: "Sunday",

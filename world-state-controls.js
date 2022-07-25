@@ -1,4 +1,4 @@
-import { LitElement, html, css } from "/dependencies/lit-all.min.js";
+import { LitElement, html, css } from "./dependencies/lit-all.min.js";
 import { globalStyles } from "./global-styles.js";
 
 const quarterDays = {

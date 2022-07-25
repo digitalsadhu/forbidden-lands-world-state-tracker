@@ -1,4 +1,4 @@
-import { LitElement, html, css, classMap } from "/dependencies/lit-all.min.js";
+import { LitElement, html, css, classMap } from "./dependencies/lit-all.min.js";
 import { globalStyles } from "./global-styles.js";
 
 export class WorldStateNotes extends LitElement {
@@ -25,7 +25,11 @@ export class WorldStateNotes extends LitElement {
         display: flex;
         flex-direction: column;
         padding: 30px;
-        justify-content: space-between;
+        justify-content: flex-start;
+        gap: 10px;
+      }
+      ul {
+        padding-left: 10px;
       }
       .controls {
         display: flex;
@@ -116,19 +120,6 @@ export class WorldStateNotes extends LitElement {
 
   render() {
     return html`
-      <section class="messages">
-        <h2>
-          <dayname-display datestamp=${this.datestamp}></dayname-display>
-          <day-display datestamp=${this.datestamp}></day-display>
-        </h2>
-        <div>
-          <ul>
-            ${this._messages.map((message) => {
-              return html`<li>${message}</li>`;
-            })}
-          </ul>
-        </div>
-      </section>
       <section class="controls">
         <div>
           <stepper-control class="w-170" type="quarterDay" @change="${this.buttonClick}">
@@ -142,6 +133,15 @@ export class WorldStateNotes extends LitElement {
           <stepper-control class="w-160" type="round" @change="${this.buttonClick}"
             >Round ${this.round}</stepper-control
           >
+        </div>
+      </section>
+      <section class="messages">
+        <div>
+          <ul>
+            ${this._messages.map((message) => {
+              return html`<li>${message}</li>`;
+            })}
+          </ul>
         </div>
       </section>
     `;

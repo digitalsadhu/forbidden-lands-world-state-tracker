@@ -1,4 +1,4 @@
-import { LitElement, html, css } from "/dependencies/lit-all.min.js";
+import { LitElement, html, css } from "./dependencies/lit-all.min.js";
 import { Tracker } from "./tracker.js";
 import { globalStyles } from "./global-styles.js";
 
@@ -14,8 +14,8 @@ export class WorldStateTracker extends LitElement {
       }
 
       .left {
-        background: #333333;
-        box-shadow: 0px 0px 32px rgba(0, 0, 0, 0.1);
+        background-color: rgba(51, 51, 51, 0.8);
+        box-shadow: 0px 0px 32px rgba(0, 0, 0, 0.5);
         border-radius: 8px;
         color: #fff;
         max-width: 650px;
@@ -152,7 +152,6 @@ export class WorldStateTracker extends LitElement {
   render() {
     return html`
       <header>
-        <calendar-display datestamp="${this._datestamp}"></calendar-display>
         <world-state-controls
           round="${this._round}"
           turn="${this._turn}"
@@ -160,6 +159,7 @@ export class WorldStateTracker extends LitElement {
           datestamp=${this._datestamp}
           @click=${this.buttonClicked}
         ></world-state-controls>
+        <calendar-display datestamp="${this._datestamp}"></calendar-display>
       </header>
       <section class="container">
         <div class="left">

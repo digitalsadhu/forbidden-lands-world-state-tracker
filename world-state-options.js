@@ -1,4 +1,4 @@
-import { LitElement, html, css, classMap } from "/dependencies/lit-all.min.js";
+import { LitElement, html, css, classMap } from "./dependencies/lit-all.min.js";
 import { globalStyles } from "./global-styles.js";
 
 export class WorldStateOptions extends LitElement {

@@ -1,4 +1,4 @@
-import { LitElement, html } from "/dependencies/lit-all.min.js";
+import { LitElement, html } from "../dependencies/lit-all.min.js";
 
 function getYear(datestamp) {
   return Math.floor(datestamp / 365);
