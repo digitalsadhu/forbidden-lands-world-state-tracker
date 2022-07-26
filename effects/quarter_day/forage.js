@@ -1,39 +1,61 @@
+import { html } from "../../dependencies/lit-all.min.js";
+
 /**
  * @param { import("../../types").State } state
  */
 export default async (state) => {
   if (state.forage) {
     const result = [];
-    let message = "FORAGE: Roll SURVIVAL";
+    let message = html`<span class="c-action">Forage</span> roll <span class="c-skill">survival</span>`;
     if (state.terrainPlains) {
-      result.push(`${message} modified by -1 for plains`);
+      result.push(
+        html`${message} modified by <span class="c-modifier">-1</span> for <span class="c-terrain">plains</span>.`
+      );
     }
     if (state.terrainForest) {
-      result.push(`${message} modified by +1 for forest`);
+      result.push(
+        html`${message} modified by <span class="c-modifier">+1</span> for <span class="c-terrain">forest</span>.`
+      );
     }
     if (state.terrainDarkForest) {
-      result.push(`${message} modified by -1 for dark forest`);
+      result.push(
+        html`${message} modified by <span class="c-modifier">-1</span> for <span class="c-terrain">dark forest</span>.`
+      );
     }
     if (state.terrainHills) {
-      result.push(message);
+      result.push(html`${message} unmodified for <span class="c-terrain">hills</span>.`);
     }
     if (state.terrainMountains) {
-      result.push(`${message} modified by -2 for mountains`);
+      result.push(
+        html`${message} modified by <span class="c-modifier">-2</span> for <span class="c-terrain">mountains</span>`
+      );
     }
     if (state.terrainHighMountains) {
-      result.push("FORAGE: No foraging is possible in high mountains");
+      result.push(
+        html`<span class="c-action">Forage</span> no foraging is possible in
+          <span class="c-terrain">high mountains</span>`
+      );
     }
     if (state.terrainLakeRiver) {
-      result.push("FORAGE: No foraging is possible on lakes or rivers");
+      result.push(
+        html`<span class="c-action">Forage</span> no foraging is possible on
+          <span class="c-terrain">lakes or rivers</span>.`
+      );
     }
     if (state.terrainMarshlands) {
-      result.push(`${message} modified by +1 for marshland`);
+      result.push(
+        html`${message} modified by <span class="c-modifier">+1</span> for <span class="c-terrain">marshland</span>.`
+      );
     }
     if (state.terrainQuagmire) {
-      result.push(`${message} modified by -1 for quagmire`);
+      result.push(
+        html`${message} modified by <span class="c-modifier">-1</span> for <span class="c-terrain">quagmire</span>`
+      );
     }
     if (state.terrainRuins) {
-      result.push(`${message} modified by -2 for ruins`);
+      result.push(
+        html`${message} modified by <span class="c-modifier">-2</span> for <span class="c-terrain">ruins</span>`
+      );
     }
 
     if (!result.length) {
