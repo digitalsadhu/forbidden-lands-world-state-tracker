@@ -3,6 +3,9 @@ import days from "./day.js";
 import rounds from "./round.js";
 import quarterDays from "./quarter_day.js";
 import weeks from "./week.js";
+import { Weather } from "./weather.js";
+
+const weather = new Weather();
 
 const types = {
   ROUND: "round",
@@ -78,12 +81,13 @@ export class Tracker extends EventTarget {
     terrainQuagmire: false,
     terrainRuins: false,
     season: "Spring",
+    weather: null,
   };
 
   _round = 1;
   _turn = 1;
   _quarterDay = 1;
-  _datestamp = 1165 * 365 + 1;
+  _datestamp = null;
   _currentType = types.QUARTER_DAY;
 
   messages = [];
@@ -93,6 +97,10 @@ export class Tracker extends EventTarget {
   _quarterDayMessages = [];
   _dayMessages = [];
   _weekMessages = [];
+
+  init() {
+    this.datestamp = 1165 * 365 + 1;
+  }
 
   async setState(key, value) {
     if (key === "terrainPlains") {
@@ -127,6 +135,30 @@ export class Tracker extends EventTarget {
     }
     if (key === "terrainRuins") {
       this.dispatchEvent(new CustomEvent("background-change", { detail: { background: "ruins" } }));
+    }
+
+    if (key === "cold") {
+      this.weather = {
+        wind: this.weather.wind,
+        rain: this.weather.rain,
+        cold: value,
+      };
+    }
+
+    if (key === "rain") {
+      this.weather = {
+        wind: this.weather.wind,
+        rain: value,
+        cold: this.weather.cold,
+      };
+    }
+
+    if (key === "wind") {
+      this.weather = {
+        wind: value,
+        rain: this.weather.rain,
+        cold: this.weather.cold,
+      };
     }
 
     if (key === "environmentDark") {
@@ -164,8 +196,10 @@ export class Tracker extends EventTarget {
     return this._datestamp;
   }
   set datestamp(value) {
+    if (value === this.datestamp) return;
     this._datestamp = value;
     this.state.season = getSeason(this._datestamp);
+    this.regenerateWeather();
     this.dispatchEvent(new CustomEvent("datestamp-change"));
   }
 
@@ -318,8 +352,8 @@ export class Tracker extends EventTarget {
     this.round = 1;
     this.turn = 1;
     this.quarterDay = 1;
-    this.datestamp = datestamp;
     this._currentType = types.DAY;
+    this.datestamp = datestamp;
     this.dispatchEvent(new CustomEvent("day-change"));
   }
 
@@ -373,6 +407,15 @@ export class Tracker extends EventTarget {
     }
   }
 
+  get weather() {
+    return this.state.weather;
+  }
+
+  set weather(weather) {
+    this.state.weather = weather;
+    this.dispatchEvent(new CustomEvent("weather-change"));
+  }
+
   calculateDarkness() {
     let dark = false;
     if (this.state.season === "Spring") {
@@ -397,6 +440,15 @@ export class Tracker extends EventTarget {
     }
 
     return dark;
+  }
+
+  regenerateWeather() {
+    weather.generate(this.datestamp);
+    this.weather = {
+      wind: weather.wind,
+      rain: weather.rain,
+      cold: weather.cold,
+    };
   }
 
   async advance(type) {

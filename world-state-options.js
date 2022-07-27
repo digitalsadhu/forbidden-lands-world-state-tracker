@@ -63,7 +63,9 @@ export class WorldStateOptions extends LitElement {
     sleep: { type: Boolean },
     makeCamp: { type: Boolean },
     forcedMarch: { type: Number },
-    environmentCold: { type: Boolean },
+    environmentCold: { type: String, attribute: "environment-cold" },
+    environmentRain: { type: String, attribute: "environment-rain" },
+    environmentWind: { type: String, attribute: "environment-wind" },
     environmentDark: { type: Boolean, attribute: "environment-dark" },
     lightSource: { type: Boolean },
     plains: { type: Boolean },
@@ -129,11 +131,74 @@ export class WorldStateOptions extends LitElement {
         flex-direction: column;
         gap: 10px;
       }
+      .hidden {
+        display: none;
+      }
+      .cold > div {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .indent {
+        margin-left: 20px;
+      }
     `,
   ];
 
   selectionChange(e) {
     this.dispatchEvent(new CustomEvent("change", { detail: { name: e.detail.value, selected: e.detail.checked } }));
+  }
+
+  coldChange(e) {
+    let value = "Mild";
+    if (e.detail.value === "environmentCold" && e.detail.checked) {
+      value = "Cold";
+    }
+    if (e.detail.value === "environmentBiting") {
+      if (e.detail.checked) {
+        value = "Biting";
+      } else {
+        value = "Cold";
+      }
+    }
+
+    this.dispatchEvent(new CustomEvent("cold-change", { detail: { name: "environmentCold", value } }));
+  }
+
+  rainChange(e) {
+    let value = "No Rain";
+    if (e.detail.value === "environmentRain" && e.detail.checked) {
+      value = "Light Rain";
+    }
+    if (e.detail.value === "environmentLightRain" && e.detail.checked) {
+      value = "Light Rain";
+    }
+    if (e.detail.value === "environmentLightSnow" && e.detail.checked) {
+      value = "Light Snow";
+    }
+    if (e.detail.value === "environmentHeavyRain" && e.detail.checked) {
+      value = "Heavy Rain";
+    }
+    if (e.detail.value === "environmentHeavySnow" && e.detail.checked) {
+      value = "Heavy Snow";
+    }
+
+    this.dispatchEvent(new CustomEvent("rain-change", { detail: { name: "environmentRain", value } }));
+  }
+
+  windChange(e) {
+    let value = "Light Breeze";
+    if (e.detail.value === "environmentWind" && e.detail.checked) {
+      value = "Strong Wind";
+    }
+    if (e.detail.value === "environmentStrongWind" && e.detail.checked) {
+      value = "Strong Wind";
+    }
+    if (e.detail.value === "environmentStorm" && e.detail.checked) {
+      value = "Storm";
+    }
+
+    this.dispatchEvent(new CustomEvent("wind-change", { detail: { name: "environmentWind", value } }));
   }
 
   radioSelectionChange(e) {
@@ -216,7 +281,7 @@ export class WorldStateOptions extends LitElement {
 
   environmentTemplate() {
     return html`
-      <div class="checkbox-group">
+      <div class="checkbox-group cold">
         <checkbox-control
           @change="${this.selectionChange}"
           name="environment-dark"
@@ -224,13 +289,94 @@ export class WorldStateOptions extends LitElement {
           ?checked="${this.environmentDark}"
           >Dark</checkbox-control
         >
-        <checkbox-control
-          @change="${this.selectionChange}"
-          name="environment-cold"
-          value="environmentCold"
-          ?checked="${this.environmentCold}"
-          >Cold</checkbox-control
-        >
+        <div>
+          <checkbox-control
+            @change="${this.coldChange}"
+            name="environment-cold"
+            value="environmentCold"
+            ?checked="${this.environmentCold === "Cold" || this.environmentCold === "Biting"}"
+            >Cold</checkbox-control
+          >
+          <checkbox-control
+            class="${classMap({ hidden: this.environmentCold === "Mild", indent: true })}"
+            @change="${this.coldChange}"
+            name="environment-biting"
+            value="environmentBiting"
+            ?checked="${this.environmentCold === "Biting"}"
+            >Biting</checkbox-control
+          >
+        </div>
+        <div>
+          <checkbox-control
+            @change="${this.rainChange}"
+            name="environment-rain"
+            value="environmentRain"
+            ?checked="${this.environmentRain === "Light Rain" ||
+            this.environmentRain === "Light Snow" ||
+            this.environmentRain === "Heavy Rain" ||
+            this.environmentRain === "Heavy Snow"}"
+            >Rain</checkbox-control
+          >
+          <checkbox-control
+            class="${classMap({ hidden: this.environmentRain === "No Rain", indent: true })}"
+            @change="${this.rainChange}"
+            name="environment-light-rain"
+            value="environmentLightRain"
+            ?checked="${this.environmentRain === "Light Rain"}"
+            >Light Rain</checkbox-control
+          >
+          <checkbox-control
+            class="${classMap({ hidden: this.environmentRain === "No Rain", indent: true })}"
+            @change="${this.rainChange}"
+            name="environment-light-snow"
+            value="environmentLightSnow"
+            ?checked="${this.environmentRain === "Light Snow"}"
+            >Light Snow</checkbox-control
+          >
+          <checkbox-control
+            class="${classMap({ hidden: this.environmentRain === "No Rain", indent: true })}"
+            @change="${this.rainChange}"
+            name="environment-heavy-rain"
+            value="environmentHeavyRain"
+            ?checked="${this.environmentRain === "Heavy Rain"}"
+            >Heavy Rain</checkbox-control
+          >
+          <checkbox-control
+            class="${classMap({ hidden: this.environmentRain === "No Rain", indent: true })}"
+            @change="${this.rainChange}"
+            name="environment-heavy-snow"
+            value="environmentHeavySnow"
+            ?checked="${this.environmentRain === "Heavy Snow"}"
+            >Heavy Snow</checkbox-control
+          >
+        </div>
+        <div>
+          <checkbox-control
+            @change="${this.windChange}"
+            name="environment-wind"
+            value="environmentWind"
+            ?checked="${this.environmentWind === "Strong Wind" || this.environmentWind === "Storm"}"
+          >
+            Wind
+          </checkbox-control>
+          <checkbox-control
+            class="${classMap({ hidden: this.environmentWind === "Light Breeze", indent: true })}"
+            @change="${this.windChange}"
+            name="environment-strong-wind"
+            value="environmentStrongWind"
+            ?checked="${this.environmentWind === "Strong Wind"}"
+          >
+            Strong Wind
+          </checkbox-control>
+          <checkbox-control
+            class="${classMap({ hidden: this.environmentWind === "Light Breeze", indent: true })}"
+            @change="${this.windChange}"
+            name="environment-storm"
+            value="environmentStorm"
+            ?checked="${this.environmentWind === "Storm"}"
+            >Storm</checkbox-control
+          >
+        </div>
         <checkbox-control @change="${this.selectionChange}" name="in-water" value="inWater" ?checked="${this.inWater}"
           >Water</checkbox-control
         >

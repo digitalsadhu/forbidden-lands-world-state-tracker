@@ -41,6 +41,14 @@ export class WorldStateTracker extends LitElement {
         color: #fff;
       }
 
+      header > div {
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+
       .container {
         display: flex;
         flex-direction: column;
@@ -94,6 +102,9 @@ export class WorldStateTracker extends LitElement {
     _messages: { state: true },
     _datestamp: { state: true },
     _dark: { state: true },
+    _wind: { state: true },
+    _rain: { state: true },
+    _cold: { state: true },
   };
   connectedCallback() {
     super.connectedCallback();
@@ -116,9 +127,15 @@ export class WorldStateTracker extends LitElement {
       this._dark = tracker.dark;
       document.documentElement.classList.toggle("dark");
     });
+    tracker.addEventListener("weather-change", () => {
+      this._wind = tracker.weather.wind;
+      this._rain = tracker.weather.rain;
+      this._cold = tracker.weather.cold;
+    });
     tracker.addEventListener("background-change", (e) => {
       document.body.classList.toggle(e.detail.background);
     });
+    tracker.init();
   }
   disconnectedCallback() {
     tracker.removeEventListener("round-change");
@@ -137,6 +154,18 @@ export class WorldStateTracker extends LitElement {
 
   selectionChange(event) {
     tracker.setState(event.detail.name, event.detail.selected);
+  }
+
+  coldChange(event) {
+    tracker.setState("cold", event.detail.value);
+  }
+
+  rainChange(event) {
+    tracker.setState("rain", event.detail.value);
+  }
+
+  windChange(event) {
+    tracker.setState("wind", event.detail.value);
   }
 
   // async dateChange(event) {
@@ -159,7 +188,10 @@ export class WorldStateTracker extends LitElement {
           datestamp=${this._datestamp}
           @click=${this.buttonClicked}
         ></world-state-controls>
-        <calendar-display datestamp="${this._datestamp}"></calendar-display>
+        <div>
+          <calendar-display datestamp="${this._datestamp}"></calendar-display>
+          <weather-display wind="${this._wind}" rain="${this._rain}" cold="${this._cold}"></weather-display>
+        </div>
       </header>
       <section class="container">
         <div class="left">
@@ -174,7 +206,13 @@ export class WorldStateTracker extends LitElement {
         <div class="right">
           <world-state-options
             @change="${this.selectionChange}"
+            @cold-change="${this.coldChange}"
+            @rain-change="${this.rainChange}"
+            @wind-change="${this.windChange}"
             ?environment-dark="${this._dark}"
+            environment-cold="${this._cold}"
+            environment-rain="${this._rain}"
+            environment-wind="${this._wind}"
           ></world-state-options>
         </div>
       </section>
