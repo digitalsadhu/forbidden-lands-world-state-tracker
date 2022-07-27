@@ -25,7 +25,9 @@ export class WorldStateOptions extends LitElement {
     this.sleep = false;
     this.makeCamp = false;
     this.forcedMarch = 0;
-    this.environmentCold = false;
+    this.environmentCold = "Mild";
+    this.environmentRain = "No Rain";
+    this.environmentWind = "Light Breeze";
     this.environmentDark = false;
     this.lightSource = false;
     this.plains = false;
@@ -134,7 +136,7 @@ export class WorldStateOptions extends LitElement {
       .hidden {
         display: none;
       }
-      .cold > div {
+      .environment > div {
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -281,7 +283,7 @@ export class WorldStateOptions extends LitElement {
 
   environmentTemplate() {
     return html`
-      <div class="checkbox-group cold">
+      <div class="checkbox-group environment">
         <checkbox-control
           @change="${this.selectionChange}"
           name="environment-dark"

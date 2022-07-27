@@ -157,15 +157,15 @@ export class WorldStateTracker extends LitElement {
   }
 
   coldChange(event) {
-    tracker.setState("cold", event.detail.value);
+    tracker.setState("environmentCold", event.detail.value);
   }
 
   rainChange(event) {
-    tracker.setState("rain", event.detail.value);
+    tracker.setState("environmentRain", event.detail.value);
   }
 
   windChange(event) {
-    tracker.setState("wind", event.detail.value);
+    tracker.setState("environmentWind", event.detail.value);
   }
 
   // async dateChange(event) {

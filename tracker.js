@@ -69,7 +69,6 @@ export class Tracker extends EventTarget {
     makeCamp: false,
     forcedMarch: 0,
     environmentDark: false,
-    environmentCold: false,
     terrainPlains: false,
     terrainForest: false,
     terrainDarkForest: false,
@@ -82,6 +81,7 @@ export class Tracker extends EventTarget {
     terrainRuins: false,
     season: "Spring",
     weather: null,
+    cold: false,
   };
 
   _round = 1;
@@ -137,7 +137,7 @@ export class Tracker extends EventTarget {
       this.dispatchEvent(new CustomEvent("background-change", { detail: { background: "ruins" } }));
     }
 
-    if (key === "cold") {
+    if (key === "environmentCold") {
       this.weather = {
         wind: this.weather.wind,
         rain: this.weather.rain,
@@ -145,7 +145,7 @@ export class Tracker extends EventTarget {
       };
     }
 
-    if (key === "rain") {
+    if (key === "environmentRain") {
       this.weather = {
         wind: this.weather.wind,
         rain: value,
@@ -153,7 +153,7 @@ export class Tracker extends EventTarget {
       };
     }
 
-    if (key === "wind") {
+    if (key === "environmentWind") {
       this.weather = {
         wind: value,
         rain: this.weather.rain,
