@@ -32,4 +32,6 @@ export type State = {
   terrainMarshlands: Boolean,
   terrainQuagmire: Boolean,
   terrainRuins: Boolean,
+  season: String,
+  weather: { wind: String, rain: String, cold: String }
 };
