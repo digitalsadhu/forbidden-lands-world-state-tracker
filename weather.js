@@ -98,7 +98,7 @@ export class Weather {
     }
   }
 
-  generateCold(datestamp) {
+  generateCold(datestamp, modifier = 0) {
     const phase = getPhaseName(datestamp);
     if (
       phase === phases.FALL_WANE ||
@@ -106,10 +106,10 @@ export class Weather {
       phase === phases.WINTER_WANE ||
       phase === phases.SPRING_RISE
     ) {
-      const roll = this.d6();
+      const roll = this.d6() + modifier;
       if (roll >= 4 && roll <= 5) {
         return cold.COLD;
-      } else if (roll === 6) {
+      } else if (roll >= 6) {
         return cold.BITING;
       }
     }
@@ -119,6 +119,11 @@ export class Weather {
   generate(datestamp) {
     this.wind = this.generateWind();
     this.rain = this.generateRain(datestamp);
-    this.cold = this.generateCold(datestamp);
+
+    let modifier = 0;
+    if (this.wind === "Strong Wind") modifier = 1;
+    if (this.wind === "Storm") modifier = 2;
+
+    this.cold = this.generateCold(datestamp, modifier);
   }
 }

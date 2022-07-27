@@ -56,15 +56,15 @@ export default async (state) => {
       terrainType = terrainTypes.DIFFICULT;
     }
 
-    if (!terrainType)
-      return [html`<span class="c-action">hike</span> Move 2 hexes in open terrain or 1 hex in difficult terrain.`];
+    let message = html`<span class="c-action">hike</span>`;
 
-    let message = html`<span class="c-action">HIKE:</span>`;
+    if (!terrainType)
+      message = html`${message} move 2 hexes in open terrain or 1 hex in difficult terrain each quarter day`;
     if (terrainType === terrainTypes.OPEN)
-      message = html`${message} Move 2 hexes in <span class="c-terrain">${terrainName}</span> (${terrainTypes.OPEN})`;
+      message = html`${message} move 2 hexes in <span class="c-terrain">${terrainName}</span> (${terrainTypes.OPEN})`;
     if (terrainType === terrainTypes.DIFFICULT)
-      message = html`${message} Move 1 hex in
-        <span class="c-terrain">${terrainName}</span> (${terrainTypes.DIFFICULT})`;
+      message = html`${message} move 1 hex in <span class="c-terrain">${terrainName}</span> (${terrainTypes.DIFFICULT})
+        each quarter day`;
     if (terrainType === terrainTypes.IMPASSABLE)
       message = html`${message} You cannot <span class="c-action">hike</span> in this hex.
         <span class="c-terrain">${terrainName}</span> terrain is ${terrainTypes.IMPASSABLE}`;
@@ -72,6 +72,17 @@ export default async (state) => {
       message = html`${message} ${terrainName} ${terrainTypes.REQUIRES_BOAT_OR_RAFT}`;
     if (terrainType === terrainTypes.REQUIRES_RAFT)
       message = html`${message} ${terrainName} ${terrainTypes.REQUIRES_RAFT}`;
-    return [message];
+
+    if (state.weather.wind === "Storm" && state.weather.rain === "Heavy Rain")
+      message = html`${message} hiking in a storm and heavy rain requires an <span class="c-skill">endurance</span> -2
+        roll each quarter day.`;
+    else if (state.weather.wind === "Storm")
+      message = html`${message} hiking in a storm requires an <span class="c-skill">endurance</span> roll each quarter
+        day.`;
+    else if (state.weather.rain === "Heavy Rain")
+      message = html`${message} hiking in heavy rain requires an <span class="c-skill">endurance</span> roll each
+        quarter day.`;
+
+    return [message, html`<span class="c-action">hike</span> roll for a random encounter each quarter day.`];
   }
 };
