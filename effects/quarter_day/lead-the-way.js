@@ -4,7 +4,6 @@ import { html } from "../../dependencies/lit-all.min.js";
  * @param { import("../../types").State } state
  */
 export default async (state) => {
-  console.log(state.environmentDark);
   if (state.leadTheWay) {
     const modifiers = [];
     const explanations = [];

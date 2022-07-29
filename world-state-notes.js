@@ -151,6 +151,27 @@ export class WorldStateNotes extends LitElement {
         </div>
       </section>
       <section class="messages">
+        <!-- 
+
+        Make a component that 
+        * listens to a state change event on the tracker 
+        * gets passed the data structure for the day
+        * iterates over the data structure for the day
+        * uses note-data.js to construct notes for week/day/quarter day/turn and round for the given day
+        * displays the notes in a nice way. See components/quarter-day-display-notes.js for an initial attempt to present quarter days
+
+         -->
+
+        <!-- <quarterday-display-notes active quarter-day="1" turn="1" round="1"></quarterday-display-notes> -->
+        <!-- Day title eg. Harvestday 3 -->
+        <!-- Day notes -->
+        <!-- Quarter Day title eg. Morning -->
+        <!-- Quarter Day notes eg. HIKE move 2 hexes in open terrain or 1 hex in difficult terrain each quarter day -->
+        <!-- Quarter Day choices eg. hike, keep watch, lead the way -->
+        <!-- Quarter Day title eg. Afternoon -->
+        <!-- Quarter Day notes eg. HIKE move 2 hexes in open terrain or 1 hex in difficult terrain each quarter day -->
+        <!-- Quarter Day choices eg. hike, keep watch, lead the way -->
+        <!-- etc -->
         <div>
           <ul>
             ${this._messages.map((message) => {

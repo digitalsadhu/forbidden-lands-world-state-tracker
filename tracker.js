@@ -4,8 +4,22 @@ import rounds from "./round.js";
 import quarterDays from "./quarter_day.js";
 import weeks from "./week.js";
 import { Weather } from "./weather.js";
+import { Data } from "./data-structures/data.js";
 
 const weather = new Weather();
+
+const journeyActionNames = new Map([
+  ["hike", "hike"],
+  ["fish", "fish"],
+  ["forage", "forage"],
+  ["hunt", "hunt"],
+  ["keepWatch", "Keep Watch"],
+  ["leadTheWay", "Lead The Way"],
+  ["rest", "Rest"],
+  ["sleep", "Sleep"],
+  ["makeCamp", "Make Camp"],
+  ["forcedMarch", "Forced March"],
+]);
 
 const types = {
   ROUND: "round",
@@ -90,6 +104,8 @@ export class Tracker extends EventTarget {
   _datestamp = null;
   _currentType = types.QUARTER_DAY;
 
+  _data = new Data();
+
   messages = [];
 
   _roundMessages = [];
@@ -100,6 +116,7 @@ export class Tracker extends EventTarget {
 
   init() {
     this.datestamp = 1165 * 365 + 1;
+    this._data.setDay(this.datestamp, this.state);
   }
 
   async setState(key, value) {
@@ -165,14 +182,32 @@ export class Tracker extends EventTarget {
       this.dark = value;
     } else this.state[key] = value;
 
+    this._data.setRound(this._data.round, this.state);
+
     await this.refresh();
+
+    if (journeyActionNames.has(key)) {
+      this.dispatchEvent(new CustomEvent("journey-selection-change", { detail: this.journeys }));
+    }
+  }
+
+  get journeys() {
+    const state = new Map();
+    for (const [key, value] of Object.entries(this.state)) {
+      if (journeyActionNames.has(key)) {
+        state.set(key, { key, selected: value, name: journeyActionNames.get(key) });
+      }
+    }
+    return state;
   }
 
   get round() {
     return this._round;
   }
   set round(value) {
+    if (this._round === value) return;
     this._round = value;
+    this._data.setRound(this.round, this.state);
     this.dispatchEvent(new CustomEvent("round-change"));
   }
 
@@ -180,7 +215,9 @@ export class Tracker extends EventTarget {
     return this._turn;
   }
   set turn(value) {
+    if (this._turn === value) return;
     this._turn = value;
+    this._data.setTurn(this.turn, this.state);
     this.dispatchEvent(new CustomEvent("turn-change"));
   }
 
@@ -188,7 +225,9 @@ export class Tracker extends EventTarget {
     return this._quarterDay;
   }
   set quarterDay(value) {
+    if (this._quarterDay === value) return;
     this._quarterDay = value;
+    this._data.setQuarterDay(this.quarterDay, this.state);
     this.dispatchEvent(new CustomEvent("quarter-day-change"));
   }
 
@@ -200,6 +239,7 @@ export class Tracker extends EventTarget {
     this._datestamp = value;
     this.state.season = getSeason(this._datestamp);
     this.regenerateWeather();
+    this._data.setDay(this.datestamp, this.state);
     this.dispatchEvent(new CustomEvent("datestamp-change"));
   }
 

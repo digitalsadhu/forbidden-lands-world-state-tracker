@@ -11,6 +11,7 @@ import { YearDisplay } from "./components/year-display.js";
 import { QuarterDayDisplay } from "./components/quarterday-display.js";
 import { StepperControl } from "./components/stepper-control.js";
 import { CheckboxControl } from "./components/checkbox-control.js";
+import { QuarterDayDisplayNotes } from "./components/quarterday-display-notes.js";
 
 customElements.define("world-state-tracker", WorldStateTracker);
 customElements.define("world-state-controls", WorldStateControls);
@@ -25,3 +26,4 @@ customElements.define("year-display", YearDisplay);
 customElements.define("quarterday-display", QuarterDayDisplay);
 customElements.define("stepper-control", StepperControl);
 customElements.define("checkbox-control", CheckboxControl);
+customElements.define("quarterday-display-notes", QuarterDayDisplayNotes);
