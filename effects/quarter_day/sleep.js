@@ -1,3 +1,5 @@
+import { html } from "../../dependencies/lit-all.min.js";
+
 /**
  * @param { import("../../types").State } state
  */

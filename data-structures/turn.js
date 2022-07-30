@@ -1,3 +1,5 @@
+import { Notes } from "./notes.js";
+
 export class Turn {
   turn = null;
   round = 1;
@@ -10,6 +12,11 @@ export class Turn {
   setRound(round) {
     this.round = round.round;
     this.rounds.set(round.round, round);
+  }
+
+  async notes() {
+    const { state } = this.rounds.get(this.round);
+    return Notes.turn(state);
   }
 
   toJSON() {

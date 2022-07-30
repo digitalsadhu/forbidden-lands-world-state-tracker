@@ -4,7 +4,7 @@ import quarterDays from "../quarter_day.js";
 import turns from "../turn.js";
 import rounds from "../round.js";
 
-export class NotesData {
+export class Notes {
   static async week(state) {
     let messages = [];
     for (const week of weeks) {

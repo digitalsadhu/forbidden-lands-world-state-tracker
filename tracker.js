@@ -5,6 +5,7 @@ import quarterDays from "./quarter_day.js";
 import weeks from "./week.js";
 import { Weather } from "./weather.js";
 import { Data } from "./data-structures/data.js";
+import { State } from "./data-structures/state.js";
 
 const weather = new Weather();
 

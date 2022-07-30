@@ -1,3 +1,5 @@
+import { Notes } from "./notes.js";
+
 export class QuarterDay {
   quarterDay = null;
   turn = 1;
@@ -12,6 +14,16 @@ export class QuarterDay {
     this.turn = turn.turn;
     this.turns.set(turn.turn, turn);
   }
+
+  async notes() {
+    return Notes.quarterDay(this.state);
+  }
+
+  get state() {
+    return this.turns.get(this.turn).rounds.get(this.round).state;
+  }
+
+  get actions() {}
 
   toJSON() {
     return {
