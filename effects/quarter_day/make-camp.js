@@ -3,8 +3,8 @@ import { html } from "../../dependencies/lit-all.min.js";
 /**
  * @param { import("../../types").State } state
  */
-export default async (state) => {
-  if (state.makeCamp) {
+export default (state) => {
+  if (state.makeCamp.value) {
     const modifiers = [];
     const explanations = [];
     if (state.weather.wind === "Strong Wind") {

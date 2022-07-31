@@ -9,7 +9,7 @@ export class Round {
     this.state = state;
   }
 
-  async notes() {
+  get notes() {
     return Notes.round(this.state);
   }
 }

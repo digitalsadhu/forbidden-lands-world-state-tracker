@@ -14,7 +14,7 @@ export class Turn {
     this.rounds.set(round.round, round);
   }
 
-  async notes() {
+  get notes() {
     const { state } = this.rounds.get(this.round);
     return Notes.turn(state);
   }

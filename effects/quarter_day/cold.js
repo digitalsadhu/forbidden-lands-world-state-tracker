@@ -3,15 +3,15 @@ import { html } from "../../dependencies/lit-all.min.js";
 /**
  * @param { import("../../types").State } state
  */
-export default async (state) => {
+export default (state) => {
   const messages = [];
   if (state.weather.cold !== "Mild") {
     const gear = [];
-    if (!state.warmClothes) {
+    if (!state.warmClothes.value) {
       gear.push("adequate warm clothing");
     }
 
-    if (state.sleep) {
+    if (state.sleep.value) {
       gear.push("a camp fire");
     }
 
@@ -22,7 +22,7 @@ export default async (state) => {
 
     if (gear.length > 0) messages.push(message);
 
-    if (state.cold && !state.warmClothes) {
+    if (state.cold.value && !state.warmClothes.value) {
       messages.push(
         html`PCs with the <strong class="c-condition">cold</strong> condition continue to roll
           <strong class="c-skill">endurance</strong> ${state.weather.cold === "Biting"
@@ -35,7 +35,7 @@ export default async (state) => {
       );
     }
   }
-  if (state.cold && state.sleep) {
+  if (state.cold.value && state.sleep.value) {
     messages.push(
       html`PCs with the <strong class="c-condition">cold</strong> condition that sleep around a campfire are no longer
         <strong class="c-condition">cold</strong>`

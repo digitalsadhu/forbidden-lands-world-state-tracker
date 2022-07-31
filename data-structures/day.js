@@ -16,7 +16,7 @@ export class Day {
     this.quarterDays.set(quarterDay.quarterDay, quarterDay);
   }
 
-  async notes() {
+  get notes() {
     const { state } = this.quarterDays.get(this.quarterDay).turns.get(this.turn).rounds.get(this.round);
     return Notes.day(state);
   }

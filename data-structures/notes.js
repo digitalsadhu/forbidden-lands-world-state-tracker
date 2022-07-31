@@ -5,38 +5,38 @@ import turns from "../turn.js";
 import rounds from "../round.js";
 
 export class Notes {
-  static async week(state) {
+  static week(state) {
     let messages = [];
     for (const week of weeks) {
-      messages = messages.concat((await week(state)) || []);
+      messages = messages.concat(week(state) || []);
     }
     return messages.filter(Boolean);
   }
-  static async day(state) {
+  static day(state) {
     let messages = [];
     for (const day of days) {
-      messages = messages.concat((await day(state)) || []);
+      messages = messages.concat(day(state) || []);
     }
     return messages.filter(Boolean);
   }
-  static async quarterDay(state) {
+  static quarterDay(state) {
     let messages = [];
     for (const quarterDay of quarterDays) {
-      messages = messages.concat((await quarterDay(state)) || []);
+      messages = messages.concat(quarterDay(state) || []);
     }
     return messages.filter(Boolean);
   }
-  static async turn(state) {
+  static turn(state) {
     let messages = [];
     for (const turn of turns) {
-      messages = messages.concat((await turn(state)) || []);
+      messages = messages.concat(turn(state) || []);
     }
     return messages.filter(Boolean);
   }
-  static async round(state) {
+  static round(state) {
     let messages = [];
     for (const round of rounds) {
-      messages = messages.concat((await round(state)) || []);
+      messages = messages.concat(round(state) || []);
     }
     return messages.filter(Boolean);
   }

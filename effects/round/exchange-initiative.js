@@ -1,6 +1,6 @@
 /**
  * @param { import("../../types").State } state
  */
-export default async (state) => {
+export default (state) => {
   return ["At the start of each round, PCs may exchange initiative"];
 };

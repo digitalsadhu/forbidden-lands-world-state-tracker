@@ -11,47 +11,47 @@ const terrainTypes = {
 /**
  * @param { import("../../types").State } state
  */
-export default async (state) => {
-  if (state.hike) {
+export default (state) => {
+  if (state.hike.value) {
     let terrainType = null;
     let terrainName = "";
-    if (state.terrainPlains) {
+    if (state.terrainPlains.value) {
       terrainName = "plains";
       terrainType = terrainTypes.OPEN;
     }
-    if (state.terrainForest) {
+    if (state.terrainForest.value) {
       terrainName = "forest";
       terrainType = terrainTypes.OPEN;
     }
-    if (state.terrainDarkForest) {
+    if (state.terrainDarkForest.value) {
       terrainName = "dark forest";
       terrainType = terrainTypes.DIFFICULT;
     }
-    if (state.terrainHills) {
+    if (state.terrainHills.value) {
       terrainName = "hills";
       terrainType = terrainTypes.OPEN;
     }
-    if (state.terrainMountains) {
+    if (state.terrainMountains.value) {
       terrainName = "mountains";
       terrainType = terrainTypes.DIFFICULT;
     }
-    if (state.terrainHighMountains) {
+    if (state.terrainHighMountains.value) {
       terrainName = "high mountains";
       terrainType = terrainTypes.IMPASSABLE;
     }
-    if (state.terrainLakeRiver) {
+    if (state.terrainLakeRiver.value) {
       terrainName = "lake / river";
       terrainType = terrainTypes.REQUIRES_BOAT_OR_RAFT;
     }
-    if (state.terrainMarshlands) {
+    if (state.terrainMarshlands.value) {
       terrainName = "marshlands";
       terrainType = terrainTypes.REQUIRES_RAFT;
     }
-    if (state.terrainQuagmire) {
+    if (state.terrainQuagmire.value) {
       terrainName = "quagmire";
       terrainType = terrainTypes.DIFFICULT;
     }
-    if (state.terrainRuins) {
+    if (state.terrainRuins.value) {
       terrainName = "ruins";
       terrainType = terrainTypes.DIFFICULT;
     }

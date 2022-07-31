@@ -4,7 +4,6 @@ import { globalStyles } from "./global-styles.js";
 export class WorldStateNotes extends LitElement {
   constructor() {
     super();
-    this._messages = [];
   }
 
   static properties = {
@@ -13,6 +12,7 @@ export class WorldStateNotes extends LitElement {
     turn: { type: Number },
     quarterDay: { type: Number, attribute: "quarter-day" },
     _messages: { state: true },
+    _day: { state: true },
   };
 
   static styles = [
@@ -113,6 +113,18 @@ export class WorldStateNotes extends LitElement {
       this._messages = tracker.weekMessages;
       this._title = "New Week";
     });
+
+    const handleStateChange = (e) => {
+      this._day = tracker.data.days.get(tracker.data.day);
+      console.log(this._day);
+    };
+    tracker.addEventListener("state-change", handleStateChange);
+    tracker.addEventListener("round-change", handleStateChange);
+    tracker.addEventListener("turn-change", handleStateChange);
+    tracker.addEventListener("quarter-day-change", handleStateChange);
+    tracker.addEventListener("day-change", handleStateChange);
+    tracker.addEventListener("week-change", handleStateChange);
+    tracker.addEventListener("year-change", handleStateChange);
   }
 
   disconnectedCallback() {
@@ -134,6 +146,7 @@ export class WorldStateNotes extends LitElement {
   }
 
   render() {
+    if (!this._day) return;
     return html`
       <section class="controls">
         <div>
@@ -174,8 +187,14 @@ export class WorldStateNotes extends LitElement {
         <!-- etc -->
         <div>
           <ul>
-            ${this._messages.map((message) => {
-              return html`<li>${message}</li>`;
+            ${Array.from(this._day.notes.values()).map((note) => {
+              return html`<li>${note}</li>`;
+            })}
+          </ul>
+
+          <ul>
+            ${Array.from(this._day.quarterDays.values()).map((quarterDay) => {
+              return html`<li>${quarterDay.notes}</li>`;
             })}
           </ul>
         </div>

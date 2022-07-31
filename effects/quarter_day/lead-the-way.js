@@ -3,8 +3,8 @@ import { html } from "../../dependencies/lit-all.min.js";
 /**
  * @param { import("../../types").State } state
  */
-export default async (state) => {
-  if (state.leadTheWay) {
+export default (state) => {
+  if (state.leadTheWay.value) {
     const modifiers = [];
     const explanations = [];
     if (state.weather.rain === "Light Rain") {
@@ -23,7 +23,7 @@ export default async (state) => {
       modifiers.push(-2);
       explanations.push("heavy snow");
     }
-    if (state.environmentDark) {
+    if (state.environmentDark.value) {
       modifiers.push(-2);
       explanations.push("darkness");
     }

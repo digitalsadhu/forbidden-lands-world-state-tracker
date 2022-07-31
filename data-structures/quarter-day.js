@@ -15,7 +15,7 @@ export class QuarterDay {
     this.turns.set(turn.turn, turn);
   }
 
-  async notes() {
+  get notes() {
     return Notes.quarterDay(this.state);
   }
 

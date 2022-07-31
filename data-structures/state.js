@@ -1,7 +1,10 @@
-const { Option } = "./option.js";
+import { Option } from "./option.js";
+import { Weather } from "./weather.js";
 
 export class State {
-  constructor(options) {
+  #options = {};
+
+  constructor(options = {}) {
     this.#options = options;
   }
   get hungry() {
@@ -320,7 +323,17 @@ export class State {
     this.#options.terrainRuins = value;
   }
 
+  get weather() {
+    return new Weather(this.#options.weather) || null;
+  }
+  set weather(value) {
+    if (typeof value !== "object") throw new Error(`Expected state.weather to be type Object. Got "${typeof value}"`);
+    if (!value.cold || !value.rain || !value.wind)
+      throw new Error(`Expected state.weather to include exactly keys "cold", "rain" and "wind". Got "${value}"`);
+    this.#options.weather = value;
+  }
+
   toJSON() {
-    return this.#options;
+    return { ...this.#options };
   }
 }

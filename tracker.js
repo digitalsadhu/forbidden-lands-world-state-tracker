@@ -61,43 +61,7 @@ function getSeason(datestamp) {
 }
 
 export class Tracker extends EventTarget {
-  state = {
-    overEncumbered: false,
-    warmClothes: false,
-    inWater: false,
-    poisoned: false,
-    injured: false,
-    diseased: false,
-    bareGroundSleeping: false,
-    usingArrows: false,
-    wearingArmor: false,
-    ownStronghold: false,
-    haveHirelings: false,
-    hike: false,
-    fish: false,
-    forage: false,
-    hunt: false,
-    keepWatch: false,
-    leadTheWay: false,
-    rest: false,
-    sleep: false,
-    makeCamp: false,
-    forcedMarch: 0,
-    environmentDark: false,
-    terrainPlains: false,
-    terrainForest: false,
-    terrainDarkForest: false,
-    terrainHills: false,
-    terrainMountains: false,
-    terrainHighMountains: false,
-    terrainLakeRiver: false,
-    terrainMarshlands: false,
-    terrainQuagmire: false,
-    terrainRuins: false,
-    season: "Spring",
-    weather: null,
-    cold: false,
-  };
+  state = new State();
 
   _round = 1;
   _turn = 1;
@@ -118,6 +82,10 @@ export class Tracker extends EventTarget {
   init() {
     this.datestamp = 1165 * 365 + 1;
     this._data.setDay(this.datestamp, this.state);
+  }
+
+  get data() {
+    return this._data;
   }
 
   async setState(key, value) {
@@ -190,6 +158,8 @@ export class Tracker extends EventTarget {
     if (journeyActionNames.has(key)) {
       this.dispatchEvent(new CustomEvent("journey-selection-change", { detail: this.journeys }));
     }
+
+    this.dispatchEvent(new CustomEvent("state-change"));
   }
 
   get journeys() {
