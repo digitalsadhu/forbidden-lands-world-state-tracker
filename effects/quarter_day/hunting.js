@@ -1,47 +1,49 @@
 import { html } from "../../dependencies/lit-all.min.js";
 
 /**
- * @param { import("../../types").State } state
- */
-export default (state) => {
-  if (state.hunt.value) {
+ * @param { import("../../data-structures/selected-options").SelectedOptions } selectedOptions
+ * @param { import("../../weather").Weather } weather
+ * @param { boolean } dark
+ * */
+export default (selectedOptions, weather, dark) => {
+  if (selectedOptions.hunt.value) {
     const result = [];
     let message = html`<span class="c-action">Hunt</span> roll <span class="c-skill">survival</span>`;
-    if (state.terrainPlains.value) {
+    if (selectedOptions.terrainPlains.value) {
       result.push(
         html`${message} modified by <span class="c-modifier">+1</span> for <span class="c-terrain">plains</span>`
       );
     }
-    if (state.terrainForest.value) {
+    if (selectedOptions.terrainForest.value) {
       result.push(
         html`${message} modified by <span class="c-modifier">+1</span> for <span class="c-terrain">forest</span>`
       );
     }
-    if (state.terrainDarkForest.value) {
+    if (selectedOptions.terrainDarkForest.value) {
     }
-    if (state.terrainHills.value) {
+    if (selectedOptions.terrainHills.value) {
     }
-    if (state.terrainMountains.value) {
+    if (selectedOptions.terrainMountains.value) {
       result.push(
         html`${message} modified by <span class="c-modifier">-1</span> for <span class="c-terrain">mountains</span>`
       );
     }
-    if (state.terrainHighMountains.value) {
+    if (selectedOptions.terrainHighMountains.value) {
       result.push(
         html`<span class="c-action">hunt</span> no hunting is possible in
           <span class="c-terrain">high mountains</span>.`
       );
     }
-    if (state.terrainLakeRiver.value) {
+    if (selectedOptions.terrainLakeRiver.value) {
     }
-    if (state.terrainMarshlands.value) {
+    if (selectedOptions.terrainMarshlands.value) {
       result.push(
         html`${message} modified by <span class="c-modifier">-1</span> for <span class="c-terrain">marshland</span>`
       );
     }
-    if (state.terrainQuagmire.value) {
+    if (selectedOptions.terrainQuagmire.value) {
     }
-    if (state.terrainRuins.value) {
+    if (selectedOptions.terrainRuins.value) {
       result.push(
         html`${message} modified by <span class="c-modifier">-1</span> for <span class="c-terrain">ruins</span>`
       );

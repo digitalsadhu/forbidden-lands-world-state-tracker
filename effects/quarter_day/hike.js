@@ -9,49 +9,51 @@ const terrainTypes = {
 };
 
 /**
- * @param { import("../../types").State } state
- */
-export default (state) => {
-  if (state.hike.value) {
+ * @param { import("../../data-structures/selected-options").SelectedOptions } selectedOptions
+ * @param { import("../../weather").Weather } weather
+ * @param { boolean } dark
+ * */
+export default (selectedOptions, weather, dark) => {
+  if (selectedOptions.hike.value) {
     let terrainType = null;
     let terrainName = "";
-    if (state.terrainPlains.value) {
+    if (selectedOptions.terrainPlains.value) {
       terrainName = "plains";
       terrainType = terrainTypes.OPEN;
     }
-    if (state.terrainForest.value) {
+    if (selectedOptions.terrainForest.value) {
       terrainName = "forest";
       terrainType = terrainTypes.OPEN;
     }
-    if (state.terrainDarkForest.value) {
+    if (selectedOptions.terrainDarkForest.value) {
       terrainName = "dark forest";
       terrainType = terrainTypes.DIFFICULT;
     }
-    if (state.terrainHills.value) {
+    if (selectedOptions.terrainHills.value) {
       terrainName = "hills";
       terrainType = terrainTypes.OPEN;
     }
-    if (state.terrainMountains.value) {
+    if (selectedOptions.terrainMountains.value) {
       terrainName = "mountains";
       terrainType = terrainTypes.DIFFICULT;
     }
-    if (state.terrainHighMountains.value) {
+    if (selectedOptions.terrainHighMountains.value) {
       terrainName = "high mountains";
       terrainType = terrainTypes.IMPASSABLE;
     }
-    if (state.terrainLakeRiver.value) {
+    if (selectedOptions.terrainLakeRiver.value) {
       terrainName = "lake / river";
       terrainType = terrainTypes.REQUIRES_BOAT_OR_RAFT;
     }
-    if (state.terrainMarshlands.value) {
+    if (selectedOptions.terrainMarshlands.value) {
       terrainName = "marshlands";
       terrainType = terrainTypes.REQUIRES_RAFT;
     }
-    if (state.terrainQuagmire.value) {
+    if (selectedOptions.terrainQuagmire.value) {
       terrainName = "quagmire";
       terrainType = terrainTypes.DIFFICULT;
     }
-    if (state.terrainRuins.value) {
+    if (selectedOptions.terrainRuins.value) {
       terrainName = "ruins";
       terrainType = terrainTypes.DIFFICULT;
     }
@@ -73,13 +75,13 @@ export default (state) => {
     if (terrainType === terrainTypes.REQUIRES_RAFT)
       message = html`${message} ${terrainName} ${terrainTypes.REQUIRES_RAFT}`;
 
-    if (state.weather.wind === "Storm" && state.weather.rain === "Heavy Rain")
+    if (weather.wind === "Storm" && weather.rain === "Heavy Rain")
       message = html`${message} hiking in a storm and heavy rain requires an <span class="c-skill">endurance</span> -2
         roll each quarter day.`;
-    else if (state.weather.wind === "Storm")
+    else if (weather.wind === "Storm")
       message = html`${message} hiking in a storm requires an <span class="c-skill">endurance</span> roll each quarter
         day.`;
-    else if (state.weather.rain === "Heavy Rain")
+    else if (weather.rain === "Heavy Rain")
       message = html`${message} hiking in heavy rain requires an <span class="c-skill">endurance</span> roll each
         quarter day.`;
 

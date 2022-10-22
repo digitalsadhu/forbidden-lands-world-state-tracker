@@ -1,85 +1,87 @@
 import { LitElement, html, css, classMap } from "./dependencies/lit-all.min.js";
 import { globalStyles } from "./global-styles.js";
+import { data } from "./global-state.js";
+import { background } from "./background.js";
 
 export class WorldStateOptions extends LitElement {
   constructor() {
     super();
-    this.overEncumbered = false;
-    this.warmClothes = false;
-    this.inWater = false;
-    this.poisoned = false;
-    this.injured = false;
-    this.diseased = false;
-    this.bareGroundSleeping = false;
-    this.usingArrows = false;
-    this.wearingArmor = false;
-    this.ownStronghold = false;
-    this.haveHirelings = false;
-    this.hike = false;
-    this.fish = false;
-    this.forage = false;
-    this.hunt = false;
-    this.keepWatch = false;
-    this.leadTheWay = false;
-    this.rest = false;
-    this.sleep = false;
-    this.makeCamp = false;
-    this.forcedMarch = 0;
-    this.environmentCold = "Mild";
-    this.environmentRain = "No Rain";
-    this.environmentWind = "Light Breeze";
-    this.environmentDark = false;
-    this.lightSource = false;
-    this.plains = false;
-    this.forest = false;
-    this.darkForest = false;
-    this.hills = false;
-    this.mountains = false;
-    this.highMountains = false;
-    this.lakeRiver = false;
-    this.marshlands = false;
-    this.quagmire = false;
-    this.ruins = false;
+    // this.overEncumbered = false;
+    // this.warmClothes = false;
+    // this.inWater = false;
+    // this.poisoned = false;
+    // this.injured = false;
+    // this.diseased = false;
+    // this.bareGroundSleeping = false;
+    // this.usingArrows = false;
+    // this.wearingArmor = false;
+    // this.ownStronghold = false;
+    // this.haveHirelings = false;
+    // this.hike = false;
+    // this.fish = false;
+    // this.forage = false;
+    // this.hunt = false;
+    // this.keepWatch = false;
+    // this.leadTheWay = false;
+    // this.rest = false;
+    // this.sleep = false;
+    // this.makeCamp = false;
+    // this.forcedMarch = 0;
+    // this.environmentCold = "Mild";
+    // this.environmentRain = "No Rain";
+    // this.environmentWind = "Light Breeze";
+    // this.environmentDark = false;
+    // this.lightSource = false;
+    // this.plains = false;
+    // this.forest = false;
+    // this.darkForest = false;
+    // this.hills = false;
+    // this.mountains = false;
+    // this.highMountains = false;
+    // this.lakeRiver = false;
+    // this.marshlands = false;
+    // this.quagmire = false;
+    // this.ruins = false;
   }
 
   static properties = {
-    overEncumbered: { type: Boolean },
-    warmClothes: { type: Boolean },
-    inWater: { type: Boolean },
-    poisoned: { type: Boolean },
-    injured: { type: Boolean },
-    diseased: { type: Boolean },
-    bareGroundSleeping: { type: Boolean },
-    usingArrows: { type: Boolean },
-    wearingArmor: { type: Boolean },
-    ownStronghold: { type: Boolean },
-    haveHirelings: { type: Boolean },
-    explore: { type: Boolean },
-    hike: { type: Boolean },
-    fish: { type: Boolean },
-    forage: { type: Boolean },
-    hunt: { type: Boolean },
-    keepWatch: { type: Boolean },
-    leadTheWay: { type: Boolean },
-    rest: { type: Boolean },
-    sleep: { type: Boolean },
-    makeCamp: { type: Boolean },
-    forcedMarch: { type: Number },
-    environmentCold: { type: String, attribute: "environment-cold" },
-    environmentRain: { type: String, attribute: "environment-rain" },
-    environmentWind: { type: String, attribute: "environment-wind" },
-    environmentDark: { type: Boolean, attribute: "environment-dark" },
-    lightSource: { type: Boolean },
-    plains: { type: Boolean },
-    forest: { type: Boolean },
-    darkForest: { type: Boolean },
-    hills: { type: Boolean },
-    mountains: { type: Boolean },
-    highMountains: { type: Boolean },
-    lakeRiver: { type: Boolean },
-    marshlands: { type: Boolean },
-    quagmire: { type: Boolean },
-    ruins: { type: Boolean },
+    _overEncumbered: { state: true },
+    _warmClothes: { state: true },
+    _inWater: { state: true },
+    _poisoned: { state: true },
+    _injured: { state: true },
+    _diseased: { state: true },
+    _bareGroundSleeping: { state: true },
+    _usingArrows: { state: true },
+    _wearingArmor: { state: true },
+    _ownStronghold: { state: true },
+    _haveHirelings: { state: true },
+    _explore: { state: true },
+    _hike: { state: true },
+    _fish: { state: true },
+    _forage: { state: true },
+    _hunt: { state: true },
+    _keepWatch: { state: true },
+    _leadTheWay: { state: true },
+    _rest: { state: true },
+    _sleep: { state: true },
+    _makeCamp: { state: true },
+    _forcedMarch: { state: true },
+    _environmentCold: { state: true },
+    _environmentRain: { state: true },
+    _environmentWind: { state: true },
+    _environmentDark: { state: true },
+    _lightSource: { state: true },
+    _plains: { state: true },
+    _forest: { state: true },
+    _darkForest: { state: true },
+    _hills: { state: true },
+    _mountains: { state: true },
+    _highMountains: { state: true },
+    _lakeRiver: { state: true },
+    _marshlands: { state: true },
+    _quagmire: { state: true },
+    _ruins: { state: true },
   };
 
   static styles = [
@@ -95,10 +97,13 @@ export class WorldStateOptions extends LitElement {
       }
       .party > section {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         gap: 20px;
         flex-wrap: wrap;
         align-items: flex-start;
+      }
+      .other {
+        width: 180px;
       }
       .other > section {
         display: flex;
@@ -148,7 +153,8 @@ export class WorldStateOptions extends LitElement {
   ];
 
   selectionChange(e) {
-    this.dispatchEvent(new CustomEvent("change", { detail: { name: e.detail.value, selected: e.detail.checked } }));
+    data.update({ [e.detail.value]: e.detail.checked });
+    // this.dispatchEvent(new CustomEvent("change", { detail: { name: e.detail.value, selected: e.detail.checked } }));
   }
 
   coldChange(e) {
@@ -164,7 +170,8 @@ export class WorldStateOptions extends LitElement {
       }
     }
 
-    this.dispatchEvent(new CustomEvent("cold-change", { detail: { name: "environmentCold", value } }));
+    data.update({ environmentCold: value });
+    // this.dispatchEvent(new CustomEvent("cold-change", { detail: { name: "environmentCold", value } }));
   }
 
   rainChange(e) {
@@ -185,7 +192,8 @@ export class WorldStateOptions extends LitElement {
       value = "Heavy Snow";
     }
 
-    this.dispatchEvent(new CustomEvent("rain-change", { detail: { name: "environmentRain", value } }));
+    data.update({ environmentRain: value });
+    // this.dispatchEvent(new CustomEvent("rain-change", { detail: { name: "environmentRain", value } }));
   }
 
   windChange(e) {
@@ -200,15 +208,25 @@ export class WorldStateOptions extends LitElement {
       value = "Storm";
     }
 
-    this.dispatchEvent(new CustomEvent("wind-change", { detail: { name: "environmentWind", value } }));
+    data.update({ environmentWind: value });
+    // this.dispatchEvent(new CustomEvent("wind-change", { detail: { name: "environmentWind", value } }));
   }
 
   radioSelectionChange(e) {
-    this.dispatchEvent(
-      new CustomEvent("change", {
-        detail: { name: e.target.name, selected: Number(e.target.value) },
-      })
-    );
+    // this.dispatchEvent(
+    //   new CustomEvent("change", {
+    //     detail: { name: e.target.name, selected: Number(e.target.value) },
+    //   })
+    // );
+
+    data.update({ [e.target.name]: Number(e.target.value) });
+  }
+
+  terrainChange(e) {
+    const { name, value, checked } = e.detail;
+    if (checked) background.set(name);
+    else background.clear();
+    data.update({ [value]: checked });
   }
 
   conditionsTemplate() {
@@ -502,71 +520,71 @@ export class WorldStateOptions extends LitElement {
     return html`
       <div class="checkbox-group">
         <checkbox-control
-          @change="${this.selectionChange}"
-          name="terrain-plains"
+          @change="${this.terrainChange}"
+          name="plains"
           value="terrainPlains"
           ?checked="${this.terrainPlains}"
           >Plains</checkbox-control
         >
         <checkbox-control
-          @change="${this.selectionChange}"
-          name="terrain-forest"
+          @change="${this.terrainChange}"
+          name="forest"
           value="terrainForest"
           ?checked="${this.terrainForest}"
           >Forest</checkbox-control
         >
         <checkbox-control
-          @change="${this.selectionChange}"
-          name="terrain-dark-forest"
+          @change="${this.terrainChange}"
+          name="dark-forest"
           value="terrainDarkForest"
           ?checked="${this.terrainDarkForest}"
           >Dark Forest</checkbox-control
         >
         <checkbox-control
-          @change="${this.selectionChange}"
-          name="terrain-hills"
+          @change="${this.terrainChange}"
+          name="hills"
           value="terrainHills"
           ?checked="${this.terrainHills}"
           >Hills</checkbox-control
         >
         <checkbox-control
-          @change="${this.selectionChange}"
-          name="terrain-mountains"
+          @change="${this.terrainChange}"
+          name="mountains"
           value="terrainMountains"
           ?checked="${this.terrainMountains}"
           >Mountains</checkbox-control
         >
         <checkbox-control
-          @change="${this.selectionChange}"
-          name="terrain-high-mountains"
+          @change="${this.terrainChange}"
+          name="high-mountains"
           value="terrainHighMountains"
           ?checked="${this.terrainHighMountains}"
           >High mountains</checkbox-control
         >
         <checkbox-control
-          @change="${this.selectionChange}"
-          name="terrain-lake-river"
+          @change="${this.terrainChange}"
+          name="lake-river"
           value="terrainLakeRiver"
           ?checked="${this.terrainLakeRiver}"
           >Lake / river</checkbox-control
         >
         <checkbox-control
-          @change="${this.selectionChange}"
-          name="terrain-marshlands"
+          @change="${this.terrainChange}"
+          name="marshlands"
           value="terrainMarshlands"
           ?checked="${this.terrainMarshlands}"
           >Marshlands</checkbox-control
         >
         <checkbox-control
-          @change="${this.selectionChange}"
-          name="terrain-quagmire"
+          @change="${this.terrainChange}"
+          name="quagmire"
           value="terrainQuagmire"
           ?checked="${this.terrainQuagmire}"
           >Quagmire</checkbox-control
         >
         <checkbox-control
-          @change="${this.selectionChange}"
-          name="terrain-ruins"
+          @change="${this.terrainChange}"
+          name="ruins"
           value="terrainRuins"
           ?checked="${this.terrainRuins}"
           >Ruins</checkbox-control
@@ -589,15 +607,6 @@ export class WorldStateOptions extends LitElement {
               <h3>Gear</h3>
               ${this.gearTemplate()}
             </div>
-          </section>
-        </section>
-        <section class="other">
-          <h2>Other</h2>
-          <section>
-            <div class="environment">
-              <h3>Environment</h3>
-              ${this.environmentTemplate()}
-            </div>
             <div class="stronghold">
               <h3>Stronghold</h3>
               ${this.strongholdTemplate()}
@@ -605,7 +614,7 @@ export class WorldStateOptions extends LitElement {
           </section>
         </section>
       </section>
-      <section class="right">
+      <section class="middle">
         <section class="journey">
           <h2>Journey</h2>
           <section>
@@ -616,6 +625,17 @@ export class WorldStateOptions extends LitElement {
             <div class="terrain">
               <h3>Terrain</h3>
               ${this.terrainTemplate()}
+            </div>
+          </section>
+        </section>
+      </section>
+      <section class="right">
+        <section class="other">
+          <h2>Other</h2>
+          <section>
+            <div class="environment">
+              <h3>Environment</h3>
+              ${this.environmentTemplate()}
             </div>
           </section>
         </section>

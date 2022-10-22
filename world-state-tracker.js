@@ -1,9 +1,8 @@
-import { LitElement, html, css } from "./dependencies/lit-all.min.js";
-import { Tracker } from "./tracker.js";
-import { globalStyles } from "./global-styles.js";
+// @ts-nocheck
 
-const tracker = new Tracker();
-window.tracker = tracker;
+import { LitElement, html, css } from "./dependencies/lit-all.min.js";
+import { globalStyles } from "./global-styles.js";
+import { data } from "./global-state.js";
 
 export class WorldStateTracker extends LitElement {
   static styles = [
@@ -18,7 +17,7 @@ export class WorldStateTracker extends LitElement {
         box-shadow: 0px 0px 32px rgba(0, 0, 0, 0.5);
         border-radius: 8px;
         color: #fff;
-        max-width: 650px;
+        max-width: 600px;
       }
 
       .right {
@@ -86,108 +85,40 @@ export class WorldStateTracker extends LitElement {
   ];
   constructor() {
     super();
-    this._title = "";
-    this._messages = [];
     this._datestamp = 1165 * 365 + 1;
-    this._dark = false;
-    this._round = 1;
-    this._turn = 1;
-    this._quarterDay = 1;
+    this.changeHandler = this.changeHandler.bind(this);
   }
   static properties = {
-    _round: { state: true },
-    _turn: { state: true },
-    _quarterDay: { state: true },
-    _title: { state: true },
-    _messages: { state: true },
     _datestamp: { state: true },
-    _dark: { state: true },
     _wind: { state: true },
     _rain: { state: true },
     _cold: { state: true },
   };
+
+  changeHandler(e) {
+    const { type } = e.detail;
+    if (type === "day") {
+      this._datestamp = data.day;
+      this._wind = data.currentWeather.wind;
+      this._rain = data.currentWeather.rain;
+      this._cold = data.currentWeather.cold;
+    }
+  }
+
   connectedCallback() {
     super.connectedCallback();
-    tracker.addEventListener("round-change", () => {
-      this._round = tracker.round;
-    });
-    tracker.addEventListener("turn-change", () => {
-      this._turn = tracker.turn;
-    });
-    tracker.addEventListener("quarter-day-change", () => {
-      this._quarterDay = tracker.quarterDay;
-    });
-    tracker.addEventListener("datestamp-change", () => {
-      this._datestamp = tracker.datestamp;
-    });
-    tracker.addEventListener("party-change", () => {
-      tracker.refresh();
-    });
-    tracker.addEventListener("darkness-change", () => {
-      this._dark = tracker.dark;
-      document.documentElement.classList.toggle("dark");
-    });
-    tracker.addEventListener("weather-change", () => {
-      this._wind = tracker.weather.wind;
-      this._rain = tracker.weather.rain;
-      this._cold = tracker.weather.cold;
-    });
-    tracker.addEventListener("background-change", (e) => {
-      document.body.classList.toggle(e.detail.background);
-    });
-    tracker.init();
+    data.addEventListener("change", this.changeHandler);
   }
+
   disconnectedCallback() {
-    tracker.removeEventListener("round-change");
-    tracker.removeEventListener("turn-change");
-    tracker.removeEventListener("quarter-day-change");
-    tracker.removeEventListener("datestamp-change");
-    tracker.removeEventListener("party-change");
-    tracker.removeEventListener("darkness-change");
+    super.disconnectedCallback();
+    data.removeEventListener("change", this.changeHandler);
   }
-
-  buttonClicked(event) {
-    if (event.detail.direction === "+") tracker.advance(event.detail.type);
-    if (event.detail.direction === "-") tracker.reverse(event.detail.type);
-    tracker.dark = tracker.calculateDarkness();
-  }
-
-  selectionChange(event) {
-    tracker.setState(event.detail.name, event.detail.selected);
-  }
-
-  coldChange(event) {
-    tracker.setState("environmentCold", event.detail.value);
-  }
-
-  rainChange(event) {
-    tracker.setState("environmentRain", event.detail.value);
-  }
-
-  windChange(event) {
-    tracker.setState("environmentWind", event.detail.value);
-  }
-
-  // async dateChange(event) {
-  //   if (event.detail.type === "week") {
-  //     await tracker.setWeek();
-  //   }
-  //   if (event.detail.type === "day") {
-  //     await tracker.setDay();
-  //   }
-  //   tracker.setState("season", event.detail.season);
-  // }
 
   render() {
     return html`
       <header>
-        <world-state-controls
-          round="${this._round}"
-          turn="${this._turn}"
-          quarterDay="${this._quarterDay}"
-          datestamp=${this._datestamp}
-          @click=${this.buttonClicked}
-        ></world-state-controls>
+        <world-state-controls></world-state-controls>
         <div>
           <calendar-display datestamp="${this._datestamp}"></calendar-display>
           <weather-display wind="${this._wind}" rain="${this._rain}" cold="${this._cold}"></weather-display>
@@ -195,25 +126,10 @@ export class WorldStateTracker extends LitElement {
       </header>
       <section class="container">
         <div class="left">
-          <world-state-notes
-            datestamp="${this._datestamp}"
-            round="${this._round}"
-            turn="${this._turn}"
-            quarter-day="${this._quarterDay}"
-            @click="${this.buttonClicked}"
-          ></world-state-notes>
+          <world-state-notes></world-state-notes>
         </div>
         <div class="right">
-          <world-state-options
-            @change="${this.selectionChange}"
-            @cold-change="${this.coldChange}"
-            @rain-change="${this.rainChange}"
-            @wind-change="${this.windChange}"
-            ?environment-dark="${this._dark}"
-            environment-cold="${this._cold}"
-            environment-rain="${this._rain}"
-            environment-wind="${this._wind}"
-          ></world-state-options>
+          <world-state-options></world-state-options>
         </div>
       </section>
     `;

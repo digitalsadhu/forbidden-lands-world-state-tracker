@@ -65,9 +65,22 @@ function getDay(datestamp) {
 }
 
 export class Weather {
-  wind = null;
-  rain = null;
-  cold = null;
+  wind = "";
+  rain = "";
+  cold = "";
+
+  /**
+   * @param { import("./data-structures/data-structures").WeatherData | null } weather;
+   */
+  constructor(weather) {
+    if (weather) {
+      this.wind = weather.wind;
+      this.rain = weather.rain;
+      this.cold = weather.cold;
+    } else {
+      this.generate();
+    }
+  }
 
   d6() {
     return Math.ceil(Math.random() * 6);
@@ -82,6 +95,7 @@ export class Weather {
     } else if (roll === 6) {
       return wind.STORM;
     }
+    return wind.LIGHT_BREEZE;
   }
 
   generateRain(datestamp) {
@@ -96,6 +110,7 @@ export class Weather {
       if (phase === phases.WINTER_RISE || phase === phases.WINTER_WANE) return rain.HEAVY_SNOW;
       return rain.HEAVY_RAIN;
     }
+    return rain.NO_RAIN;
   }
 
   generateCold(datestamp, modifier = 0) {

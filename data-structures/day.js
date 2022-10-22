@@ -1,24 +1,51 @@
-import { Notes } from "./notes.js";
+import { Weather } from "../weather.js";
+import { QuarterDay } from "./quarter-day.js";
+import { Darkness } from "../darkness.js";
 
 export class Day {
+  /** @type {number | null} */
   day = null;
   quarterDay = 1;
   turn = 1;
   round = 1;
-  quarterDays = new Map();
+  /** @type {Map<number, QuarterDay>} */
+  quarterDayList = new Map();
+  /** @type {Weather | null} */
+  weather = null;
 
-  constructor(day) {
-    this.day = day;
+  /**
+   * @param { import("./data-structures").DayData } day
+   */
+  static restore(day) {
+    const instance = new this(day.day, new Weather(day.weather));
+    instance.quarterDay = day.quarterDay;
+    instance.turn = day.turn;
+    instance.round = day.round;
+    for (const quarterDay of day.quarterDayList) {
+      instance.quarterDayList.set(
+        quarterDay.quarterDay,
+        QuarterDay.restore(quarterDay, Darkness.calculateDarkness(day.day, quarterDay.quarterDay))
+      );
+    }
+    return instance;
   }
 
+  /**
+   * @param {number} day
+   * @param {Weather | null} weather
+   */
+  constructor(day, weather) {
+    this.day = day;
+    if (weather) this.weather = weather;
+    else this.weather = new Weather(null);
+  }
+
+  /**
+   * @param {QuarterDay} quarterDay
+   */
   setQuarterDay(quarterDay) {
     this.quarterDay = quarterDay.quarterDay;
-    this.quarterDays.set(quarterDay.quarterDay, quarterDay);
-  }
-
-  get notes() {
-    const { state } = this.quarterDays.get(this.quarterDay).turns.get(this.turn).rounds.get(this.round);
-    return Notes.day(state);
+    this.quarterDayList.set(quarterDay.quarterDay, quarterDay);
   }
 
   toJSON() {
@@ -27,7 +54,8 @@ export class Day {
       quarterDay: this.quarterDay,
       turn: this.turn,
       round: this.round,
-      quarterDays: Array.from(this.quarterDays.values()),
+      weather: this.weather,
+      quarterDayList: Array.from(this.quarterDayList.values()),
     };
   }
 }

@@ -1,15 +1,28 @@
-import { Notes } from "./notes.js";
-
 export class Round {
-  round = null;
-  state = {};
+  /** @type {number} */
+  round = 1;
 
-  constructor(round, state) {
-    this.round = round;
-    this.state = state;
+  /**
+   * @param { import('./data-structures').RoundData } roundData
+   */
+  static restore(roundData) {
+    const instance = new this(roundData.round);
+    return instance;
   }
 
-  get notes() {
-    return Notes.round(this.state);
+  /**
+   * @param {number} round
+   */
+  constructor(round) {
+    this.round = round;
+  }
+
+  /**
+   * @return { import('./data-structures').RoundData }
+   */
+  toJSON() {
+    return {
+      round: this.round,
+    };
   }
 }

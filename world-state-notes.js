@@ -1,17 +1,14 @@
 import { LitElement, html, css, classMap } from "./dependencies/lit-all.min.js";
 import { globalStyles } from "./global-styles.js";
+import { data } from "./global-state.js";
+import { Notes } from "./data-structures/notes.js";
 
 export class WorldStateNotes extends LitElement {
-  constructor() {
-    super();
-  }
-
   static properties = {
-    datestamp: { type: Number },
-    round: { type: Number },
-    turn: { type: Number },
-    quarterDay: { type: Number, attribute: "quarter-day" },
-    _messages: { state: true },
+    // datestamp: { type: Number },
+    _round: { state: true },
+    _turn: { state: true },
+    _quarterDay: { state: true },
     _day: { state: true },
   };
 
@@ -94,55 +91,63 @@ export class WorldStateNotes extends LitElement {
     `,
   ];
 
+  changeHandler(e) {
+    console.log(e);
+    const { type, value } = e.detail;
+
+    if (type === "day") {
+      this._day = data.currentDay;
+      this._quarterDay = data.currentQuarterDay;
+      this._turn = data.currentTurn;
+      this._round = data.currentRound;
+    }
+
+    if (type === "quarterDay") {
+      this._quarterDay = data.currentQuarterDay;
+      this._turn = data.currentTurn;
+      this._round = data.currentRound;
+    }
+
+    if (type === "turn") {
+      this._turn = data.currentTurn;
+      this._round = data.currentRound;
+    }
+
+    if (type === "round") {
+      this._round = data.currentRound;
+    }
+  }
+
   connectedCallback() {
     super.connectedCallback();
-    const tracker = window.tracker;
-    tracker.addEventListener("round-messages-change", () => {
-      this._messages = tracker.roundMessages;
-    });
-    tracker.addEventListener("turn-messages-change", () => {
-      this._messages = tracker.turnMessages;
-    });
-    tracker.addEventListener("quarter-day-messages-change", () => {
-      this._messages = tracker.quarterDayMessages;
-    });
-    tracker.addEventListener("day-messages-change", () => {
-      this._messages = tracker.dayMessages;
-    });
-    tracker.addEventListener("week-messages-change", () => {
-      this._messages = tracker.weekMessages;
-      this._title = "New Week";
-    });
-
-    const handleStateChange = (e) => {
-      this._day = tracker.data.days.get(tracker.data.day);
-      console.log(this._day);
-    };
-    tracker.addEventListener("state-change", handleStateChange);
-    tracker.addEventListener("round-change", handleStateChange);
-    tracker.addEventListener("turn-change", handleStateChange);
-    tracker.addEventListener("quarter-day-change", handleStateChange);
-    tracker.addEventListener("day-change", handleStateChange);
-    tracker.addEventListener("week-change", handleStateChange);
-    tracker.addEventListener("year-change", handleStateChange);
+    data.addEventListener("change", this.changeHandler);
   }
 
   disconnectedCallback() {
-    tracker.removeEventListener("round-messages-change");
-    tracker.removeEventListener("turn-messages-change");
-    tracker.removeEventListener("quarter-day-messages-change");
-    tracker.removeEventListener("day-messages-change");
-    tracker.removeEventListener("week-messages-change");
+    super.disconnectedCallback();
+    data.removeEventListener("change", this.changeHandler);
+  }
+
+  constructor() {
+    super();
+    this.changeHandler = this.changeHandler.bind(this);
   }
 
   buttonClick(e) {
-    this.dispatchEvent(
-      new CustomEvent("click", {
-        detail: { type: e.detail.type, direction: e.detail.direction },
-        bubbles: true,
-        composed: true,
-      })
-    );
+    const { type, direction } = e.detail;
+
+    if (type === "quarterDay") {
+      if (direction === "+") data.advanceQuarterDay();
+      else if (direction === "-") data.reverseQuarterDay();
+    }
+    if (type === "turn") {
+      if (direction === "+") data.advanceTurn();
+      else if (direction === "-") data.reverseTurn();
+    }
+    if (type === "round") {
+      if (direction === "+") data.advanceRound();
+      else if (direction === "-") data.reverseRound();
+    }
   }
 
   render() {
@@ -151,15 +156,17 @@ export class WorldStateNotes extends LitElement {
       <section class="controls">
         <div>
           <stepper-control class="w-170" type="quarterDay" @change="${this.buttonClick}">
-            <quarterday-display quarter-day="${this.quarterDay}"></quarterday-display>
+            <quarterday-display quarter-day="${this._quarterDay?.quarterDay}"></quarterday-display>
           </stepper-control>
         </div>
         <div>
-          <stepper-control class="w-150" type="turn" @change="${this.buttonClick}">Turn ${this.turn}</stepper-control>
+          <stepper-control class="w-150" type="turn" @change="${this.buttonClick}"
+            >Turn ${this._turn?.turn}</stepper-control
+          >
         </div>
         <div>
           <stepper-control class="w-160" type="round" @change="${this.buttonClick}"
-            >Round ${this.round}</stepper-control
+            >Round ${this._round?.round}</stepper-control
           >
         </div>
       </section>
@@ -186,17 +193,28 @@ export class WorldStateNotes extends LitElement {
         <!-- Quarter Day choices eg. hike, keep watch, lead the way -->
         <!-- etc -->
         <div>
+          <h2><dayname-display datestamp="${this._day.day}"></dayname-display></h2>
           <ul>
-            ${Array.from(this._day.notes.values()).map((note) => {
+            ${Notes.day(data.currentSelectedOptions, data.currentWeather, data.currentDark).map((note) => {
               return html`<li>${note}</li>`;
             })}
           </ul>
 
-          <ul>
-            ${Array.from(this._day.quarterDays.values()).map((quarterDay) => {
-              return html`<li>${quarterDay.notes}</li>`;
-            })}
-          </ul>
+          ${Array.from(this._day?.quarterDayList.values()).map(
+            (quarterDay) => html`
+              <h3>
+                <quarterday-display quarter-day="${quarterDay.quarterDay}"></quarterday-display>
+              </h3>
+              <div>
+                <ul>
+                  ${Notes.quarterDay(data.currentSelectedOptions, data.currentWeather, data.currentDark).map((note) => {
+                    console.log(note);
+                    return html`<li>${note}</li>`;
+                  })}
+                </ul>
+              </div>
+            `
+          )}
         </div>
       </section>
     `;

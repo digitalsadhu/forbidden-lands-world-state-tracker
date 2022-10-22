@@ -1,11 +1,13 @@
 /**
- * @param { import("../../types").State } state
- */
-export default (state) => {
+ * @param { import("../../data-structures/selected-options").SelectedOptions } selectedOptions
+ * @param { import("../../weather").Weather } weather
+ * @param { boolean } dark
+ * */
+export default (selectedOptions, weather, dark) => {
   const messages = [];
 
-  if (state.inWater.value) {
-    if (state.wearingArmor.value) messages.push("PCs in water and wearing armor must roll ENDURANCE.");
+  if (selectedOptions.inWater.value) {
+    if (selectedOptions.wearingArmor.value) messages.push("PCs in water and wearing armor must roll ENDURANCE.");
     messages.push("PCs that sink must make an ENDURANCE roll every round to hold their breath.");
   }
 

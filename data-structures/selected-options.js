@@ -1,45 +1,32 @@
-// @ts-nocheck
-
 import { Option } from "./option.js";
-import { Weather } from "./weather.js";
 
-export class State {
+export class SelectedOptions {
+  /** @type {number | null} */
+  #day = null;
+  /** @type {number | null} */
+  #quarterDay = null;
+  /** @type {number | null} */
+  #turn = null;
+  /** @type {number | null} */
+  #round = null;
   #options = {};
   static clone(state) {
     return new this(JSON.parse(JSON.stringify(state)));
   }
-  constructor(options = {}) {
+  /**
+   * @param { import('./data-structures').SelectedOptionsData } data
+   */
+  static restore(data) {
+    const instance = new this(data);
+    return instance;
+  }
+  constructor({ day = 1, quarterDay = 1, turn = 1, round = 1, options = {} } = {}) {
+    this.#day = day;
+    this.#quarterDay = quarterDay;
+    this.#turn = turn;
+    this.#round = round;
     this.#options = options;
   }
-  // set datestamp(value) {
-  //   if (typeof value !== "number") throw new Error(`Expected state.datestamp to be type Number. Got "${typeof value}"`);
-  //   this.#options.datestamp = value;
-  // }
-  // get datestamp() {
-  //   return new Option("datestamp", this.#options.datestamp);
-  // }
-  // set round(value) {
-  //   if (typeof value !== "number") throw new Error(`Expected state.round to be type Number. Got "${typeof value}"`);
-  //   this.#options.round = value;
-  // }
-  // get round() {
-  //   return new Option("round", this.#options.round || 1);
-  // }
-  // set turn(value) {
-  //   if (typeof value !== "number") throw new Error(`Expected state.turn to be type Number. Got "${typeof value}"`);
-  //   this.#options.turn = value;
-  // }
-  // get turn() {
-  //   return new Option("turn", this.#options.turn || 1);
-  // }
-  // set quarterDay(value) {
-  //   if (typeof value !== "number")
-  //     throw new Error(`Expected state.quarterDay to be type Number. Got "${typeof value}"`);
-  //   this.#options.quarterDay = value;
-  // }
-  // get quarterDay() {
-  //   return new Option("quarterDay", this.#options.quarterDay || 1);
-  // }
   get hungry() {
     return new Option("hungry", this.#options.hungry || false);
   }
@@ -357,6 +344,12 @@ export class State {
   }
 
   toJSON() {
-    return { ...this.#options };
+    return {
+      day: this.#day,
+      quarterDay: this.#quarterDay,
+      turn: this.#turn,
+      round: this.#round,
+      options: this.#options,
+    };
   }
 }

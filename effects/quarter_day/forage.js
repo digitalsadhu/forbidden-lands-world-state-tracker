@@ -1,58 +1,60 @@
 import { html } from "../../dependencies/lit-all.min.js";
 
 /**
- * @param { import("../../types").State } state
- */
-export default (state) => {
-  if (state.forage.value) {
+ * @param { import("../../data-structures/selected-options").SelectedOptions } selectedOptions
+ * @param { import("../../weather").Weather } weather
+ * @param { boolean } dark
+ * */
+export default (selectedOptions, weather, dark) => {
+  if (selectedOptions.forage.value) {
     const result = [];
     let message = html`<span class="c-action">Forage</span> roll <span class="c-skill">survival</span>`;
-    if (state.terrainPlains.value) {
+    if (selectedOptions.terrainPlains.value) {
       result.push(
         html`${message} modified by <span class="c-modifier">-1</span> for <span class="c-terrain">plains</span>.`
       );
     }
-    if (state.terrainForest.value) {
+    if (selectedOptions.terrainForest.value) {
       result.push(
         html`${message} modified by <span class="c-modifier">+1</span> for <span class="c-terrain">forest</span>.`
       );
     }
-    if (state.terrainDarkForest.value) {
+    if (selectedOptions.terrainDarkForest.value) {
       result.push(
         html`${message} modified by <span class="c-modifier">-1</span> for <span class="c-terrain">dark forest</span>.`
       );
     }
-    if (state.terrainHills.value) {
+    if (selectedOptions.terrainHills.value) {
       result.push(html`${message} unmodified for <span class="c-terrain">hills</span>.`);
     }
-    if (state.terrainMountains.value) {
+    if (selectedOptions.terrainMountains.value) {
       result.push(
         html`${message} modified by <span class="c-modifier">-2</span> for <span class="c-terrain">mountains</span>`
       );
     }
-    if (state.terrainHighMountains.value) {
+    if (selectedOptions.terrainHighMountains.value) {
       result.push(
         html`<span class="c-action">Forage</span> no foraging is possible in
           <span class="c-terrain">high mountains</span>`
       );
     }
-    if (state.terrainLakeRiver.value) {
+    if (selectedOptions.terrainLakeRiver.value) {
       result.push(
         html`<span class="c-action">Forage</span> no foraging is possible on
           <span class="c-terrain">lakes or rivers</span>.`
       );
     }
-    if (state.terrainMarshlands.value) {
+    if (selectedOptions.terrainMarshlands.value) {
       result.push(
         html`${message} modified by <span class="c-modifier">+1</span> for <span class="c-terrain">marshland</span>.`
       );
     }
-    if (state.terrainQuagmire.value) {
+    if (selectedOptions.terrainQuagmire.value) {
       result.push(
         html`${message} modified by <span class="c-modifier">-1</span> for <span class="c-terrain">quagmire</span>`
       );
     }
-    if (state.terrainRuins.value) {
+    if (selectedOptions.terrainRuins.value) {
       result.push(
         html`${message} modified by <span class="c-modifier">-2</span> for <span class="c-terrain">ruins</span>`
       );

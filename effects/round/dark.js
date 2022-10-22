@@ -1,11 +1,13 @@
 /**
- * @param { import("../../types").State } state
- */
-export default (state) => {
-  if (state.environmentDark.value && !state.lightSource.value) {
+ * @param { import("../../data-structures/selected-options").SelectedOptions } selectedOptions
+ * @param { import("../../weather").Weather } weather
+ * @param { boolean } dark
+ * */
+export default (selectedOptions, weather, dark) => {
+  if (selectedOptions.environmentDark.value && !selectedOptions.lightSource.value) {
     const result = ["PCs without a light source must make a SCOUT roll when trying to hit an enemy."];
 
-    if (state.usingArrows.value) {
+    if (selectedOptions.usingArrows.value) {
       result.push(
         ...[
           "PCs cannot SHOOT at targets at SHORT range or more in the dark.",

@@ -28,10 +28,18 @@ function sentenceCase(str) {
 }
 
 export class Option {
+  /** @type { string | null } */
   #key = "";
+  /** @type { any } */
   #value = null;
+  /** @type { string | null } */
   #displayName = null;
 
+  /**
+   * @param {string | null} key
+   * @param {any} value
+   * @param {string | null} displayName
+   */
   constructor(key = "", value = null, displayName = null) {
     this.#key = key;
     this.#value = value;

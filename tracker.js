@@ -1,8 +1,3 @@
-import turns from "./turn.js";
-import days from "./day.js";
-import rounds from "./round.js";
-import quarterDays from "./quarter_day.js";
-import weeks from "./week.js";
 import { Weather } from "./weather.js";
 import { Data } from "./data-structures/data.js";
 import { State } from "./data-structures/state.js";
@@ -81,6 +76,7 @@ export class Tracker extends EventTarget {
 
   init() {
     this.datestamp = 1165 * 365 + 1;
+    this.state = new State();
     this._data.setDay(this.datestamp, this.state);
   }
 
@@ -151,6 +147,7 @@ export class Tracker extends EventTarget {
       this.dark = value;
     } else this.state[key] = value;
 
+    this.state = State.clone(this.state);
     this._data.setRound(this._data.round, this.state);
 
     await this.refresh();
@@ -178,6 +175,7 @@ export class Tracker extends EventTarget {
   set round(value) {
     if (this._round === value) return;
     this._round = value;
+    this.state = State.clone(this.state);
     this._data.setRound(this.round, this.state);
     this.dispatchEvent(new CustomEvent("round-change"));
   }
@@ -188,6 +186,7 @@ export class Tracker extends EventTarget {
   set turn(value) {
     if (this._turn === value) return;
     this._turn = value;
+    this.state = State.clone(this.state);
     this._data.setTurn(this.turn, this.state);
     this.dispatchEvent(new CustomEvent("turn-change"));
   }
@@ -198,6 +197,7 @@ export class Tracker extends EventTarget {
   set quarterDay(value) {
     if (this._quarterDay === value) return;
     this._quarterDay = value;
+    this.state = State.clone(this.state);
     this._data.setQuarterDay(this.quarterDay, this.state);
     this.dispatchEvent(new CustomEvent("quarter-day-change"));
   }
@@ -210,6 +210,7 @@ export class Tracker extends EventTarget {
     this._datestamp = value;
     this.state.season = getSeason(this._datestamp);
     this.regenerateWeather();
+    this.state = State.clone(this.state);
     this._data.setDay(this.datestamp, this.state);
     this.dispatchEvent(new CustomEvent("datestamp-change"));
   }
@@ -255,12 +256,12 @@ export class Tracker extends EventTarget {
   }
 
   async setRound(num) {
-    let messages = [];
-    for (const round of rounds) {
-      // pass in weather and terrain and light level and party state
-      messages = messages.concat((await round(this.state)) || []);
-    }
-    this.roundMessages = messages.filter(Boolean);
+    // let messages = [];
+    // for (const round of rounds) {
+    //   // pass in weather and terrain and light level and party state
+    //   messages = messages.concat(round(this.state) || []);
+    // }
+    // this.roundMessages = messages.filter(Boolean);
     this.round = num;
     this._currentType = types.ROUND;
   }
@@ -284,12 +285,12 @@ export class Tracker extends EventTarget {
   }
 
   async setTurn(num) {
-    let messages = [];
-    for (const turn of turns) {
-      // pass in weather and terrain and light level and party state
-      messages = messages.concat((await turn(this.state)) || []);
-    }
-    this.turnMessages = messages.filter(Boolean);
+    // let messages = [];
+    // for (const turn of turns) {
+    //   // pass in weather and terrain and light level and party state
+    //   messages = messages.concat(turn(this.state) || []);
+    // }
+    // this.turnMessages = messages.filter(Boolean);
     this.round = 1;
     this.turn = num;
     this._currentType = types.TURN;
@@ -314,15 +315,15 @@ export class Tracker extends EventTarget {
   }
 
   async setQuarterDay(num) {
-    let messages = [];
-    for (const quarterDay of quarterDays) {
-      // pass in weather and terrain and light level and party state
-      const collectedMessages = await quarterDay(this.state);
-      for (const message of collectedMessages || []) {
-        messages.push(message);
-      }
-    }
-    this.quarterDayMessages = messages.filter(Boolean);
+    // let messages = [];
+    // for (const quarterDay of quarterDays) {
+    //   // pass in weather and terrain and light level and party state
+    //   const collectedMessages = quarterDay(this.state);
+    //   for (const message of collectedMessages || []) {
+    //     messages.push(message);
+    //   }
+    // }
+    // this.quarterDayMessages = messages.filter(Boolean);
     this.round = 1;
     this.turn = 1;
     this.quarterDay = num;
@@ -354,12 +355,12 @@ export class Tracker extends EventTarget {
   }
 
   async setDay(datestamp) {
-    let messages = [];
-    for (const day of days) {
-      // pass in weather and terrain and light level and party state
-      messages = messages.concat((await day(this.state)) || []);
-    }
-    this.dayMessages = messages.filter(Boolean);
+    // let messages = [];
+    // for (const day of days) {
+    //   // pass in weather and terrain and light level and party state
+    //   messages = messages.concat(day(this.state) || []);
+    // }
+    // this.dayMessages = messages.filter(Boolean);
     this.round = 1;
     this.turn = 1;
     this.quarterDay = 1;
@@ -377,12 +378,12 @@ export class Tracker extends EventTarget {
   }
 
   async setWeek(datestamp) {
-    let messages = [];
-    for (const week of weeks) {
-      // pass in weather and terrain and light level and party state
-      messages = messages.concat((await week(this.state)) || []);
-    }
-    this.weekMessages = messages.filter(Boolean);
+    // let messages = [];
+    // for (const week of weeks) {
+    //   // pass in weather and terrain and light level and party state
+    //   messages = messages.concat(week(this.state) || []);
+    // }
+    // this.weekMessages = messages.filter(Boolean);
     this.round = 1;
     this.turn = 1;
     this.quarterDay = 1;

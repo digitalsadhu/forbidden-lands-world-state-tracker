@@ -1,29 +1,47 @@
-import { Notes } from "./notes.js";
+import { Round } from "./round.js";
 
 export class Turn {
-  turn = null;
+  /** @type {number} */
+  turn = 1;
   round = 1;
-  rounds = new Map();
+  /** @type {Map<number, Round>} */
+  roundList = new Map();
 
+  /**
+   * @param { import('./data-structures').TurnData } turn
+   */
+  static restore(turn) {
+    const instance = new this(turn.turn);
+    instance.round = turn.round;
+    for (const round of turn.roundList) {
+      instance.roundList.set(round.round, Round.restore(round));
+    }
+    return instance;
+  }
+
+  /**
+   * @param {number} turn
+   */
   constructor(turn) {
     this.turn = turn;
   }
 
+  /**
+   * @param {Round} round
+   */
   setRound(round) {
     this.round = round.round;
-    this.rounds.set(round.round, round);
+    this.roundList.set(round.round, round);
   }
 
-  get notes() {
-    const { state } = this.rounds.get(this.round);
-    return Notes.turn(state);
-  }
-
+  /**
+   * @return { import('./data-structures').TurnData }
+   */
   toJSON() {
     return {
       turn: this.turn,
       round: this.round,
-      rounds: Array.from(this.rounds.values()),
+      roundList: Array.from(this.roundList.values()),
     };
   }
 }

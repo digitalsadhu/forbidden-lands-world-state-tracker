@@ -5,38 +5,68 @@ import turns from "../turn.js";
 import rounds from "../round.js";
 
 export class Notes {
-  static week(state) {
+  /**
+   * @param { import("../data-structures/selected-options").SelectedOptions } selectedOptions
+   * @param { import("../weather").Weather } weather
+   * @param { boolean } dark
+   * */
+  static week(selectedOptions, weather, dark) {
     let messages = [];
     for (const week of weeks) {
-      messages = messages.concat(week(state) || []);
+      messages = messages.concat(week(selectedOptions, weather, dark) || []);
     }
     return messages.filter(Boolean);
   }
-  static day(state) {
+
+  /**
+   * @param { import("../data-structures/selected-options").SelectedOptions } selectedOptions
+   * @param { import("../weather").Weather } weather
+   * @param { boolean } dark
+   * */
+  static day(selectedOptions, weather, dark) {
     let messages = [];
     for (const day of days) {
-      messages = messages.concat(day(state) || []);
+      messages = messages.concat(day(selectedOptions, weather, dark) || []);
     }
     return messages.filter(Boolean);
   }
-  static quarterDay(state) {
+
+  /**
+   * @param { import("../data-structures/selected-options").SelectedOptions } selectedOptions
+   * @param { import("../weather").Weather } weather
+   * @param { boolean } dark
+   * */
+  static quarterDay(selectedOptions, weather, dark) {
+    console.log(selectedOptions, weather, dark);
     let messages = [];
     for (const quarterDay of quarterDays) {
-      messages = messages.concat(quarterDay(state) || []);
+      messages = messages.concat(quarterDay(selectedOptions, weather, dark) || []);
     }
     return messages.filter(Boolean);
   }
-  static turn(state) {
+
+  /**
+   * @param { import("../data-structures/selected-options").SelectedOptions } selectedOptions
+   * @param { import("../weather").Weather } weather
+   * @param { boolean } dark
+   * */
+  static turn(selectedOptions, weather, dark) {
     let messages = [];
     for (const turn of turns) {
-      messages = messages.concat(turn(state) || []);
+      messages = messages.concat(turn(selectedOptions, weather, dark) || []);
     }
     return messages.filter(Boolean);
   }
-  static round(state) {
+
+  /**
+   * @param { import("../data-structures/selected-options").SelectedOptions } selectedOptions
+   * @param { import("../weather").Weather } weather
+   * @param { boolean } dark
+   * */
+  static round(selectedOptions, weather, dark) {
     let messages = [];
     for (const round of rounds) {
-      messages = messages.concat(round(state) || []);
+      messages = messages.concat(round(selectedOptions, weather, dark) || []);
     }
     return messages.filter(Boolean);
   }

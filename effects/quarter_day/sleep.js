@@ -1,31 +1,33 @@
 import { html } from "../../dependencies/lit-all.min.js";
 
 /**
- * @param { import("../../types").State } state
- */
-export default (state) => {
+ * @param { import("../../data-structures/selected-options").SelectedOptions } selectedOptions
+ * @param { import("../../weather").Weather } weather
+ * @param { boolean } dark
+ * */
+export default (selectedOptions, weather, dark) => {
   const result = [];
 
-  if (state.sleep.value) {
-    if (state.bareGroundSleeping.value) {
-      result.push("SLEEP: Make a SURVIVAL roll when sleeping without having first made camp (MAKE CAMP).");
-    }
+  if (selectedOptions.sleep.value) {
+    // if (selectedOptions.bareGroundSleeping.value) {
+    //   result.push("SLEEP: Make a SURVIVAL roll when sleeping without having first made camp (MAKE CAMP).");
+    // }
 
     let message = "SLEEP: PCs recover all attribute points";
     const exceptions = [];
-    if (state.hungry.value) {
+    if (selectedOptions.hungry.value) {
       exceptions.push("HUNGRY");
     }
 
-    if (state.thirsty.value) {
+    if (selectedOptions.thirsty.value) {
       exceptions.push("THIRSTY");
     }
 
-    if (state.diseased.value) {
+    if (selectedOptions.diseased.value) {
       exceptions.push("SICK (Diseased PCs recover WITS and EMPATHY only)");
     }
 
-    if (state.cold.value) {
+    if (selectedOptions.cold.value) {
       exceptions.push("COLD (Cold PCs recover AGILITY and EMPATHY only)");
     }
 
@@ -37,7 +39,7 @@ export default (state) => {
 
     result.push(message);
 
-    if (state.sleepy.value) {
+    if (selectedOptions.sleepy.value) {
       result.push("PCs recover from the SLEEPY condition.");
     }
   }

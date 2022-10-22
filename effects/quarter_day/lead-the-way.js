@@ -1,29 +1,31 @@
 import { html } from "../../dependencies/lit-all.min.js";
 
 /**
- * @param { import("../../types").State } state
- */
-export default (state) => {
-  if (state.leadTheWay.value) {
+ * @param { import("../../data-structures/selected-options").SelectedOptions } selectedOptions
+ * @param { import("../../weather").Weather } weather
+ * @param { boolean } dark
+ * */
+export default (selectedOptions, weather, dark) => {
+  if (selectedOptions.leadTheWay.value) {
     const modifiers = [];
     const explanations = [];
-    if (state.weather.rain === "Light Rain") {
+    if (weather.rain === "Light Rain") {
       modifiers.push(-1);
       explanations.push("light rain");
     }
-    if (state.weather.rain === "Light Snow") {
+    if (weather.rain === "Light Snow") {
       modifiers.push(-1);
       explanations.push("light snow");
     }
-    if (state.weather.rain === "Heavy Rain") {
+    if (weather.rain === "Heavy Rain") {
       modifiers.push(-2);
       explanations.push("heavy rain");
     }
-    if (state.weather.rain === "Heavy Snow") {
+    if (weather.rain === "Heavy Snow") {
       modifiers.push(-2);
       explanations.push("heavy snow");
     }
-    if (state.environmentDark.value) {
+    if (selectedOptions.environmentDark.value) {
       modifiers.push(-2);
       explanations.push("darkness");
     }
