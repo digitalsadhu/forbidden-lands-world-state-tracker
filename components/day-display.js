@@ -1,4 +1,5 @@
 import { LitElement, html } from "../dependencies/lit-all.min.js";
+import { DAY } from "../data-structures/constants.js";
 
 const phaseBoundaries = [
   [45, 1],
@@ -11,8 +12,8 @@ const phaseBoundaries = [
   [365, 8],
 ];
 
-function getPhaseDay(datestamp) {
-  const dayOfYear = getDay(datestamp);
+function getPhaseDay(timestamp) {
+  const dayOfYear = getDayOfYear(timestamp);
   for (let i = 0; i < phaseBoundaries.length; i++) {
     if (phaseBoundaries[i][0] > dayOfYear && phaseBoundaries[i + 1][0] > dayOfYear) {
       return dayOfYear;
@@ -28,18 +29,20 @@ function getPhaseDay(datestamp) {
   }
 }
 
-function getDay(datestamp) {
-  let dayNum = datestamp % 365;
-  if (dayNum === 0) dayNum = 365;
+function getDayOfYear(timestamp) {
+  let dayNum = (Math.floor(timestamp / DAY) % 365) + 1;
+  // if (dayNum === 0) dayNum = 365;
   return dayNum;
 }
 
 export class DayDisplay extends LitElement {
   static properties = {
-    datestamp: { type: Number },
+    timestamp: { type: Number },
   };
 
+  // @ts-ignore
   render() {
-    return html`${getPhaseDay(this.datestamp)}`;
+    // @ts-ignore
+    return html`${getPhaseDay(this.timestamp)}`;
   }
 }

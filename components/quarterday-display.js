@@ -1,22 +1,26 @@
+import { QUARTER_DAY } from "../data-structures/constants.js";
 import { LitElement, html } from "../dependencies/lit-all.min.js";
 
-const quarterDays = {
-  1: "Morning",
-  2: "Afternoon",
-  3: "Evening",
-  4: "Night",
-};
+const quarterDays = ["Morning", "Afternoon", "Evening", "Night"];
 
-function quarterDayName(quarterDay = 1) {
-  return quarterDays[quarterDay];
+function getQuarterDay(timestamp) {
+  return Math.floor(timestamp / QUARTER_DAY) % 4;
 }
 
 export class QuarterDayDisplay extends LitElement {
   static properties = {
-    quarterDay: { type: Number, attribute: "quarter-day" },
+    timestamp: { type: Number },
   };
 
+  get quarterDay() {
+    // @ts-ignore
+    return getQuarterDay(this.timestamp);
+  }
+
+  // @ts-ignore
   render() {
-    return html`${quarterDayName(this.quarterDay)}`;
+    console.log(this.quarterDay);
+    // @ts-ignore
+    return html`${quarterDays[this.quarterDay]}`;
   }
 }

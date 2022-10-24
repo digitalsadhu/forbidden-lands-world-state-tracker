@@ -12,6 +12,8 @@ import { QuarterDayDisplay } from "./components/quarterday-display.js";
 import { StepperControl } from "./components/stepper-control.js";
 import { CheckboxControl } from "./components/checkbox-control.js";
 import { QuarterDayDisplayNotes } from "./components/quarterday-display-notes.js";
+import { TurnDisplay } from "./components/turn-display.js";
+import { RoundDisplay } from "./components/round-display.js";
 
 customElements.define("world-state-tracker", WorldStateTracker);
 customElements.define("world-state-controls", WorldStateControls);
@@ -27,3 +29,5 @@ customElements.define("quarterday-display", QuarterDayDisplay);
 customElements.define("stepper-control", StepperControl);
 customElements.define("checkbox-control", CheckboxControl);
 customElements.define("quarterday-display-notes", QuarterDayDisplayNotes);
+customElements.define("turn-display", TurnDisplay);
+customElements.define("round-display", RoundDisplay);

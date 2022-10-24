@@ -4,7 +4,6 @@ class Events extends EventTarget {
   #state = new State();
 
   update(patch) {
-    console.log(patch);
     for (const [key, value] of Object.entries(patch)) {
       this.#state[key] = value;
     }

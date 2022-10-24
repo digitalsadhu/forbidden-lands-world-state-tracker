@@ -37,7 +37,6 @@ export class Notes {
    * @param { boolean } dark
    * */
   static quarterDay(selectedOptions, weather, dark) {
-    console.log(selectedOptions, weather, dark);
     let messages = [];
     for (const quarterDay of quarterDays) {
       messages = messages.concat(quarterDay(selectedOptions, weather, dark) || []);

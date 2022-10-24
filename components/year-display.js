@@ -1,15 +1,22 @@
 import { LitElement, html } from "../dependencies/lit-all.min.js";
+import { YEAR } from "../data-structures/constants.js";
 
-function getYear(datestamp) {
-  return Math.floor(datestamp / 365);
+function getYear(timestamp) {
+  return Math.floor(timestamp / YEAR);
 }
 
 export class YearDisplay extends LitElement {
   static properties = {
-    datestamp: { type: Number },
+    timestamp: { type: Number },
   };
 
+  get year() {
+    // @ts-ignore
+    return getYear(this.timestamp);
+  }
+
+  // @ts-ignore
   render() {
-    return html`${getYear(this.datestamp)}`;
+    return html`${this.year}`;
   }
 }

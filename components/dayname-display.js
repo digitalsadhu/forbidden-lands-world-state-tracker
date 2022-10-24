@@ -1,27 +1,22 @@
 import { LitElement, html } from "../dependencies/lit-all.min.js";
+import { DAY } from "../data-structures/constants.js";
 
-const days = {
-  1: "Sunday",
-  2: "Moonday",
-  3: "Bloodday",
-  4: "Earthday",
-  5: "Growthday",
-  6: "Harvestday",
-  7: "Stillday",
-};
+const dayList = ["Sunday", "Moonday", "Bloodday", "Earthday", "Growthday", "Harvestday", "Stillday"];
 
-function getDayName(datestamp) {
-  let dayNum = datestamp % 7;
-  if (dayNum === 0) dayNum = 7;
-  return days[dayNum];
+function getDayName(timestamp) {
+  const days = Math.floor(timestamp / DAY);
+  const dayNum = days % 7;
+  return dayList[dayNum];
 }
 
 export class DaynameDisplay extends LitElement {
   static properties = {
-    datestamp: { type: Number },
+    timestamp: { type: Number },
   };
 
+  // @ts-ignore
   render() {
-    return html`${getDayName(this.datestamp)}`;
+    // @ts-ignore
+    return html`${getDayName(this.timestamp)}`;
   }
 }

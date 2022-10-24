@@ -2,7 +2,7 @@ import { LitElement, html, css } from "../dependencies/lit-all.min.js";
 
 export class CalendarDisplay extends LitElement {
   static properties = {
-    datestamp: { type: Number },
+    timestamp: { type: Number },
   };
 
   static styles = [
@@ -18,14 +18,17 @@ export class CalendarDisplay extends LitElement {
     `,
   ];
 
+  // @ts-ignore
   render() {
+    // @ts-ignore
+    const timestamp = this.timestamp;
     return html`
       <section>
         <h1>
-          <dayname-display datestamp=${this.datestamp}></dayname-display>
-          <day-display datestamp=${this.datestamp}></day-display>
-          <season-display datestamp=${this.datestamp}></season-display>,
-          <year-display datestamp=${this.datestamp}></year-display>
+          <dayname-display timestamp=${timestamp}></dayname-display>
+          <day-display timestamp=${timestamp}></day-display>
+          <season-display timestamp=${timestamp}></season-display>,
+          <year-display timestamp=${timestamp}></year-display>
         </h1>
       </section>
     `;

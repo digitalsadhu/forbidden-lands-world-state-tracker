@@ -70,15 +70,16 @@ export class Weather {
   cold = "";
 
   /**
-   * @param { import("./data-structures/data-structures").WeatherData | null } weather;
+   * @param { import("./data-structures/data-structures").WeatherData? } weather;
+   * @param { number? } timestamp;
    */
-  constructor(weather) {
+  constructor(weather = null, timestamp = null) {
     if (weather) {
       this.wind = weather.wind;
       this.rain = weather.rain;
       this.cold = weather.cold;
     } else {
-      this.generate();
+      this.generate(timestamp);
     }
   }
 
@@ -98,8 +99,8 @@ export class Weather {
     return wind.LIGHT_BREEZE;
   }
 
-  generateRain(datestamp) {
-    const phase = getPhaseName(datestamp);
+  generateRain(timestamp) {
+    const phase = getPhaseName(timestamp);
     const roll = this.d6();
     if (roll >= 1 && roll <= 3) {
       return rain.NO_RAIN;
@@ -113,8 +114,8 @@ export class Weather {
     return rain.NO_RAIN;
   }
 
-  generateCold(datestamp, modifier = 0) {
-    const phase = getPhaseName(datestamp);
+  generateCold(timestamp, modifier = 0) {
+    const phase = getPhaseName(timestamp);
     if (
       phase === phases.FALL_WANE ||
       phase === phases.WINTER_RISE ||
@@ -131,14 +132,22 @@ export class Weather {
     return cold.MILD;
   }
 
-  generate(datestamp) {
+  generate(timestamp) {
     this.wind = this.generateWind();
-    this.rain = this.generateRain(datestamp);
+    this.rain = this.generateRain(timestamp);
 
     let modifier = 0;
     if (this.wind === "Strong Wind") modifier = 1;
     if (this.wind === "Storm") modifier = 2;
 
-    this.cold = this.generateCold(datestamp, modifier);
+    this.cold = this.generateCold(timestamp, modifier);
+  }
+
+  toJSON() {
+    return {
+      rain: this.rain,
+      cold: this.cold,
+      wind: this.wind,
+    };
   }
 }

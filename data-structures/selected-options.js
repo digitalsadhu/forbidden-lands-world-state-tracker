@@ -1,14 +1,6 @@
 import { Option } from "./option.js";
 
 export class SelectedOptions {
-  /** @type {number | null} */
-  #day = null;
-  /** @type {number | null} */
-  #quarterDay = null;
-  /** @type {number | null} */
-  #turn = null;
-  /** @type {number | null} */
-  #round = null;
   #options = {};
   static clone(state) {
     return new this(JSON.parse(JSON.stringify(state)));
@@ -20,11 +12,7 @@ export class SelectedOptions {
     const instance = new this(data);
     return instance;
   }
-  constructor({ day = 1, quarterDay = 1, turn = 1, round = 1, options = {} } = {}) {
-    this.#day = day;
-    this.#quarterDay = quarterDay;
-    this.#turn = turn;
-    this.#round = round;
+  constructor(options) {
     this.#options = options;
   }
   get hungry() {
@@ -345,10 +333,6 @@ export class SelectedOptions {
 
   toJSON() {
     return {
-      day: this.#day,
-      quarterDay: this.#quarterDay,
-      turn: this.#turn,
-      round: this.#round,
       options: this.#options,
     };
   }

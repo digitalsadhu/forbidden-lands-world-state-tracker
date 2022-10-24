@@ -17,7 +17,6 @@ export default (selectedOptions, weather, dark) => {
       modifiers.push(-2);
       explanations.push("storm");
     }
-    console.log(modifiers);
     const extra = html` ${modifiers.reduce((accumulator, curr) => accumulator + curr, 0)} (${explanations.join(", ")})`;
 
     return [html`<span class="c-action">Make camp</span> roll <span class="c-skill">survival</span>${extra}.`];

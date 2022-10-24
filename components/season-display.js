@@ -1,4 +1,5 @@
 import { LitElement, html } from "../dependencies/lit-all.min.js";
+import { DAY } from "../data-structures/constants.js";
 
 const phases = {
   1: "Springrise",
@@ -22,8 +23,8 @@ const phaseBoundaries = [
   [365, 8],
 ];
 
-function getPhaseName(datestamp) {
-  const day = getDay(datestamp);
+function getPhaseName(timestamp) {
+  const day = getDayOfYear(timestamp);
   for (const [boundary, phaseNum] of phaseBoundaries) {
     if (day <= boundary) {
       return phases[phaseNum];
@@ -31,18 +32,20 @@ function getPhaseName(datestamp) {
   }
 }
 
-function getDay(datestamp) {
-  let dayNum = datestamp % 365;
-  if (dayNum === 0) dayNum = 365;
+function getDayOfYear(timestamp) {
+  let dayNum = ((timestamp / DAY) % 365) + 1;
+  // if (dayNum === 0) dayNum = 365;
   return dayNum;
 }
 
 export class SeasonDisplay extends LitElement {
   static properties = {
-    datestamp: { type: Number },
+    timestamp: { type: Number },
   };
 
+  // @ts-ignore
   render() {
-    return html`${getPhaseName(this.datestamp)}`;
+    // @ts-ignore
+    return html`${getPhaseName(this.timestamp)}`;
   }
 }

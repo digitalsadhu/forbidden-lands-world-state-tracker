@@ -52,16 +52,21 @@ export class StepperControl extends LitElement {
   `;
 
   click(e) {
-    const event = { detail: { type: this.type, direction: e.currentTarget.dataset.direction } };
+    // @ts-ignore
+    const type = this.type;
+    const event = { detail: { type, direction: e.currentTarget.dataset.direction } };
     this.dispatchEvent(new CustomEvent("change", event));
   }
 
+  // @ts-ignore
   render() {
+    // @ts-ignore
+    const type = this.type;
     return html`
       <div>
-        <button @click=${this.click} data-type="${this.type}" data-direction="-"><span>-</span></button>
+        <button @click=${this.click} data-type="${type}" data-direction="-"><span>-</span></button>
         <h3><slot></slot></h3>
-        <button @click=${this.click} data-type="${this.type}" data-direction="+"><span>+</span></button>
+        <button @click=${this.click} data-type="${type}" data-direction="+"><span>+</span></button>
       </div>
     `;
   }

@@ -3,6 +3,9 @@
 import { LitElement, html, css } from "./dependencies/lit-all.min.js";
 import { globalStyles } from "./global-styles.js";
 import { data } from "./global-state.js";
+import { DAY } from "./data-structures/constants.js";
+import { Weather } from "./weather.js";
+import { Database } from "./data-structures/database.js";
 
 export class WorldStateTracker extends LitElement {
   static styles = [
@@ -83,36 +86,43 @@ export class WorldStateTracker extends LitElement {
       }
     `,
   ];
-  constructor() {
-    super();
-    this._datestamp = 1165 * 365 + 1;
-    this.changeHandler = this.changeHandler.bind(this);
-  }
+
   static properties = {
-    _datestamp: { state: true },
     _wind: { state: true },
-    _rain: { state: true },
     _cold: { state: true },
+    _rain: { state: true },
   };
 
-  changeHandler(e) {
-    const { type } = e.detail;
-    if (type === "day") {
-      this._datestamp = data.day;
-      this._wind = data.currentWeather.wind;
-      this._rain = data.currentWeather.rain;
-      this._cold = data.currentWeather.cold;
-    }
+  constructor() {
+    super();
+    this._weather = {};
   }
 
-  connectedCallback() {
+  get timestamp() {
+    return Number(new URLSearchParams(window.location.search).get("timestamp"));
+  }
+
+  get datestamp() {
+    return Math.floor(this.timestamp / DAY);
+  }
+
+  async connectedCallback() {
     super.connectedCallback();
-    data.addEventListener("change", this.changeHandler);
-  }
+    Database.initialize("weather").addEventListener("write", (e) => {
+      const weather = new Weather(e.detail.value);
+      this._rain = weather.rain;
+      this._cold = weather.cold;
+      this._wind = weather.wind;
+    });
 
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    data.removeEventListener("change", this.changeHandler);
+    if (!(await Database.initialize("weather").has(this.datestamp))) {
+      await Database.initialize("weather").set(this.datestamp, new Weather());
+    } else {
+      const weather = await Database.initialize("weather").get(this.datestamp);
+      this._rain = weather.rain;
+      this._cold = weather.cold;
+      this._wind = weather.wind;
+    }
   }
 
   render() {
@@ -120,7 +130,7 @@ export class WorldStateTracker extends LitElement {
       <header>
         <world-state-controls></world-state-controls>
         <div>
-          <calendar-display datestamp="${this._datestamp}"></calendar-display>
+          <calendar-display timestamp="${this.timestamp}"></calendar-display>
           <weather-display wind="${this._wind}" rain="${this._rain}" cold="${this._cold}"></weather-display>
         </div>
       </header>

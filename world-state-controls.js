@@ -1,7 +1,6 @@
 import { LitElement, html, css } from "./dependencies/lit-all.min.js";
 import { globalStyles } from "./global-styles.js";
 import { data } from "./global-state.js";
-import { events } from "./events.js";
 
 export class WorldStateControls extends LitElement {
   static styles = [
@@ -55,19 +54,20 @@ export class WorldStateControls extends LitElement {
   buttonClick(e) {
     const { type, direction } = e.detail;
     if (type === "day") {
-      if (direction === "+") data.advanceDay(events.state);
-      else if (direction === "-") data.reverseDay(events.state);
+      if (direction === "+") data.nextDay();
+      else if (direction === "-") data.prevDay();
     }
     if (type === "week") {
-      if (direction === "+") data.advanceWeek(events.state);
-      else if (direction === "-") data.reverseWeek(events.state);
+      if (direction === "+") data.nextWeek();
+      else if (direction === "-") data.prevWeek();
     }
     if (type === "year") {
-      if (direction === "+") data.advanceYear(events.state);
-      else if (direction === "-") data.reverseYear(events.state);
+      if (direction === "+") data.nextYear();
+      else if (direction === "-") data.prevYear();
     }
   }
 
+  // @ts-ignore
   render() {
     return html`
       <section class="controls">

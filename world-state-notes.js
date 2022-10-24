@@ -91,41 +91,30 @@ export class WorldStateNotes extends LitElement {
     `,
   ];
 
+  get timestamp() {
+    return Number(new URLSearchParams(window.location.search).get("timestamp"));
+  }
+
   changeHandler(e) {
-    console.log(e);
-    const { type, value } = e.detail;
-
-    if (type === "day") {
-      this._day = data.currentDay;
-      this._quarterDay = data.currentQuarterDay;
-      this._turn = data.currentTurn;
-      this._round = data.currentRound;
-    }
-
-    if (type === "quarterDay") {
-      this._quarterDay = data.currentQuarterDay;
-      this._turn = data.currentTurn;
-      this._round = data.currentRound;
-    }
-
-    if (type === "turn") {
-      this._turn = data.currentTurn;
-      this._round = data.currentRound;
-    }
-
-    if (type === "round") {
-      this._round = data.currentRound;
-    }
+    // const options = window.localStorage.getItem(`options:${this.timestamp}`);
+    // TODO: change weather to only store per day instead of every single round
+    // const weather = window.localStorage.getItem(`weather:${this.timestamp}`);
+    // populate notes
   }
 
   connectedCallback() {
     super.connectedCallback();
-    data.addEventListener("change", this.changeHandler);
+
+    // data.addEventListener("change", this.changeHandler);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    data.removeEventListener("change", this.changeHandler);
+    // const options = window.localStorage.getItem(`options:${this.timestamp}`);
+    // if (!options) {
+    // populate notes
+    // }
+    // data.removeEventListener("change", this.changeHandler);
   }
 
   constructor() {
@@ -137,37 +126,37 @@ export class WorldStateNotes extends LitElement {
     const { type, direction } = e.detail;
 
     if (type === "quarterDay") {
-      if (direction === "+") data.advanceQuarterDay();
-      else if (direction === "-") data.reverseQuarterDay();
+      if (direction === "+") data.nextQuarterDay();
+      else if (direction === "-") data.prevQuarterDay();
     }
     if (type === "turn") {
-      if (direction === "+") data.advanceTurn();
-      else if (direction === "-") data.reverseTurn();
+      if (direction === "+") data.nextTurn();
+      else if (direction === "-") data.prevTurn();
     }
     if (type === "round") {
-      if (direction === "+") data.advanceRound();
-      else if (direction === "-") data.reverseRound();
+      if (direction === "+") data.nextRound();
+      else if (direction === "-") data.prevRound();
     }
   }
 
+  // @ts-ignore
   render() {
-    if (!this._day) return;
     return html`
       <section class="controls">
         <div>
           <stepper-control class="w-170" type="quarterDay" @change="${this.buttonClick}">
-            <quarterday-display quarter-day="${this._quarterDay?.quarterDay}"></quarterday-display>
+            <quarterday-display timestamp="${this.timestamp}"></quarterday-display>
           </stepper-control>
         </div>
         <div>
           <stepper-control class="w-150" type="turn" @change="${this.buttonClick}"
-            >Turn ${this._turn?.turn}</stepper-control
-          >
+            >Turn <turn-display timestamp="${this.timestamp}"></turn-display
+          ></stepper-control>
         </div>
         <div>
           <stepper-control class="w-160" type="round" @change="${this.buttonClick}"
-            >Round ${this._round?.round}</stepper-control
-          >
+            >Round <round-display timestamp="${this.timestamp}"></round-display
+          ></stepper-control>
         </div>
       </section>
       <section class="messages">
@@ -192,8 +181,16 @@ export class WorldStateNotes extends LitElement {
         <!-- Quarter Day notes eg. HIKE move 2 hexes in open terrain or 1 hex in difficult terrain each quarter day -->
         <!-- Quarter Day choices eg. hike, keep watch, lead the way -->
         <!-- etc -->
-        <div>
-          <h2><dayname-display datestamp="${this._day.day}"></dayname-display></h2>
+      </section>
+    `;
+  }
+}
+
+/**
+ 
+
+<div>
+          <h2><dayname-display timestamp="${this.timestamp}"></dayname-display></h2>
           <ul>
             ${Notes.day(data.currentSelectedOptions, data.currentWeather, data.currentDark).map((note) => {
               return html`<li>${note}</li>`;
@@ -208,7 +205,6 @@ export class WorldStateNotes extends LitElement {
               <div>
                 <ul>
                   ${Notes.quarterDay(data.currentSelectedOptions, data.currentWeather, data.currentDark).map((note) => {
-                    console.log(note);
                     return html`<li>${note}</li>`;
                   })}
                 </ul>
@@ -216,7 +212,6 @@ export class WorldStateNotes extends LitElement {
             `
           )}
         </div>
-      </section>
-    `;
-  }
-}
+
+
+ */
