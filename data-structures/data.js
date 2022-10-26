@@ -1,6 +1,6 @@
 import { SelectedOptions } from "./selected-options.js";
 import { ROUND, TURN, QUARTER_DAY, DAY, WEEK, YEAR } from "./constants.js";
-import { Weather } from "../weather.js";
+import { Database } from "./database.js";
 
 const assert = (condition, message) => {
   if (!condition) throw new Error(message);
@@ -70,8 +70,9 @@ export class Data extends EventTarget {
    * Dispatches a change event when called.
    * @param {number} timestamp
    */
-  setDay(timestamp) {
+  async setDay(timestamp) {
     assert(timestamp, "timestamp required when calling setDay()");
+    await Database.initialize("timestamp").set("previous", this.timestamp);
     window.location.search = `?timestamp=${timestamp}`;
   }
 
@@ -98,8 +99,9 @@ export class Data extends EventTarget {
    * Dispatches a change event when called.
    * @param {number} timestamp - Valid values are 1,2,3 or 4 which represent the 4 possible quarter days of morning, afternoon, evening and night.
    */
-  setQuarterDay(timestamp) {
+  async setQuarterDay(timestamp) {
     assert(timestamp, "setQuarterDay requires a timestamp to be provided.");
+    await Database.initialize("timestamp").set("previous", this.timestamp);
     window.location.search = `?timestamp=${timestamp}`;
   }
 
@@ -128,8 +130,9 @@ export class Data extends EventTarget {
    * Dispatches a change event when called.
    * @param {number} timestamp
    */
-  setTurn(timestamp) {
+  async setTurn(timestamp) {
     assert(timestamp, "setTurn requires a timestamp to be provided.");
+    await Database.initialize("timestamp").set("previous", this.timestamp);
     window.location.search = `?timestamp=${timestamp}`;
   }
 
@@ -154,6 +157,7 @@ export class Data extends EventTarget {
    */
   setRound(timestamp) {
     assert(timestamp, "setRound requires a timestamp to be provided.");
+    Database.initialize("timestamp").set("previous", this.timestamp);
     window.location.search = `?timestamp=${timestamp}`;
   }
 

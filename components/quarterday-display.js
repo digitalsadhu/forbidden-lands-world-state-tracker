@@ -19,7 +19,6 @@ export class QuarterDayDisplay extends LitElement {
 
   // @ts-ignore
   render() {
-    console.log(this.quarterDay);
     // @ts-ignore
     return html`${quarterDays[this.quarterDay]}`;
   }

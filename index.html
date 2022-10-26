@@ -5,9 +5,59 @@
     <title>Forbidden Lands World State Tracker</title>
     <meta name="description" content="Forbidden Lands World State Tracker" />
     <meta name="viewport" content="width=device-width" />
-    <script>
-      const timestamp = new URLSearchParams(window.location.search).get("timestamp");
-      if (!timestamp) window.location.search = `?timestamp=${1165 * 365 * 4 * 24 * 60 + 1}`;
+    <script type="module">
+      // let timestamp = new URLSearchParams(window.location.search).get("timestamp");
+      // if (!timestamp) {
+      //   timestamp = window.localStorage.getItem("timestamp");
+      //   if (!timestamp) {
+      //     window.location.search = `?timestamp=${1165 * 365 * 4 * 24 * 60 + 1}`;
+      //   } else {
+      //     window.location.search = `?timestamp=${timestamp}`;
+      //   }
+      // } else {
+      //   window.localStorage.setItem("timestamp", timestamp);
+      // }
+
+      import { Database } from "./data-structures/database.js";
+
+      const ts = new URLSearchParams(window.location.search).get("timestamp");
+
+      // No timestamp in the URL
+      if (!ts) {
+        // let timestamp = window.localStorage.getItem("timestamp");
+        let timestamp = await Database.initialize("timestamp").get("current");
+        if (timestamp) window.location.search = `?timestamp=${timestamp}`;
+        else window.location.search = `?timestamp=${1165 * 365 * 4 * 24 * 60 + 1}`;
+      }
+
+      // timestamp in the URL
+      else {
+        if (!(await Database.initialize("options").has(String(ts)))) {
+          try {
+            const previousTimestamp = await Database.initialize("timestamp").get("previous");
+            const previousOptions = await Database.initialize("options").get(String(previousTimestamp));
+            await Database.initialize("options").set(ts, previousOptions);
+          } catch (e) {}
+        }
+        await Database.initialize("timestamp").set("current", Number(ts));
+        // window.localStorage.setItem("timestamp", ts);
+      }
+      // else {
+      //   timestamp = window.localStorage.getItem("timestamp");
+      //   if (timestamp) window.location.search = `?timestamp=${timestamp}`;
+      //   else window.location.search = `?timestamp=${1165 * 365 * 4 * 24 * 60 + 1}`;
+      // }
+
+      // if (!timestamp) {
+      //   timestamp = window.localStorage.getItem("timestamp");
+      //   if (!timestamp) {
+      //     window.location.search = `?timestamp=${1165 * 365 * 4 * 24 * 60 + 1}`;
+      //   } else {
+      //     window.location.search = `?timestamp=${timestamp}`;
+      //   }
+      // } else {
+      //   window.localStorage.setItem("timestamp", timestamp);
+      // }
     </script>
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="fonts.css" rel="stylesheet" />

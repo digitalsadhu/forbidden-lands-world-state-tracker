@@ -101,6 +101,7 @@ export class WorldStateOptions extends LitElement {
     // this.dispatchEvent(new CustomEvent("change", { detail: { name: e.detail.value, selected: e.detail.checked } }));
 
     Database.initialize("options").set(String(this.timestamp), this._options);
+    Database.initialize("options").set("current", this._options);
     // window.localStorage.setItem(`options:${this.timestamp}`, JSON.stringify(this._options));
     // data.updateSelectedOptions();
   }
@@ -124,6 +125,7 @@ export class WorldStateOptions extends LitElement {
     // window.localStorage.setItem(`options:${this.timestamp}`, JSON.stringify(this._options));
     // data.updateSelectedOptions();
     Database.initialize("options").set(String(this.timestamp), this._options);
+    Database.initialize("options").set("current", this._options);
   }
 
   rainChange(e) {
@@ -146,6 +148,7 @@ export class WorldStateOptions extends LitElement {
 
     this._options.environmentRain = value;
     Database.initialize("options").set(String(this.timestamp), this._options);
+    Database.initialize("options").set("current", this._options);
     // window.localStorage.setItem(`options:${this.timestamp}`, JSON.stringify(this._options));
     // data.update({ environmentRain: value });
     // this.dispatchEvent(new CustomEvent("rain-change", { detail: { name: "environmentRain", value } }));
@@ -168,6 +171,7 @@ export class WorldStateOptions extends LitElement {
     // window.localStorage.setItem(`options:${this.timestamp}`, JSON.stringify(this._options));
     // data.updateSelectedOptions();
     Database.initialize("options").set(String(this.timestamp), this._options);
+    Database.initialize("options").set("current", this._options);
     // data.update({ environmentWind: value });
     // this.dispatchEvent(new CustomEvent("wind-change", { detail: { name: "environmentWind", value } }));
   }
@@ -184,6 +188,7 @@ export class WorldStateOptions extends LitElement {
     // window.localStorage.setItem(`options:${this.timestamp}`, JSON.stringify(this._options));
     // data.updateSelectedOptions();
     Database.initialize("options").set(String(this.timestamp), this._options);
+    Database.initialize("options").set("current", this._options);
   }
 
   terrainChange(e) {
@@ -195,6 +200,7 @@ export class WorldStateOptions extends LitElement {
     // window.localStorage.setItem(`options:${this.timestamp}`, JSON.stringify(this._options));
     // data.updateSelectedOptions();
     Database.initialize("options").set(String(this.timestamp), this._options);
+    Database.initialize("options").set("current", this._options);
   }
 
   conditionsTemplate() {
